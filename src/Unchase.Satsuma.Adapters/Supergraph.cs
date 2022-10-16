@@ -202,7 +202,10 @@ namespace Unchase.Satsuma.Adapters
             }
 
 			var node = new Node(_nodeAllocator.Allocate());
-            _nodeProperties.Add(node, new(properties));
+			if (!_nodeProperties.ContainsKey(node))
+            {
+                _nodeProperties.Add(node, new(properties));
+            }
 			_nodes.Add(node);
 			return node;
 		}
@@ -221,7 +224,10 @@ namespace Unchase.Satsuma.Adapters
             }
 
 			var node = new Node(id);
-            _nodeProperties.Add(node, new(properties));
+			if (!_nodeProperties.ContainsKey(node))
+            {
+                _nodeProperties.Add(node, new(properties));
+            }
 			_nodes.Add(node);
 			return node;
 		}

@@ -85,7 +85,10 @@ namespace Unchase.Satsuma.Core
 		public Node GetNode(int index, Dictionary<string, object>? properties = default)
 		{
 			var node = new Node(1L + index);
-            _nodeProperties.Add(node, new(properties));
+			if (!_nodeProperties.ContainsKey(node))
+            {
+                _nodeProperties.Add(node, new(properties));
+            }
 
 			return node;
         }

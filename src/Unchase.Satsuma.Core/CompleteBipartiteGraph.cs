@@ -92,7 +92,10 @@ namespace Unchase.Satsuma.Core
 		public Node GetRedNode(int index, Dictionary<string, object>? properties = default)
 		{
 			var redNode = new Node(1L + index);
-            _nodeProperties.Add(redNode, new(properties));
+			if (!_nodeProperties.ContainsKey(redNode))
+            {
+                _nodeProperties.Add(redNode, new(properties));
+            }
 
 			return redNode;
         }
@@ -105,7 +108,10 @@ namespace Unchase.Satsuma.Core
 		public Node GetBlueNode(int index, Dictionary<string, object>? properties = default)
 		{
 			var blueNode = new Node(1L + RedNodeCount + index);
-            _nodeProperties.Add(blueNode, new(properties));
+			if (!_nodeProperties.ContainsKey(blueNode))
+            {
+                _nodeProperties.Add(blueNode, new(properties));
+            }
 
 			return blueNode;
         }

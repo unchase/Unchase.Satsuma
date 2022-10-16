@@ -58,7 +58,6 @@ namespace Unchase.Satsuma.Test.Algorithms
                 var dijkstra = new Dijkstra(superGraph, arc =>
                 {
                     var u = superGraph.U(arc);
-                    var v = superGraph.V(arc);
                     var uProperties = superGraph.Properties(u);
                     var uCost = uProperties?.ContainsKey("testProperty") == true 
                         ? double.TryParse(uProperties["testProperty"].ToString(), out var cost) ? cost : 0

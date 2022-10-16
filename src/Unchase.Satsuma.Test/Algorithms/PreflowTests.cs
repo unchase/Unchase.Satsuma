@@ -8,17 +8,17 @@ using Xunit;
 namespace Unchase.Satsuma.Test.Algorithms
 {
     /// <summary>
-    /// <see cref="Bfs"/> tests.
+    /// <see cref="Preflow"/> tests.
     /// </summary>
-    public class BfsTests
+    public class PreflowTests
     {
         /// <summary>
-        /// Successfully test.
+        /// 
         /// </summary>
         /// <param name="start">Start test.</param>
         [Theory]
         [InlineData(true)]
-        public void Bfs_Returns_Success(bool start)
+        public void Preflow_Returns_Success(bool start)
         {
             if (start)
             {
@@ -26,39 +26,23 @@ namespace Unchase.Satsuma.Test.Algorithms
                 var graph = new CompleteGraph(1, Directedness.Directed);
                 var superGraph = new Supergraph(graph);
                 superGraph.AddNode(1);
-                superGraph.AddNode(2, new()
-                {
-                    { "testProperty", 15 }
-                });
-                superGraph.AddNode(3, new()
-                {
-                    { "testProperty", 10 }
-                });
-                superGraph.AddNode(4, new()
-                {
-                    { "wrongProperty", 11 }
-                });
+                superGraph.AddNode(2);
+                superGraph.AddNode(3);
+                superGraph.AddNode(4);
                 superGraph.AddNode(5);
-                superGraph.AddNode(6, new()
-                {
-                    { "testProperty", 11 }
-                });
+                superGraph.AddNode(6);
                 superGraph.AddArc(new(1), new(2), Directedness.Directed);
                 superGraph.AddArc(new(2), new(3), Directedness.Directed);
                 superGraph.AddArc(new(3), new(5), Directedness.Directed);
                 superGraph.AddArc(new(5), new(4), Directedness.Directed);
                 superGraph.AddArc(new(4), new(6), Directedness.Directed);
-
-                var bfs = new Bfs(superGraph);
-                bfs.AddSource(superGraph.Nodes().First());
+                var random = new Random();
 
                 // Act
-                var resultNode = bfs.RunUntilReached(node => superGraph
-                    .Properties(node)?
-                    .Any(x => x.Key == "testProperty" && x.Value.Equals(11)) == true);
+                var preflow = new Preflow(superGraph, arc => random.Next(6, 1000), new(1), new(6));
 
                 // Assert
-                resultNode.Id.Should().Be(6);
+                preflow.FlowSize.Should().BeGreaterOrEqualTo(6).And.BeLessOrEqualTo(1000);
             }
         }
     }
