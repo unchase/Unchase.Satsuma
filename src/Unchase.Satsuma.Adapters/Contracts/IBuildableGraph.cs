@@ -22,9 +22,11 @@ freely, subject to the following restrictions:
    distribution.*/
 # endregion
 
+using Unchase.Satsuma.Core;
+using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
 
-namespace Unchase.Satsuma.Core.Contracts
+namespace Unchase.Satsuma.Adapters.Contracts
 {
     /// <summary>
     /// A graph which can build new nodes and arcs.

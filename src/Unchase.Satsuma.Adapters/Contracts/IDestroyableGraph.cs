@@ -22,7 +22,10 @@ freely, subject to the following restrictions:
    distribution.*/
 # endregion
 
-namespace Unchase.Satsuma.Core.Contracts
+using Unchase.Satsuma.Core;
+using Unchase.Satsuma.Core.Contracts;
+
+namespace Unchase.Satsuma.Adapters.Contracts
 {
     /// <summary>
     /// A graph which can destroy its nodes and arcs.

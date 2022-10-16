@@ -25,6 +25,7 @@ freely, subject to the following restrictions:
 using System.Diagnostics;
 
 using Unchase.Satsuma.Adapters.Abstractions;
+using Unchase.Satsuma.Adapters.Contracts;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
@@ -148,7 +149,10 @@ namespace Unchase.Satsuma.Adapters
 		/// Initialize <see cref="Supergraph"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="IGraph"/>.</param>
-		public Supergraph(IGraph? graph)
+		/// <param name="nodeProperties">Node properties dictionary.</param>
+		public Supergraph(
+            IGraph? graph,
+            Dictionary<Node, NodeProperties>? nodeProperties = default)
 		{
 			_graph = graph;
 
@@ -158,7 +162,9 @@ namespace Unchase.Satsuma.Adapters
 			_nodes = new();
 			_arcs = new();
 			_arcProperties = new();
-            _nodeProperties = new();
+            _nodeProperties = nodeProperties?
+                .Where(x => _graph?.HasNode(x.Key) == true)
+                .ToDictionary(x => x.Key, y => y.Value) ?? new();
 			_edges = new();
 
 			_nodeArcsAll = new();

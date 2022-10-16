@@ -35,7 +35,7 @@ namespace Unchase.Satsuma.Adapters
 	/// <remarks>
 	/// <para>The Node and Arc set of the adapter is a subset of that of the original graph.</para>
 	/// <para>
-	/// The underlying graph can be modified while using this adaptor,
+	/// The underlying graph can be modified while using this adapter,
 	/// as long as no path nodes and path arcs are deleted.
 	/// </para>
 	/// <para>
@@ -83,7 +83,9 @@ namespace Unchase.Satsuma.Adapters
 		/// </summary>
 		/// <param name="graph"><see cref="IGraph"/>.</param>
 		/// <param name="nodeProperties">Node properties dictionary.</param>
-		public Path(IGraph graph, Dictionary<Node, NodeProperties>? nodeProperties = default)
+		public Path(
+            IGraph graph,
+            Dictionary<Node, NodeProperties>? nodeProperties = default)
 		{
 			Graph = graph;
 
