@@ -5,6 +5,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Company>Unchase</Company>
+    <Copyright>Copyright © 2013 Balázs Szalkai (updated by Unchase)</Copyright>
+    <PackageProjectUrl>https://github.com/unchase/Unchase.Satsuma</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/unchase/Unchase.Satsuma</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Graph,Satsuma</PackageTags>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <Description>Satsuma is a graph library for .NET, written in C#.</Description>
   </PropertyGroup>
 
 </Project>
