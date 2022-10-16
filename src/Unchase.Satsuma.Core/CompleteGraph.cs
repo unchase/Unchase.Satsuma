@@ -62,7 +62,7 @@ namespace Unchase.Satsuma.Core
 			Directed = directedness == Directedness.Directed;
             _nodeProperties = new();
 
-			if (nodeCount < 0)
+			if (nodeCount <= 0)
             {
                 throw new ArgumentException("Invalid node count: " + nodeCount);
             }

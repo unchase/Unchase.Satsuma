@@ -378,24 +378,24 @@ namespace Unchase.Satsuma.Adapters
 
         private List<Arc> ArcsInternal(Node v, ArcFilter filter)
 		{
-			List<Arc> result;
+			List<Arc>? result;
 			switch (filter)
 			{
 				case ArcFilter.All: 
-                    _nodeArcsAll.TryGetValue(v, out result!); 
+                    _nodeArcsAll.TryGetValue(v, out result); 
                     break;
 				case ArcFilter.Edge: 
-                    _nodeArcsEdge.TryGetValue(v, out result!); 
+                    _nodeArcsEdge.TryGetValue(v, out result); 
                     break;
 				case ArcFilter.Forward: 
-                    _nodeArcsForward.TryGetValue(v, out result!); 
+                    _nodeArcsForward.TryGetValue(v, out result); 
                     break;
 				default: 
-                    _nodeArcsBackward.TryGetValue(v, out result!); 
+                    _nodeArcsBackward.TryGetValue(v, out result); 
                     break;
 			}
 
-			return result;
+			return result ?? new();
 		}
 
         /// <inheritdoc />
