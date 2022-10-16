@@ -73,7 +73,11 @@ namespace Unchase.Satsuma.Core
             {
                 if (!_parent.TryGetValue(element, out var p))
                 {
-                    foreach (var a in _tmpList) _parent[a] = element;
+                    foreach (var a in _tmpList)
+                    {
+                        _parent[a] = element;
+                    }
+
                     _tmpList.Clear();
                     return new(element);
                 }

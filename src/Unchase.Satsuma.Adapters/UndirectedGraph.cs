@@ -39,14 +39,34 @@ namespace Unchase.Satsuma.Adapters
         IGraph
     {
         private readonly IGraph _graph;
+        private readonly Dictionary<Node, NodeProperties>? _nodeProperties;
 
         /// <summary>
         /// Initialize <see cref="UndirectedGraph"/>.
         /// </summary>
         /// <param name="graph"></param>
-        public UndirectedGraph(IGraph graph)
+        /// <param name="nodeProperties">Node properties dictionary.</param>
+        public UndirectedGraph(
+            IGraph graph,
+            Dictionary<Node, NodeProperties>? nodeProperties = default)
         {
             _graph = graph;
+            _nodeProperties = nodeProperties?
+                .Where(x => _graph.HasNode(x.Key))
+                .ToDictionary(x => x.Key, y => y.Value);
+        }
+
+        /// <inheritdoc />
+        public Dictionary<string, object>? Properties(Node node)
+        {
+            if (_nodeProperties == null)
+            {
+                return null;
+            }
+
+            return _nodeProperties.TryGetValue(node, out var p)
+                ? p.Properties
+                : _graph.Properties(node) ?? null;
         }
 
         /// <inheritdoc />

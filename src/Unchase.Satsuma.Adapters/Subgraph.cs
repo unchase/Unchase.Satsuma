@@ -48,14 +48,21 @@ namespace Unchase.Satsuma.Adapters
 		private readonly HashSet<Node> _nodeExceptions = new();
 		private bool _defaultArcEnabled;
 		private readonly HashSet<Arc> _arcExceptions = new();
+        private readonly Dictionary<Node, NodeProperties>? _nodeProperties;
 
 		/// <summary>
 		/// Initialize <see cref="Subgraph"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="IGraph"/>.</param>
-		public Subgraph(IGraph graph)
+		/// <param name="nodeProperties">Node properties dictionary.</param>
+		public Subgraph(
+            IGraph graph,
+            Dictionary<Node, NodeProperties>? nodeProperties = default)
 		{
 			_graph = graph;
+			_nodeProperties = _nodeProperties = nodeProperties?
+                .Where(x => _graph.HasNode(x.Key))
+                .ToDictionary(x => x.Key, y => y.Value);
 
 			EnableAllNodes(true);
 			EnableAllArcs(true);
@@ -134,6 +141,19 @@ namespace Unchase.Satsuma.Adapters
 		{
 			return _defaultArcEnabled ^ _arcExceptions.Contains(arc);
 		}
+
+        /// <inheritdoc />
+        public Dictionary<string, object>? Properties(Node node)
+        {
+            if (_nodeProperties == null)
+            {
+                return null;
+            }
+
+            return _nodeProperties.TryGetValue(node, out var p)
+                ? p.Properties
+                : _graph.Properties(node) ?? null;
+        }
 
 		/// <inheritdoc />
 		public Node U(Arc arc)

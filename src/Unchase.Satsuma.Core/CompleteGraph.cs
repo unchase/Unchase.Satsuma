@@ -39,9 +39,11 @@ namespace Unchase.Satsuma.Core
 	public sealed class CompleteGraph : 
         IGraph
 	{
-        /// <summary>
+        private readonly Dictionary<Node, NodeProperties> _nodeProperties;
+
+		/// <summary>
 		/// True if the graph contains all the possible directed arcs, 
-        /// false if it contains all the possible edges.
+		/// false if it contains all the possible edges.
 		/// </summary>
 		public bool Directed { get; }
 
@@ -57,9 +59,10 @@ namespace Unchase.Satsuma.Core
             Directedness directedness)
 		{
 			_nodeCount = nodeCount;
-			Directed = (directedness == Directedness.Directed);
+			Directed = directedness == Directedness.Directed;
+            _nodeProperties = new();
 
-            if (nodeCount < 0)
+			if (nodeCount < 0)
             {
                 throw new ArgumentException("Invalid node count: " + nodeCount);
             }
@@ -80,10 +83,14 @@ namespace Unchase.Satsuma.Core
 		/// Gets a node of the complete graph by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and NodeCount() (exclusive).</param>
-        public Node GetNode(int index)
+		/// <param name="properties">The node properties.</param>
+		public Node GetNode(int index, Dictionary<string, object>? properties = default)
 		{
-			return new(1L + index);
-		}
+			var node = new Node(1L + index);
+            _nodeProperties.Add(node, new(properties));
+
+			return node;
+        }
 
 		/// <summary>
 		/// Gets the index of a graph node.
@@ -128,6 +135,14 @@ namespace Unchase.Satsuma.Core
 		}
 
         /// <inheritdoc />
+        public Dictionary<string, object>? Properties(Node node)
+        {
+            return _nodeProperties.TryGetValue(node, out var p)
+                ? p.Properties
+                : null;
+        }
+
+		/// <inheritdoc />
 		public Node U(Arc arc)
 		{
 			return new(1L + (arc.Id - 1) % _nodeCount);

@@ -39,7 +39,9 @@ namespace Unchase.Satsuma.Core
 	public sealed class CompleteBipartiteGraph : 
         IGraph
 	{
-        /// <summary>
+        private readonly Dictionary<Node, NodeProperties> _nodeProperties;
+
+		/// <summary>
 		/// The count of nodes in the first color class.
 		/// </summary>
 		public int RedNodeCount { get; }
@@ -79,25 +81,34 @@ namespace Unchase.Satsuma.Core
 			RedNodeCount = redNodeCount;
 			BlueNodeCount = blueNodeCount;
 			Directed = directedness == Directedness.Directed;
-		}
+            _nodeProperties = new();
+        }
 
 		/// <summary>
 		/// Gets a red node by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and RedNodeCount (exclusive).</param>
-		public Node GetRedNode(int index)
+		/// <param name="properties">The node properties.</param>
+		public Node GetRedNode(int index, Dictionary<string, object>? properties = default)
 		{
-			return new(1L + index);
-		}
+			var redNode = new Node(1L + index);
+            _nodeProperties.Add(redNode, new(properties));
+
+			return redNode;
+        }
 
 		/// <summary>
 		/// Gets a blue node by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and BlueNodeCount (exclusive).</param>
-        public Node GetBlueNode(int index)
+		/// <param name="properties">The node properties.</param>
+		public Node GetBlueNode(int index, Dictionary<string, object>? properties = default)
 		{
-			return new(1L + RedNodeCount + index);
-		}
+			var blueNode = new Node(1L + RedNodeCount + index);
+            _nodeProperties.Add(blueNode, new(properties));
+
+			return blueNode;
+        }
 
 		/// <summary>
 		/// Node is red.
@@ -116,20 +127,32 @@ namespace Unchase.Satsuma.Core
 		/// <returns>The arc whose two ends are u and v, or <see cref="Arc.Invalid"/> if the two nodes are of the same color.</returns>
 		public Arc GetArc(Node u, Node v)
 		{
-			var ured = IsRed(u);
-			var vred = IsRed(v);
+			var uRed = IsRed(u);
+			var vRed = IsRed(v);
 
-			if (ured == vred) return Arc.Invalid;
-			if (vred)
+            if (uRed == vRed)
+            {
+                return Arc.Invalid;
+            }
+
+			if (vRed)
 			{
 				(u, v) = (v, u);
             }
 
-			var uindex = (int)(u.Id - 1);
-			var vindex = (int)(v.Id - RedNodeCount - 1);
+			var uIndex = (int)(u.Id - 1);
+			var vIndex = (int)(v.Id - RedNodeCount - 1);
 
-			return new(1 + (long)vindex * RedNodeCount + uindex);
+			return new(1 + (long)vIndex * RedNodeCount + uIndex);
 		}
+
+        /// <inheritdoc />
+        public Dictionary<string, object>? Properties(Node node)
+        {
+            return _nodeProperties.TryGetValue(node, out var p)
+                ? p.Properties
+                : null;
+        }
 
 		/// <inheritdoc />
 		/// 

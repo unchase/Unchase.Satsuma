@@ -104,8 +104,11 @@ namespace Unchase.Satsuma.Algorithms
 
 		private Node CheckTarget(Node node)
 		{
-			if (node != Node.Invalid && Heuristic(node) != 0)
-				throw new ArgumentException("Heuristic is nonzero for a target");
+            if (node != Node.Invalid && Heuristic(node) != 0)
+            {
+                throw new ArgumentException("Heuristic is nonzero for a target");
+            }
+
 			return node;
 		}
 

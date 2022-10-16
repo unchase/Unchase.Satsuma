@@ -36,12 +36,17 @@ namespace Unchase.Satsuma.Core
 	/// </remarks>
 	public static class Utils
 	{
+        /// <summary>
 		/// Returns the first child element that matches the given local name, or null if none found.
-		internal static XElement? ElementLocal(
+		/// </summary>
+		/// <param name="xParent"><see cref="XElement"/>.</param>
+		/// <param name="localName">Local name.</param>
+        internal static XElement? ElementLocal(
             XElement xParent, 
             string localName)
 		{
-			return ElementsLocal(xParent, localName).FirstOrDefault();
+			return ElementsLocal(xParent, localName)
+                .FirstOrDefault();
 		}
 
 		/// <summary>
@@ -54,7 +59,8 @@ namespace Unchase.Satsuma.Core
             XElement xParent, 
             string localName)
 		{
-			return xParent.Elements().Where(x => x.Name.LocalName == localName);
+			return xParent.Elements()
+                .Where(x => x.Name.LocalName == localName);
 		}
 
 		/// <summary>
@@ -81,10 +87,12 @@ namespace Unchase.Satsuma.Core
                     UseShellExecute = false
                 };
 
-                var process = new Process();
-				process.StartInfo = processStartInfo;
+                var process = new Process
+                {
+                    StartInfo = processStartInfo
+                };
 
-				if (!silent)
+                if (!silent)
 				{
 					process.OutputDataReceived += (_, a) => Console.WriteLine(a.Data);
 					process.ErrorDataReceived += (_, a) => Console.Error.WriteLine(a.Data);

@@ -22,28 +22,18 @@ freely, subject to the following restrictions:
    distribution.*/
 # endregion
 
-using Unchase.Satsuma.Algorithms.Abstractions;
-
-namespace Unchase.Satsuma.Algorithms.Enums
+namespace Unchase.Satsuma.Core.Contracts
 {
     /// <summary>
-    /// Direction.
+    /// A graph which can provide information about its nodes.
     /// </summary>
-	public enum Direction
+    public interface INodeLookup
     {
         /// <summary>
-        /// The <see cref="Dfs"/> treats each arc as bidirectional.
+        /// Get the node properties.
         /// </summary>
-        Undirected,
-
-        /// <summary>
-        /// The <see cref="Dfs"/> respects the orientation of each arc.
-        /// </summary>
-        Forward,
-
-        /// <summary>
-        /// The <see cref="Dfs"/> runs on the reverse graph.
-        /// </summary>
-        Backward
+        /// <param name="node">Node.</param>
+        /// <returns>Returns the node properties.</returns>
+        public Dictionary<string, object>? Properties(Node node);
     }
 }

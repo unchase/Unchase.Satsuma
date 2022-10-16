@@ -75,19 +75,24 @@ namespace Unchase.Satsuma.Adapters
 		private Dictionary<Node, Arc> _nextArc;
 		private Dictionary<Node, Arc> _prevArc;
 		private readonly HashSet<Arc> _arcs;
+        private readonly Dictionary<Node, NodeProperties>? _nodeProperties;
 		private int _edgeCount;
 
 		/// <summary>
 		/// Initialize and empty <see cref="Path"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="IGraph"/>.</param>
-		public Path(IGraph graph)
+		/// <param name="nodeProperties">Node properties dictionary.</param>
+		public Path(IGraph graph, Dictionary<Node, NodeProperties>? nodeProperties = default)
 		{
 			Graph = graph;
 
 			_nextArc = new();
 			_prevArc = new();
 			_arcs = new();
+            _nodeProperties = _nodeProperties = nodeProperties?
+                .Where(x => Graph.HasNode(x.Key))
+                .ToDictionary(x => x.Key, y => y.Value);
 
 			Clear();
 		}
@@ -104,6 +109,7 @@ namespace Unchase.Satsuma.Adapters
 			_nextArc.Clear();
 			_prevArc.Clear();
 			_arcs.Clear();
+            _nodeProperties?.Clear();
 			_edgeCount = 0;
 		}
 
@@ -218,6 +224,19 @@ namespace Unchase.Satsuma.Adapters
 		}
 
         /// <inheritdoc />
+        public Dictionary<string, object>? Properties(Node node)
+        {
+            if (_nodeProperties == null)
+            {
+                return null;
+            }
+
+            return _nodeProperties.TryGetValue(node, out var p)
+                ? p.Properties
+                : Graph.Properties(node) ?? null;
+        }
+
+		/// <inheritdoc />
 		public Node U(Arc arc)
 		{
 			return Graph.U(arc);

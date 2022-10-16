@@ -30,7 +30,8 @@ namespace Unchase.Satsuma.Core.Contracts
 	/// Interface to a read-only graph.
 	/// </summary>
 	public interface IGraph : 
-        IArcLookup
+        IArcLookup,
+        INodeLookup
 	{
         /// <summary>
 		/// Get all nodes of the graph.

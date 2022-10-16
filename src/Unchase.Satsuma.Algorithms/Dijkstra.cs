@@ -166,13 +166,20 @@ namespace Unchase.Satsuma.Algorithms
 		/// <returns>Returns the newly fixed node, or <see cref="Node.Invalid"/> if there was no reached but unfixed node.</returns>
 		public Node Step()
 		{
-			if (_priorityQueue.Count == 0) return Node.Invalid;
+            if (_priorityQueue.Count == 0)
+            {
+                return Node.Invalid;
+            }
 
 			// find the closest reached but unfixed node
             var min = _priorityQueue.Peek(out var minDist);
 			_priorityQueue.Pop();
 
-			if (double.IsPositiveInfinity(minDist)) return Node.Invalid;
+            if (double.IsPositiveInfinity(minDist))
+            {
+                return Node.Invalid;
+            }
+
 			_distance[min] = minDist; // fix the node
 
 			// modify keys for neighboring nodes in the priority queue

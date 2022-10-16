@@ -41,7 +41,7 @@ namespace Unchase.Satsuma.Adapters
 	/// <para>The adapter is an <see cref="IDestroyableGraph"/>, but only the nodes/arcs added by the adapter can be deleted.</para>
 	/// <para>Memory usage: O(n+m), where n is the number of new nodes and m is the number of new arcs.</para>
 	/// <para>
-	/// The following example demonstrates how nodes and arcs can be added to a(n otherwise immutable) CompleteGraph:
+	/// The following example demonstrates how nodes and arcs can be added to a(n otherwise immutable) <see cref="CompleteGraph"/>:
 	/// <code>
 	/// var g = new CompleteGraph(10);
 	/// var sg = new Supergraph(g);
@@ -99,10 +99,19 @@ namespace Unchase.Satsuma.Adapters
 
 		private class ArcProperties
 		{
+			/// <summary>
+			/// The first node.
+			/// </summary>
 			public Node U { get; }
 
+			/// <summary>
+			/// The second node.
+			/// </summary>
 			public Node V { get; }
 
+			/// <summary>
+			/// The arc is edge.
+			/// </summary>
 			public bool IsEdge { get; }
 
 			/// <summary>
@@ -127,6 +136,7 @@ namespace Unchase.Satsuma.Adapters
 		private readonly HashSet<Node> _nodes;
 		private readonly HashSet<Arc> _arcs;
 		private readonly Dictionary<Arc, ArcProperties> _arcProperties;
+        private readonly Dictionary<Node, NodeProperties> _nodeProperties;
 		private readonly HashSet<Arc> _edges;
 
 		private readonly Dictionary<Node, List<Arc>> _nodeArcsAll;
@@ -148,6 +158,7 @@ namespace Unchase.Satsuma.Adapters
 			_nodes = new();
 			_arcs = new();
 			_arcProperties = new();
+            _nodeProperties = new();
 			_edges = new();
 
 			_nodeArcsAll = new();
@@ -167,7 +178,8 @@ namespace Unchase.Satsuma.Adapters
 			_nodes.Clear();
 			_arcs.Clear();
 			_arcProperties.Clear();
-			_edges.Clear();
+            _nodeProperties.Clear();
+            _edges.Clear();
 
 			_nodeArcsAll.Clear();
 			_nodeArcsEdge.Clear();
@@ -176,7 +188,7 @@ namespace Unchase.Satsuma.Adapters
 		}
 
 		/// <inheritdoc />
-		public Node AddNode()
+		public Node AddNode(Dictionary<string, object>? properties = default)
 		{
             if (NodeCount() == int.MaxValue)
             {
@@ -184,16 +196,18 @@ namespace Unchase.Satsuma.Adapters
             }
 
 			var node = new Node(_nodeAllocator.Allocate());
+            _nodeProperties.Add(node, new(properties));
 			_nodes.Add(node);
 			return node;
 		}
 
         /// <summary>
-		/// Add a new node to the graph with id.
-		/// </summary>
-		/// <param name="id">Id</param>
-		/// <returns>Returns new added node.</returns>
-        public Node AddNode(long id)
+        /// Add a new node to the graph with id.
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <param name="properties">Node properties.</param>
+        /// <returns>Returns new added node.</returns>
+        public Node AddNode(long id, Dictionary<string, object>? properties = default)
 		{
             if (NodeCount() == int.MaxValue)
             {
@@ -201,6 +215,7 @@ namespace Unchase.Satsuma.Adapters
             }
 
 			var node = new Node(id);
+            _nodeProperties.Add(node, new(properties));
 			_nodes.Add(node);
 			return node;
 		}
@@ -256,7 +271,9 @@ namespace Unchase.Satsuma.Adapters
                 return false;
             }
 
-            bool ArcsToRemove(Arc a) => (U(a) == node || V(a) == node);
+            _nodeProperties.Remove(node);
+
+			bool ArcsToRemove(Arc a) => (U(a) == node || V(a) == node);
 
             // remove arcs from nodeArcs_... of other ends of the arcs going from "node"
 			foreach (var otherNode in Nodes())
@@ -274,7 +291,7 @@ namespace Unchase.Satsuma.Adapters
 			Utils.RemoveAll(_edges, ArcsToRemove);
 			Utils.RemoveAll(_arcProperties, ArcsToRemove);
 
-			_nodeArcsAll.Remove(node);
+            _nodeArcsAll.Remove(node);
 			_nodeArcsEdge.Remove(node);
 			_nodeArcsForward.Remove(node);
 			_nodeArcsBackward.Remove(node);
@@ -315,6 +332,14 @@ namespace Unchase.Satsuma.Adapters
 		}
 
         /// <inheritdoc />
+		public Dictionary<string, object>? Properties(Node node)
+        {
+            return _nodeProperties.TryGetValue(node, out var p)
+                ? p.Properties
+                : _graph?.Properties(node) ?? null;
+		}
+
+		/// <inheritdoc />
 		public Node U(Arc arc)
         {
             return _arcProperties.TryGetValue(arc, out var p) 
@@ -340,7 +365,9 @@ namespace Unchase.Satsuma.Adapters
 
 		private HashSet<Arc> ArcsInternal(ArcFilter filter)
 		{
-			return filter == ArcFilter.All ? _arcs : _edges;
+			return filter == ArcFilter.All 
+                ? _arcs 
+                : _edges;
 		}
 
         private List<Arc> ArcsInternal(Node v, ArcFilter filter)
@@ -368,13 +395,17 @@ namespace Unchase.Satsuma.Adapters
         /// <inheritdoc />
 		public IEnumerable<Node> Nodes()
 		{
-			return _graph == null ? _nodes : _nodes.Concat(_graph.Nodes());
+			return _graph == null 
+                ? _nodes 
+                : _nodes.Concat(_graph.Nodes());
 		}
 
         /// <inheritdoc />
 		public IEnumerable<Arc> Arcs(ArcFilter filter = ArcFilter.All)
 		{
-			return _graph == null ? ArcsInternal(filter) : ArcsInternal(filter).Concat(_graph.Arcs(filter));
+			return _graph == null 
+                ? ArcsInternal(filter) 
+                : ArcsInternal(filter).Concat(_graph.Arcs(filter));
 		}
 
         /// <inheritdoc />

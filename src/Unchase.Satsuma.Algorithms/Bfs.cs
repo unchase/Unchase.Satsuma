@@ -137,11 +137,10 @@ namespace Unchase.Satsuma.Algorithms
 		/// </summary>
 		public void Run()
 		{
-			Node dummy;
-            while (Step(null, out dummy))
+            while (Step(null, out _))
             {
             }
-		}
+        }
 
 		/// <summary>
 		/// Runs the algorithm until a specific target node is reached.

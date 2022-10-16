@@ -35,8 +35,9 @@ namespace Unchase.Satsuma.Core.Contracts
         /// <summary>
         /// Adds a new node to the graph.
         /// </summary>
+        /// <param name="properties">Node properties.</param>
         /// <returns>Return new added node.</returns>
-        public Node AddNode();
+        public Node AddNode(Dictionary<string, object>? properties = default);
 
         /// <summary>
         /// Adds a directed arc or an edge (undirected arc) between u and v to the graph.

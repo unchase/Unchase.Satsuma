@@ -70,7 +70,11 @@ namespace Unchase.Satsuma.Core
         /// <inheritdoc />
         public override bool Equals(object? obj)
         {
-            if (obj is Arc) return Equals((Arc)obj);
+            if (obj is Arc arc)
+            {
+                return Equals(arc);
+            }
+
             return false;
         }
 

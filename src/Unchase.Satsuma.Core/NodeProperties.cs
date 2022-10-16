@@ -20,30 +20,27 @@ freely, subject to the following restrictions:
 
    3. This notice may not be removed or altered from any source
    distribution.*/
-# endregion
+#endregion
 
-using Unchase.Satsuma.Algorithms.Abstractions;
-
-namespace Unchase.Satsuma.Algorithms.Enums
+namespace Unchase.Satsuma.Core
 {
     /// <summary>
-    /// Direction.
+    /// The node properties.
     /// </summary>
-	public enum Direction
+    public class NodeProperties
     {
         /// <summary>
-        /// The <see cref="Dfs"/> treats each arc as bidirectional.
+        /// The node properties.
         /// </summary>
-        Undirected,
+        public Dictionary<string, object>? Properties { get; }
 
         /// <summary>
-        /// The <see cref="Dfs"/> respects the orientation of each arc.
+        /// Initialize <see cref="NodeProperties"/>.
         /// </summary>
-        Forward,
-
-        /// <summary>
-        /// The <see cref="Dfs"/> runs on the reverse graph.
-        /// </summary>
-        Backward
+        /// <param name="properties">The node properties.</param>
+        public NodeProperties(Dictionary<string, object>? properties = default)
+        {
+            Properties = properties;
+        }
     }
 }

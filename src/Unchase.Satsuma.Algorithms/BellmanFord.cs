@@ -30,7 +30,7 @@ using Path = Unchase.Satsuma.Adapters.Path;
 
 namespace Unchase.Satsuma.Algorithms
 {
-    /// <summary>
+	/// <summary>
 	/// Finds cheapest paths in a graph from a set of source nodes to all nodes, or a negative cycle reachable from the sources.
 	/// </summary>
 	/// <remarks>
@@ -45,9 +45,9 @@ namespace Unchase.Satsuma.Algorithms
 	/// <para>- If a negative cycle has been reached, then <see cref="NegativeCycle"/> is not null and contains such a cycle.</para>
 	/// <para>  - In this case, <see cref="GetDistance"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/> throw an exception.</para>
 	/// <para>- If no negative cycle could be reached, then <see cref="NegativeCycle"/> is null.</para>
-	/// <para>  - In this case, use #GetDistance, #GetParentArc and #GetPath for querying the results.</para>
+	/// <para>  - In this case, use <see cref="GetDistance"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/> for querying the results.</para>
 	/// <para>  - For unreachable nodes, <see cref="GetDistance"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/> <see cref="double.PositiveInfinity"/>, <see cref="Arc.Invalid"/> and null respectively.</para>
-    /// </remarks>
+	/// </remarks>
 	public sealed class BellmanFord
 	{
         /// <summary>
@@ -234,7 +234,11 @@ namespace Unchase.Satsuma.Algorithms
 			while (true)
 			{
 				var arc = GetParentArc(node);
-				if (arc == Arc.Invalid) break;
+                if (arc == Arc.Invalid)
+                {
+                    break;
+                }
+
 				result.AddFirst(arc);
 				node = Graph.Other(arc, node);
 			}

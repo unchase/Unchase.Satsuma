@@ -44,16 +44,21 @@ namespace Unchase.Satsuma.Core
 	{
 		private readonly int _nodeCount;
 		private readonly bool _isCycle, _directed;
+        private readonly Dictionary<Node, NodeProperties> _nodeProperties;
 
 		/// <summary>
 		/// The first node.
 		/// </summary>
-        public Node FirstNode => _nodeCount > 0 ? new(1) : Node.Invalid;
+		public Node FirstNode => _nodeCount > 0 
+            ? new(1) 
+            : Node.Invalid;
 
 		/// <summary>
 		/// The last node.
 		/// </summary>
-        public Node LastNode => _nodeCount > 0 ? new(_isCycle ? 1 : _nodeCount) : Node.Invalid;
+        public Node LastNode => _nodeCount > 0 
+            ? new(_isCycle ? 1 : _nodeCount) 
+            : Node.Invalid;
 
 		/// <summary>
 		/// Initialize <see cref="PathGraph"/>.
@@ -69,16 +74,21 @@ namespace Unchase.Satsuma.Core
 			_nodeCount = nodeCount;
 			_isCycle = topology == Topology.Cycle;
 			_directed = directedness == Directedness.Directed;
-		}
+            _nodeProperties = new();
+        }
 
 		/// <summary>
 		/// Gets a node of the path by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and NodeCount() (exclusive).</param>
-        public Node GetNode(int index)
+		/// <param name="properties">The node properties.</param>
+		public Node GetNode(int index, Dictionary<string, object>? properties = default)
 		{
-			return new(1L + index);
-		}
+			var node = new Node(1L + index);
+            _nodeProperties.Add(node, new(properties));
+
+			return node;
+        }
 
 		/// <summary>
 		/// Gets the index of a path node.
@@ -115,6 +125,14 @@ namespace Unchase.Satsuma.Core
 		}
 
         /// <inheritdoc />
+        public Dictionary<string, object>? Properties(Node node)
+        {
+            return _nodeProperties.TryGetValue(node, out var p)
+                ? p.Properties
+                : null;
+        }
+
+		/// <inheritdoc />
 		public Node U(Arc arc)
 		{
 			return new(arc.Id);
@@ -166,7 +184,8 @@ namespace Unchase.Satsuma.Core
         /// <inheritdoc />
 		public IEnumerable<Arc> Arcs(Node u, Node v, ArcFilter filter = ArcFilter.All)
 		{
-			return Arcs(u, filter).Where(arc => this.Other(arc, u) == v);
+			return Arcs(u, filter)
+                .Where(arc => this.Other(arc, u) == v);
 		}
 
         /// <inheritdoc />

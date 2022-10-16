@@ -45,16 +45,23 @@ namespace Unchase.Satsuma.Adapters
 	{
 		private readonly IGraph _graph;
 		private readonly DisjointSet<Node> _nodeGroups;
+        private readonly Dictionary<Node, NodeProperties>? _nodeProperties;
 		private int _unionCount;
 
-		/// <summary>
-		/// Initialize <see cref="ContractedGraph"/>.
-		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
-		public ContractedGraph(IGraph graph)
+        /// <summary>
+        /// Initialize <see cref="ContractedGraph"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="nodeProperties">Node properties dictionary.</param>
+        public ContractedGraph(
+            IGraph graph,
+            Dictionary<Node, NodeProperties>? nodeProperties = default)
 		{
 			_graph = graph;
 			_nodeGroups = new();
+            _nodeProperties = _nodeProperties = nodeProperties?
+                .Where(x => _graph.HasNode(x.Key))
+                .ToDictionary(x => x.Key, y => y.Value);
 			Reset();
 		}
 
@@ -64,6 +71,7 @@ namespace Unchase.Satsuma.Adapters
 		public void Reset()
 		{
 			_nodeGroups.Clear();
+            _nodeProperties?.Clear();
 			_unionCount = 0;
 		}
 
@@ -117,6 +125,19 @@ namespace Unchase.Satsuma.Adapters
 		}
 
         /// <inheritdoc />
+        public Dictionary<string, object>? Properties(Node node)
+        {
+            if (_nodeProperties == null)
+            {
+                return null;
+            }
+
+            return _nodeProperties.TryGetValue(node, out var p)
+                ? p.Properties
+                : _graph.Properties(node) ?? null;
+        }
+
+		/// <inheritdoc />
 		public Node U(Arc arc)
 		{
 			return GetRepresentative(_graph.U(arc));
@@ -137,8 +158,13 @@ namespace Unchase.Satsuma.Adapters
         /// <inheritdoc />
 		public IEnumerable<Node> Nodes()
 		{
-			foreach (var node in _graph.Nodes())
-				if (GetRepresentative(node) == node) yield return node;
+            foreach (var node in _graph.Nodes())
+            {
+                if (GetRepresentative(node) == node)
+                {
+                    yield return node;
+                }
+            }
 		}
 
         /// <inheritdoc />
@@ -155,9 +181,12 @@ namespace Unchase.Satsuma.Adapters
 				foreach (var arc in _graph.Arcs(node, filter))
 				{
 					var loop = (U(arc) == V(arc));
+
 					// we should avoid outputting an arc twice
-					if (!loop || !(filter == ArcFilter.All || IsEdge(arc)) || _graph.U(arc) == node)
-						yield return arc;
+                    if (!loop || !(filter == ArcFilter.All || IsEdge(arc)) || _graph.U(arc) == node)
+                    {
+                        yield return arc;
+                    }
 				}
 			}
 		}
