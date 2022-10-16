@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{90E43B2C-6
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.Test", "src\Unchase.Satsuma.Test\Unchase.Satsuma.Test.csproj", "{EC691AF4-A32A-438E-89AF-6EC828C3D8D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.Test", "tests\Unchase.Satsuma.Test\Unchase.Satsuma.Test.csproj", "{EC691AF4-A32A-438E-89AF-6EC828C3D8D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
