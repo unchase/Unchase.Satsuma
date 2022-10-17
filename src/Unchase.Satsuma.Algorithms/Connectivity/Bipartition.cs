@@ -30,7 +30,7 @@ using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Extensions;
 
-namespace Unchase.Satsuma.Algorithms
+namespace Unchase.Satsuma.Algorithms.Connectivity
 {
     /// <summary>
 	/// Decides whether the graph is bipartite and finds a bipartition into red and blue nodes.

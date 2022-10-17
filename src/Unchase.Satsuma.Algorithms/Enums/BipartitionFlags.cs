@@ -24,6 +24,8 @@ freely, subject to the following restrictions:
 Updated by Unchase © 2022*/
 #endregion
 
+using Unchase.Satsuma.Algorithms.Connectivity;
+
 namespace Unchase.Satsuma.Algorithms.Enums
 {
     /// <summary>

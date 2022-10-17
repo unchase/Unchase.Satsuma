@@ -29,7 +29,7 @@ using Unchase.Satsuma.Algorithms.Enums;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
 
-namespace Unchase.Satsuma.Algorithms
+namespace Unchase.Satsuma.Algorithms.Connectivity
 {
     /// <summary>
     /// Finds the connected components of a graph.

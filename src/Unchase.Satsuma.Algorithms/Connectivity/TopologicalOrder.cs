@@ -30,7 +30,7 @@ using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Extensions;
 
-namespace Unchase.Satsuma.Algorithms
+namespace Unchase.Satsuma.Algorithms.Connectivity
 {
     /// <summary>
     /// Decides whether a digraph is acyclic and finds a topological order of its nodes.
