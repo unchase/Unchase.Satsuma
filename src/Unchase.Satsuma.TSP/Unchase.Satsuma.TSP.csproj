@@ -6,12 +6,12 @@
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Company>Unchase</Company>
-    <Description>Satsuma is a graph library for .NET, written in C# (Adapters).</Description>
+    <Description>Satsuma is a graph library for .NET, written in C# (TSP).</Description>
     <Copyright>Copyright © 2013 Balázs Szalkai (updated by Unchase)</Copyright>
     <PackageProjectUrl>https://github.com/unchase/Unchase.Satsuma</PackageProjectUrl>
     <RepositoryUrl>https://github.com/unchase/Unchase.Satsuma</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>Graph,Satsuma,Adapters</PackageTags>
+    <PackageTags>Graph,Satsuma,TSP</PackageTags>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
     <ApplicationIcon>satsuma.ico</ApplicationIcon>
@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Unchase.Satsuma.Core\Unchase.Satsuma.Core.csproj" />
+    <ProjectReference Include="..\Unchase.Satsuma.Algorithms\Unchase.Satsuma.Algorithms.csproj" />
   </ItemGroup>
 
 </Project>

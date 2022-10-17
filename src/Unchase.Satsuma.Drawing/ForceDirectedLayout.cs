@@ -146,9 +146,11 @@ namespace Unchase.Satsuma.Drawing
 		{
 			if (initialPositions == null)
 			{
-				// make a random layout
-				var r = new Random();
-				initialPositions = _ => new(r.NextDouble(), r.NextDouble());
+                // make a random layout
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+                var r = new Random();
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                initialPositions = _ => new(r.NextDouble(), r.NextDouble());
 			}
 
             foreach (var node in Graph.Nodes())

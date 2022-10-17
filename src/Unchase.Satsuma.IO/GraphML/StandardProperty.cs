@@ -138,61 +138,43 @@ namespace Unchase.Satsuma.IO.GraphML
 		/// </summary>
 		/// <param name="type"><see cref="StandardType"/>.</param>
         private static string TypeToGraphML(StandardType type)
-		{
-			switch (type)
-			{
-				case StandardType.Bool: 
-                    return "boolean"; // !
-				case StandardType.Double: 
-                    return "double";
-				case StandardType.Float: 
-                    return "float";
-				case StandardType.Int: 
-                    return "int";
-				case StandardType.Long: 
-                    return "long";
-				default: 
-                    return "string";
-			}
-		}
+        {
+            return type switch
+            {
+                StandardType.Bool => "boolean", // !
+                StandardType.Double => "double",
+                StandardType.Float => "float",
+                StandardType.Int => "int",
+                StandardType.Long => "long",
+                _ => "string"
+            };
+        }
 
 		private static object ParseValue(string value)
-		{
-			switch (Type)
-			{
-				case StandardType.Bool: 
-                    return value == "true";
-				case StandardType.Double: 
-                    return double.Parse(value, CultureInfo.InvariantCulture);
-				case StandardType.Float: 
-                    return float.Parse(value, CultureInfo.InvariantCulture);
-				case StandardType.Int: 
-                    return int.Parse(value, CultureInfo.InvariantCulture);
-				case StandardType.Long: 
-                    return long.Parse(value, CultureInfo.InvariantCulture);
-				default: 
-                    return value;
-			}
-		}
+        {
+            return Type switch
+            {
+                StandardType.Bool => value == "true",
+                StandardType.Double => double.Parse(value, CultureInfo.InvariantCulture),
+                StandardType.Float => float.Parse(value, CultureInfo.InvariantCulture),
+                StandardType.Int => int.Parse(value, CultureInfo.InvariantCulture),
+                StandardType.Long => long.Parse(value, CultureInfo.InvariantCulture),
+                _ => value
+            };
+        }
 
 		private static string? ValueToGraphML(object value)
-		{
-			switch (Type)
-			{
-				case StandardType.Bool: 
-                    return (bool)value ? "true" : "false";
-				case StandardType.Double: 
-                    return ((double)value).ToString(CultureInfo.InvariantCulture);
-				case StandardType.Float: 
-                    return ((float)value).ToString(CultureInfo.InvariantCulture);
-				case StandardType.Int: 
-                    return ((int)value).ToString(CultureInfo.InvariantCulture);
-				case StandardType.Long: 
-                    return ((long)value).ToString(CultureInfo.InvariantCulture);
-				default: 
-                    return value.ToString();
-			}
-		}
+        {
+            return Type switch
+            {
+                StandardType.Bool => (bool)value ? "true" : "false",
+                StandardType.Double => ((double)value).ToString(CultureInfo.InvariantCulture),
+                StandardType.Float => ((float)value).ToString(CultureInfo.InvariantCulture),
+                StandardType.Int => ((int)value).ToString(CultureInfo.InvariantCulture),
+                StandardType.Long => ((long)value).ToString(CultureInfo.InvariantCulture),
+                _ => value.ToString()
+            };
+        }
 
 		/// <inheritdoc />
 		public override XElement GetKeyElement()
@@ -211,7 +193,7 @@ namespace Unchase.Satsuma.IO.GraphML
         /// <inheritdoc />
 		protected override XElement WriteValue(T? value)
 		{
-			return new("dummy", ValueToGraphML(value));
+			return new("dummy", ValueToGraphML(value!));
 		}
 	}
 }

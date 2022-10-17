@@ -93,7 +93,7 @@ namespace Unchase.Satsuma.Core
 		/// Gets a red node by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and RedNodeCount (exclusive).</param>
-        public Node GetRedNode(int index)
+        public static Node GetRedNode(int index)
 		{
 			return new(1L + index);
         }

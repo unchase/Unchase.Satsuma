@@ -24,36 +24,38 @@ freely, subject to the following restrictions:
 Updated by Unchase © 2022*/
 #endregion
 
-namespace Unchase.Satsuma.Drawing.Enums
+namespace Unchase.Satsuma.TSP
 {
     /// <summary>
-    /// The possible types of <see cref="NodeShape"/>.
+    /// Utilities regarding the "traveling salesman problem".
     /// </summary>
-    public enum NodeShapeKind
+    public static class TspUtils
     {
         /// <summary>
-        /// Diamond.
+        /// Returns the total cost of a TSP tour.
         /// </summary>
-        Diamond,
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="tour">
+        /// <para>A node sequence representing a tour.</para>
+        /// <para>If the tour is not empty, then the starting node must be repeated at the end.</para>
+        /// </param>
+        /// <param name="cost">A finite cost function on the node pairs.</param>
+        /// <returns></returns>
+        public static double GetTourCost<TNode>(IEnumerable<TNode> tour, Func<TNode, TNode, double> cost)
+        {
+            double result = 0;
+            var tourList = tour.ToList();
+            if (tourList.Any())
+            {
+                var prev = tourList.First();
+                foreach (var node in tourList.Skip(1))
+                {
+                    result += cost(prev, node);
+                    prev = node;
+                }
+            }
 
-        /// <summary>
-        /// Ellipse.
-        /// </summary>
-        Ellipse,
-
-        /// <summary>
-        /// Rectangle.
-        /// </summary>
-        Rectangle,
-
-        /// <summary>
-        /// Triangle.
-        /// </summary>
-        Triangle,
-
-        /// <summary>
-        /// UpsideDownTriangle.
-        /// </summary>
-        UpsideDownTriangle
+            return result;
+        }
     }
 }

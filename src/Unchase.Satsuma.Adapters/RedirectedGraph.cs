@@ -117,43 +117,33 @@ namespace Unchase.Satsuma.Adapters
 		}
 
 		private IEnumerable<Arc> FilterArcs(Node u, IEnumerable<Arc> arcs, ArcFilter filter)
-		{
-			switch (filter)
-			{
-				case ArcFilter.All: 
-                    return arcs;
-				case ArcFilter.Edge: 
-                    return arcs.Where(x => _getDirection(x) == ArcDirection.Edge);
-				case ArcFilter.Forward:
-					return arcs.Where(x =>
-					{
-						var dir = _getDirection(x);
-						switch (dir)
-						{
-							case ArcDirection.Forward: 
-                                return U(x) == u;
-							case ArcDirection.Backward: 
-                                return V(x) == u;
-							default: 
-                                return true;
-						}
-					});
-				default:
-					return arcs.Where(x =>
-					{
-						var dir = _getDirection(x);
-						switch (dir)
-						{
-							case ArcDirection.Forward: 
-                                return V(x) == u;
-							case ArcDirection.Backward: 
-                                return U(x) == u;
-							default: 
-                                return true;
-						}
-					});
-			}
-		}
+        {
+            return filter switch
+            {
+                ArcFilter.All => arcs,
+                ArcFilter.Edge => arcs.Where(x => _getDirection(x) == ArcDirection.Edge),
+                ArcFilter.Forward => arcs.Where(x =>
+                {
+                    var dir = _getDirection(x);
+                    return dir switch
+                    {
+                        ArcDirection.Forward => U(x) == u,
+                        ArcDirection.Backward => V(x) == u,
+                        _ => true
+                    };
+                }),
+                _ => arcs.Where(x =>
+                {
+                    var dir = _getDirection(x);
+                    return dir switch
+                    {
+                        ArcDirection.Forward => V(x) == u,
+                        ArcDirection.Backward => U(x) == u,
+                        _ => true
+                    };
+                })
+            };
+        }
 
         /// <inheritdoc />
 		public IEnumerable<Arc> Arcs(Node u, ArcFilter filter = ArcFilter.All)

@@ -182,7 +182,7 @@ namespace Unchase.Satsuma.IO
 
                         if (s[0] == '"' && s[^1] == '"')
                         {
-                            s = Unescape(s.Substring(1, s.Length - 2));
+                            s = Unescape(s[1..^1]);
                         }
 
 						return s;

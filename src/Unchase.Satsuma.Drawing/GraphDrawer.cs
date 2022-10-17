@@ -128,9 +128,9 @@ namespace Unchase.Satsuma.Drawing
 			NodeCaption = _ => string.Empty;
 			var defaultNodeStyle = new NodeStyle();
 			NodeStyle = _ => defaultNodeStyle;
-			ArcPen = arc => Graph.IsEdge(arc)
+			ArcPen = arc => (Graph.IsEdge(arc)
                 ? UndirectedPen 
-                : DirectedPen;
+                : DirectedPen) ?? throw new InvalidOperationException();
 
 			DirectedPen = new(Color.Black)
             {

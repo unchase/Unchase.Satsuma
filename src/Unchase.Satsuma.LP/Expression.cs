@@ -386,15 +386,15 @@ namespace Unchase.Satsuma.LP
 			return new(x, ComparisonOperator.Equal, y);
 		}
 
-		/// <summary>
-		/// != operator.
-		/// </summary>
-		/// <param name="x">The first operand.</param>
-		/// <param name="y">The second operand.</param>
-		/// <exception cref="InvalidOperationException">Not-equal LP constraints are not supported.</exception>
-		public static Constraint operator !=(Expression x, Expression y)
-		{
-			throw new InvalidOperationException("Not-equal LP constraints are not supported.");
+        /// <summary>
+        /// != operator.
+        /// </summary>
+        /// <param name="x">The first operand.</param>
+        /// <param name="y">The second operand.</param>
+        /// <exception cref="InvalidOperationException">Not-equal LP constraints are not supported.</exception>
+        public static Constraint operator !=(Expression x, Expression y)
+        {
+            throw new InvalidOperationException("Not-equal LP constraints are not supported.");
 		}
 	}
 }

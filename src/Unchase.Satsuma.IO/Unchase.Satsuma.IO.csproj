@@ -9,7 +9,20 @@
     <Description>Satsuma is a graph library for .NET, written in C# (IO).</Description>
     <Copyright>Copyright © 2013 Balázs Szalkai (updated by Unchase)</Copyright>
     <PackageProjectUrl>https://github.com/unchase/Unchase.Satsuma</PackageProjectUrl>
+    <ApplicationIcon>satsuma.ico</ApplicationIcon>
+    <PackageIcon>satsuma.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="satsuma.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\satsuma.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Unchase.Satsuma.Adapters\Unchase.Satsuma.Adapters.csproj" />

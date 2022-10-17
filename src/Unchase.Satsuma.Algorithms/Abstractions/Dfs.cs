@@ -69,20 +69,14 @@ namespace Unchase.Satsuma.Algorithms.Abstractions
             IEnumerable<Node>? roots = null)
 		{
             Start(out var direction);
-			switch (direction)
-			{
-				case Direction.Undirected: 
-                    _arcFilter = ArcFilter.All; 
-                    break;
-				case Direction.Forward: 
-                    _arcFilter = ArcFilter.Forward; 
-                    break;
-				default: 
-                    _arcFilter = ArcFilter.Backward; 
-                    break;
-			}
+            _arcFilter = direction switch
+            {
+                Direction.Undirected => ArcFilter.All,
+                Direction.Forward => ArcFilter.Forward,
+                _ => ArcFilter.Backward
+            };
 
-			_traversed = new();
+            _traversed = new();
 			foreach (var node in roots ?? Graph.Nodes())
 			{
                 if (_traversed.Contains(node))

@@ -24,36 +24,25 @@ freely, subject to the following restrictions:
 Updated by Unchase © 2022*/
 #endregion
 
-namespace Unchase.Satsuma.Drawing.Enums
+namespace Unchase.Satsuma.TSP.Contracts
 {
     /// <summary>
-    /// The possible types of <see cref="NodeShape"/>.
+    /// Interface to "TSP" solvers.
     /// </summary>
-    public enum NodeShapeKind
+    /// <typeparam name="TNode">The node type.</typeparam>
+    public interface ITsp<out TNode>
     {
         /// <summary>
-        /// Diamond.
+        /// Returns the nodes present in the current tour in visiting order.
         /// </summary>
-        Diamond,
+        /// <remarks>
+        /// If the tour is not empty, then its starting node is repeated at the end.
+        /// </remarks>
+        IEnumerable<TNode> Tour { get; }
 
         /// <summary>
-        /// Ellipse.
+        /// The cost of the current tour.
         /// </summary>
-        Ellipse,
-
-        /// <summary>
-        /// Rectangle.
-        /// </summary>
-        Rectangle,
-
-        /// <summary>
-        /// Triangle.
-        /// </summary>
-        Triangle,
-
-        /// <summary>
-        /// UpsideDownTriangle.
-        /// </summary>
-        UpsideDownTriangle
+        double TourCost { get; }
     }
 }

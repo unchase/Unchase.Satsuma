@@ -14,7 +14,20 @@
     <PackageTags>Graph,Satsuma,Algorithms</PackageTags>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <FileVersion>1.0.0</FileVersion>
+    <ApplicationIcon>satsuma.ico</ApplicationIcon>
+    <PackageIcon>satsuma.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="satsuma.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\satsuma.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Unchase.Satsuma.Adapters\Unchase.Satsuma.Adapters.csproj" />

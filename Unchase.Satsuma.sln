@@ -10,6 +10,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unchase.Satsuma.Algorithms", "src\Unchase.Satsuma.Algorithms\Unchase.Satsuma.Algorithms.csproj", "{B3DC1E0B-C8B9-40B7-ABD3-F16098697561}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}"
+	ProjectSection(SolutionItems) = preProject
+		satsuma.ico = satsuma.ico
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4FE6C31F-532C-4998-B449-29962EEFE353}"
 EndProject
@@ -27,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.Drawing", "src\Unchase.Satsuma.Drawing\Unchase.Satsuma.Drawing.csproj", "{E8D680E3-3644-4553-8941-AD85EEBCA530}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.LP", "src\Unchase.Satsuma.LP\Unchase.Satsuma.LP.csproj", "{F95143C0-C2EC-41A8-A1A5-FBDA913955CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.TSP", "src\Unchase.Satsuma.TSP\Unchase.Satsuma.TSP.csproj", "{4AF39D22-1E9A-4A82-A6F8-506A7AAE7C20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +67,10 @@ Global
 		{F95143C0-C2EC-41A8-A1A5-FBDA913955CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F95143C0-C2EC-41A8-A1A5-FBDA913955CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F95143C0-C2EC-41A8-A1A5-FBDA913955CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AF39D22-1E9A-4A82-A6F8-506A7AAE7C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AF39D22-1E9A-4A82-A6F8-506A7AAE7C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AF39D22-1E9A-4A82-A6F8-506A7AAE7C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AF39D22-1E9A-4A82-A6F8-506A7AAE7C20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +83,7 @@ Global
 		{46ED8079-E8AB-4D68-A164-641CD8181D3F} = {8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}
 		{E8D680E3-3644-4553-8941-AD85EEBCA530} = {8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}
 		{F95143C0-C2EC-41A8-A1A5-FBDA913955CC} = {8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}
+		{4AF39D22-1E9A-4A82-A6F8-506A7AAE7C20} = {8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4E8ED3B0-5AFF-43FD-B007-1EA5EF5A768A}

@@ -88,7 +88,7 @@ namespace Unchase.Satsuma.Core
 		/// Gets a node of the complete graph by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and NodeCount() (exclusive).</param>
-        public Node GetNode(int index)
+        public static Node GetNode(int index)
 		{
 			return new(1L + index);
         }
@@ -98,7 +98,7 @@ namespace Unchase.Satsuma.Core
 		/// </summary>
 		/// <param name="node">Node.</param>
 		/// <returns>An integer between 0 (inclusive) and NodeCount() (exclusive).</returns>
-		public int GetNodeIndex(Node node)
+		public static int GetNodeIndex(Node node)
 		{
 			return (int)(node.Id - 1);
 		}
@@ -282,41 +282,35 @@ namespace Unchase.Satsuma.Core
 
         /// <inheritdoc />
 		public int ArcCount(Node u, ArcFilter filter = ArcFilter.All)
-		{
+        {
             if (!Directed)
             {
                 return _nodeCount - 1;
             }
 
-			switch (filter)
-			{
-				case ArcFilter.All: 
-                    return 2 * (_nodeCount - 1);
-				case ArcFilter.Edge: 
-                    return 0;
-				default: 
-                    return _nodeCount - 1;
-			}
-		}
+            return filter switch
+            {
+                ArcFilter.All => 2 * (_nodeCount - 1),
+                ArcFilter.Edge => 0,
+                _ => _nodeCount - 1
+            };
+        }
 
         /// <inheritdoc />
 		public int ArcCount(Node u, Node v, ArcFilter filter = ArcFilter.All)
-		{
+        {
             if (!Directed)
             {
                 return 1;
             }
 
-			switch (filter)
-			{
-				case ArcFilter.All: 
-                    return 2;
-				case ArcFilter.Edge: 
-                    return 0;
-				default: 
-                    return 1;
-			}
-		}
+            return filter switch
+            {
+                ArcFilter.All => 2,
+                ArcFilter.Edge => 0,
+                _ => 1
+            };
+        }
 
         /// <inheritdoc />
 		public bool HasNode(Node node)

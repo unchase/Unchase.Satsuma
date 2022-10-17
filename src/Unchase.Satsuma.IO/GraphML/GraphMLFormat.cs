@@ -249,21 +249,21 @@ namespace Unchase.Satsuma.IO.GraphML
                 // load nodes
                 NodeId = new();
                 var nodeById = new Dictionary<string, Node>();
-                foreach (var xNode in Utils.ElementsLocal(xGraph, "node"))
+                foreach (var xNode in Utils.ElementsLocal(xGraph!, "node"))
                 {
                     var node = buildableGraph.AddNode();
                     var id = xNode.Attribute("id")?.Value;
-                    NodeId[node] = id;
-                    nodeById[id] = node;
+                    NodeId[node] = id!;
+                    nodeById[id!] = node;
                     ReadProperties(propertyById, xNode, node);
                 }
 
                 // load arcs
                 ArcId = new();
-                foreach (var xArc in Utils.ElementsLocal(xGraph, "edge"))
+                foreach (var xArc in Utils.ElementsLocal(xGraph!, "edge"))
                 {
-                    var u = nodeById[xArc.Attribute("source").Value];
-                    var v = nodeById[xArc.Attribute("target").Value];
+                    var u = nodeById[xArc.Attribute("source")!.Value];
+                    var v = nodeById[xArc.Attribute("target")!.Value];
 
                     var dir = defaultDirectedness;
                     var dirAttr = xArc.Attribute("directed");
@@ -346,9 +346,12 @@ namespace Unchase.Satsuma.IO.GraphML
 		/// <param name="getValueForNode">Function for getting value for <see cref="Node"/>.</param>
 		public void AddStandardNodeProperty<T>(string name, Func<Node, T> getValueForNode)
 		{
-			var prop = new StandardProperty<T>();
-			prop.Domain = PropertyDomain.Node;
-			prop.Name = name;
+			var prop = new StandardProperty<T>
+            {
+                Domain = PropertyDomain.Node,
+                Name = name
+            };
+
             foreach (var node in Graph.Nodes())
             {
                 prop.Values[node] = getValueForNode(node);
@@ -370,9 +373,12 @@ namespace Unchase.Satsuma.IO.GraphML
 		/// <param name="getValueForArc">Function for getting value for <see cref="Arc"/>.</param>
 		public void AddStandardArcProperty<T>(string name, Func<Arc, T> getValueForArc)
 		{
-			var prop = new StandardProperty<T>();
-			prop.Domain = PropertyDomain.Arc;
-			prop.Name = name;
+			var prop = new StandardProperty<T>
+            {
+                Domain = PropertyDomain.Arc,
+                Name = name
+            };
+
             foreach (var arc in Graph.Arcs())
             {
                 prop.Values[arc] = getValueForArc(arc);

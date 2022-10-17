@@ -24,36 +24,21 @@ freely, subject to the following restrictions:
 Updated by Unchase © 2022*/
 #endregion
 
-namespace Unchase.Satsuma.Drawing.Enums
+namespace Unchase.Satsuma.TSP.Enums
 {
     /// <summary>
-    /// The possible types of <see cref="NodeShape"/>.
+    /// The operation mode of <see cref="InsertionTsp{TNode}"/>.
     /// </summary>
-    public enum NodeShapeKind
+    public enum TspSelectionRule
     {
         /// <summary>
-        /// Diamond.
+        /// The node nearest to the current tour is selected for insertion.
         /// </summary>
-        Diamond,
+        Nearest,
 
         /// <summary>
-        /// Ellipse.
+        /// The node farthest from the current tour is selected for insertion.
         /// </summary>
-        Ellipse,
-
-        /// <summary>
-        /// Rectangle.
-        /// </summary>
-        Rectangle,
-
-        /// <summary>
-        /// Triangle.
-        /// </summary>
-        Triangle,
-
-        /// <summary>
-        /// UpsideDownTriangle.
-        /// </summary>
-        UpsideDownTriangle
+        Farthest
     }
 }

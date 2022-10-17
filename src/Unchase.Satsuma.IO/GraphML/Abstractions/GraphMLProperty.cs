@@ -89,19 +89,15 @@ namespace Unchase.Satsuma.IO.GraphML.Abstractions
 		/// </summary>
 		/// <param name="domain"><see cref="PropertyDomain"/>.</param>
 		protected static string DomainToGraphML(PropertyDomain domain)
-		{
-			switch (domain)
-			{
-				case PropertyDomain.Node: 
-                    return "node";
-				case PropertyDomain.Arc: 
-                    return "edge";
-				case PropertyDomain.Graph: 
-                    return "graph";
-				default: 
-                    return "all";
-			}
-		}
+        {
+            return domain switch
+            {
+                PropertyDomain.Node => "node",
+                PropertyDomain.Arc => "edge",
+                PropertyDomain.Graph => "graph",
+                _ => "all"
+            };
+        }
 
 		/// <summary>
 		/// Parses the string representation of a GraphML domain.
@@ -112,19 +108,15 @@ namespace Unchase.Satsuma.IO.GraphML.Abstractions
 		/// </param>
 		/// <returns></returns>
 		protected static PropertyDomain ParseDomain(string? s)
-		{
-			switch (s)
-			{
-				case "node": 
-                    return PropertyDomain.Node;
-				case "edge": 
-                    return PropertyDomain.Arc;
-				case "graph": 
-                    return PropertyDomain.Graph;
-				default: 
-                    return PropertyDomain.All;
-			}
-		}
+        {
+            return s switch
+            {
+                "node" => PropertyDomain.Node,
+                "edge" => PropertyDomain.Arc,
+                "graph" => PropertyDomain.Graph,
+                _ => PropertyDomain.All
+            };
+        }
 
 		/// <summary>
 		/// Loads the declaration of the property from the given <tt>&lt;key&gt;</tt> element (including the default value).
