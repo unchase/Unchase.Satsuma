@@ -5,6 +5,7 @@ using Unchase.Satsuma.Algorithms.Enums;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
+using Unchase.Satsuma.Core.Extensions;
 using Xunit;
 
 namespace Unchase.Satsuma.Test.Algorithms
@@ -35,7 +36,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 superGraph.AddNode(6);
                 superGraph.AddNode(7);
 
-                ((IGraph)superGraph).AddNodeProperties(new()
+                superGraph.AddNodeProperties(new()
                 {
                     { new(1), new(new() { { "testProperty", 0 } }) },
                     { new(2), new(new() { { "testProperty", 0 } }) },

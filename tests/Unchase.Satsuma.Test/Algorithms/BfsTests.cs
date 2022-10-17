@@ -4,6 +4,7 @@ using Unchase.Satsuma.Algorithms;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
+using Unchase.Satsuma.Core.Extensions;
 using Xunit;
 
 namespace Unchase.Satsuma.Test.Algorithms
@@ -39,7 +40,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 superGraph.AddArc(new(5), new(4), Directedness.Directed);
                 superGraph.AddArc(new(4), new(6), Directedness.Directed);
 
-                ((IGraph)superGraph).AddNodeProperties(new()
+                superGraph.AddNodeProperties(new()
                 {
                     { new(4), new(new() { { "testProperty", 11 } }) }
                 });

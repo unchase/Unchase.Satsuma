@@ -338,19 +338,5 @@ namespace Unchase.Satsuma.Core
 			// HasNode(u) is always true
 			return Directed || u.Id < v.Id;
 		}
-
-        /// <inheritdoc />
-        public void AddNodeProperties(Dictionary<Node, NodeProperties> nodeProperties)
-        {
-			IGraph graph = this;
-            graph.AddNodeProperties(nodeProperties);
-        }
-
-        /// <inheritdoc />
-        public void AddArcProperties(Dictionary<Arc, ArcProperties> arcProperties)
-        {
-			IGraph graph = this;
-            graph.AddArcProperties(arcProperties);
-        }
-	}
+    }
 }

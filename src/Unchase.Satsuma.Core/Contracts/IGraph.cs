@@ -151,43 +151,5 @@ namespace Unchase.Satsuma.Core.Contracts
 		/// <param name="arc"></param>
 		/// <returns>Returns whether the given arc is contained in the graph.</returns>
 		public bool HasArc(Arc arc);
-
-		/// <summary>
-		/// Add node properties to the graph.
-		/// </summary>
-		/// <param name="nodeProperties">Node properties dictionary.</param>
-        public void AddNodeProperties(Dictionary<Node, NodeProperties> nodeProperties)
-        {
-            foreach (var node in nodeProperties.Keys)
-            {
-                if (NodePropertiesDictionary.ContainsKey(node))
-                {
-                    NodePropertiesDictionary[node] = nodeProperties[node];
-                }
-                else
-                {
-                    NodePropertiesDictionary.Add(node, nodeProperties[node]);
-                }
-            }
-        }
-
-		/// <summary>
-		/// Add arc properties to the graph.
-		/// </summary>
-		/// <param name="arcProperties">Arc properties dictionary.</param>
-		public void AddArcProperties(Dictionary<Arc, ArcProperties> arcProperties)
-        {
-            foreach (var arc in arcProperties.Keys)
-            {
-                if (ArcPropertiesDictionary.ContainsKey(arc))
-                {
-                    ArcPropertiesDictionary[arc] = arcProperties[arc];
-                }
-                else
-                {
-                    ArcPropertiesDictionary.Add(arc, arcProperties[arc]);
-                }
-            }
-		}
 	}
 }

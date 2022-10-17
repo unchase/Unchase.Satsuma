@@ -328,19 +328,5 @@ namespace Unchase.Satsuma.Core
 		{
 			return arc.Id >= 1 && arc.Id <= RedNodeCount * BlueNodeCount;
 		}
-
-        /// <inheritdoc />
-        public void AddNodeProperties(Dictionary<Node, NodeProperties> nodeProperties)
-        {
-			IGraph graph = this;
-            graph.AddNodeProperties(nodeProperties);
-        }
-
-        /// <inheritdoc />
-        public void AddArcProperties(Dictionary<Arc, ArcProperties> arcProperties)
-        {
-			IGraph graph = this;
-            graph.AddArcProperties(arcProperties);
-        }
-	}
+    }
 }
