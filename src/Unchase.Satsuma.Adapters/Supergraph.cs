@@ -64,19 +64,21 @@ namespace Unchase.Satsuma.Adapters
 		private class NodeAllocator : 
             IdAllocator
 		{
-			public Supergraph? Parent;
+            private readonly Supergraph? _parent;
 
 			/// <summary>
 			/// Initialize <see cref="NodeAllocator"/>.
 			/// </summary>
-			public NodeAllocator()
+			/// <param name="parent">Parens <see cref="Subgraph"/>.</param>
+			public NodeAllocator(Supergraph? parent)
             {
-            }
+                _parent = parent;
+			}
 
 			/// <inheritdoc />
             protected override bool IsAllocated(long id)
             {
-                return Parent?.HasNode(new(id)) ?? false;
+                return _parent?.HasNode(new(id)) ?? false;
             }
 		}
 
@@ -84,19 +86,21 @@ namespace Unchase.Satsuma.Adapters
 		private class ArcAllocator : 
             IdAllocator
 		{
-			public Supergraph? Parent;
+            private readonly Supergraph? _parent;
 
 			/// <summary>
 			/// Initialize <see cref="ArcAllocator"/>.
             /// </summary>
-			public ArcAllocator()
+            /// <param name="parent">Parens <see cref="Subgraph"/>.</param>
+			public ArcAllocator(Supergraph? parent)
             {
+				_parent = parent;
             }
 
             /// <inheritdoc />
 			protected override bool IsAllocated(long id)
             {
-                return Parent?.HasArc(new(id)) ?? false;
+                return _parent?.HasArc(new(id)) ?? false;
             }
 		}
 
@@ -158,8 +162,8 @@ namespace Unchase.Satsuma.Adapters
 		{
 			_graph = graph;
 
-			_nodeAllocator = new() { Parent = this };
-			_arcAllocator = new() { Parent = this };
+			_nodeAllocator = new(this);
+			_arcAllocator = new(this);
 
 			_nodes = new();
 			_arcs = new();
