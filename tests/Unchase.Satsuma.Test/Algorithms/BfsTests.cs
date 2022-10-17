@@ -2,7 +2,6 @@
 using Unchase.Satsuma.Adapters;
 using Unchase.Satsuma.Algorithms;
 using Unchase.Satsuma.Core;
-using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
 using Xunit;

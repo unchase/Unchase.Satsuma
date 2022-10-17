@@ -2,7 +2,6 @@
 using Unchase.Satsuma.Adapters;
 using Unchase.Satsuma.Algorithms;
 using Unchase.Satsuma.Core;
-using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
 using Xunit;
@@ -57,7 +56,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 var bellmanFord = new BellmanFord(superGraph, arc =>
                 {
                     var u = superGraph.U(arc);
-                    var uProperties = superGraph.GetNodeProperties(u);
+                    var uProperties = u.GetProperties(superGraph);
                     var uCost = uProperties?.ContainsKey("testProperty") == true
                         ? double.TryParse(uProperties["testProperty"].ToString(), out var cost) ? cost : 0
                         : 0;

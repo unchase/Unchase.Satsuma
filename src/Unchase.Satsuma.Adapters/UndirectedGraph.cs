@@ -51,11 +51,9 @@ namespace Unchase.Satsuma.Adapters
         /// <summary>
         /// Initialize <see cref="UndirectedGraph"/>.
         /// </summary>
-        /// <param name="graph"></param>
-        /// <param name="nodeProperties">Node properties dictionary.</param>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
         public UndirectedGraph(
-            IGraph graph,
-            Dictionary<Node, NodeProperties>? nodeProperties = default)
+            IGraph graph)
         {
             _graph = graph;
         }

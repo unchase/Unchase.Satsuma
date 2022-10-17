@@ -13,7 +13,7 @@ namespace Unchase.Satsuma.Test.Algorithms
     public class PreflowTests
     {
         /// <summary>
-        /// 
+        /// <see cref="Preflow"/> tests.
         /// </summary>
         /// <param name="start">Start test.</param>
         [Theory]
