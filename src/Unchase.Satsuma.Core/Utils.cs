@@ -266,7 +266,7 @@ namespace Unchase.Satsuma.Core
 		/// Implements a random-seeming but deterministic 1-to-1 mapping on ulong.
 		/// </summary>
 		/// <param name="x">Value.</param>
-        internal static ulong ReversibleHash1(ulong x)
+        public static ulong ReversibleHash1(ulong x)
 		{
 			x += 11633897956271718833UL;
 			x *= 8363978825398262719UL;
@@ -278,7 +278,7 @@ namespace Unchase.Satsuma.Core
 		/// Implements a random-seeming but deterministic 1-to-1 mapping on ulong.
 		/// </summary>
 		/// <param name="x">Value.</param>
-        internal static ulong ReversibleHash2(ulong x)
+        public static ulong ReversibleHash2(ulong x)
 		{
 			x += 2254079448387046741UL;
 			x *= 16345256107010564221UL;
@@ -290,7 +290,7 @@ namespace Unchase.Satsuma.Core
 		/// Implements a random-seeming but deterministic 1-to-1 mapping on ulong.
 		/// </summary>
 		/// <param name="x">Value.</param>
-        internal static ulong ReversibleHash3(ulong x)
+        public static ulong ReversibleHash3(ulong x)
 		{
 			x += 5687820266445524563UL;
 			x *= 15961264385709064403UL;
