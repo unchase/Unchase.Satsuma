@@ -24,15 +24,17 @@ freely, subject to the following restrictions:
 Updated by Unchase © 2022*/
 # endregion
 
+using Unchase.Satsuma.Core.Contracts;
+
 namespace Unchase.Satsuma.Core
 {
     /// <summary>
-    /// Represents a graph arc, consisting of a wrapped #Id.
+    /// Represents a graph arc, consisting of a wrapped <see cref="Id"/>.
     /// </summary>
     /// <remarks>
     /// Arcs can be either directed or undirected. Undirected arcs are called edges.
     /// Endpoints and directedness of an arc are not stored in this object, but rather they can be queried
-    /// using methods of the containing graph (see IArcLookup).
+    /// using methods of the containing graph (see <see cref="IArcLookup"/>).
     /// </remarks>
     public readonly struct Arc : 
         IEquatable<Arc>

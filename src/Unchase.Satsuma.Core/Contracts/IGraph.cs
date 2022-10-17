@@ -73,8 +73,8 @@ namespace Unchase.Satsuma.Core.Contracts
 		/// <param name="filter">
 		/// <para>If <see cref="ArcFilter.All"/>, then all arcs are returned.</para>
 		/// <para>If <see cref="ArcFilter.Edge"/>, only the edges (undirected arcs) are returned.</para>
-		/// <para>If <see cref="ArcFilter.Forward"/>, only the arcs from \e u to \e v (this includes edges) are returned.</para>
-		/// <para>If <see cref="ArcFilter.Backward"/>, only the arcs from \e v to \e u (this includes edges) are returned.</para>
+		/// <para>If <see cref="ArcFilter.Forward"/>, only the arcs from u to v (this includes edges) are returned.</para>
+		/// <para>If <see cref="ArcFilter.Backward"/>, only the arcs from v to u (this includes edges) are returned.</para>
 		/// </param>
 		/// <returns>Returns all arcs adjacent to two nodes satisfying a given filter.</returns>
 		public IEnumerable<Arc> Arcs(Node u, Node v, ArcFilter filter = ArcFilter.All);
