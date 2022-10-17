@@ -43,7 +43,7 @@ namespace Unchase.Satsuma.Core
 		/// </summary>
 		/// <param name="xParent"><see cref="XElement"/>.</param>
 		/// <param name="localName">Local name.</param>
-        internal static XElement? ElementLocal(
+        public static XElement? ElementLocal(
             XElement xParent, 
             string localName)
 		{
@@ -57,7 +57,7 @@ namespace Unchase.Satsuma.Core
 		/// <param name="xParent"><see cref="XElement"/>.</param>
 		/// <param name="localName">Local name.</param>
 		/// <returns>Returns all child elements filtered by local name.</returns>
-		internal static IEnumerable<XElement> ElementsLocal(
+		public static IEnumerable<XElement> ElementsLocal(
             XElement xParent, 
             string localName)
 		{

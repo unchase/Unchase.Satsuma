@@ -5,9 +5,9 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unchase.Satsuma.Core", "src\Unchase.Satsuma.Core\Unchase.Satsuma.Core.csproj", "{60F1C859-15E0-4F53-A721-172BAE14B3E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.Adapters", "src\Unchase.Satsuma.Adapters\Unchase.Satsuma.Adapters.csproj", "{77FD20C8-9EFC-490C-837B-91304C377847}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unchase.Satsuma.Adapters", "src\Unchase.Satsuma.Adapters\Unchase.Satsuma.Adapters.csproj", "{77FD20C8-9EFC-490C-837B-91304C377847}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.Algorithms", "src\Unchase.Satsuma.Algorithms\Unchase.Satsuma.Algorithms.csproj", "{B3DC1E0B-C8B9-40B7-ABD3-F16098697561}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unchase.Satsuma.Algorithms", "src\Unchase.Satsuma.Algorithms\Unchase.Satsuma.Algorithms.csproj", "{B3DC1E0B-C8B9-40B7-ABD3-F16098697561}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}"
 EndProject
@@ -20,7 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{90E43B2C-6
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.Test", "tests\Unchase.Satsuma.Test\Unchase.Satsuma.Test.csproj", "{EC691AF4-A32A-438E-89AF-6EC828C3D8D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unchase.Satsuma.Test", "tests\Unchase.Satsuma.Test\Unchase.Satsuma.Test.csproj", "{EC691AF4-A32A-438E-89AF-6EC828C3D8D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unchase.Satsuma.IO", "src\Unchase.Satsuma.IO\Unchase.Satsuma.IO.csproj", "{46ED8079-E8AB-4D68-A164-641CD8181D3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{EC691AF4-A32A-438E-89AF-6EC828C3D8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC691AF4-A32A-438E-89AF-6EC828C3D8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC691AF4-A32A-438E-89AF-6EC828C3D8D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46ED8079-E8AB-4D68-A164-641CD8181D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46ED8079-E8AB-4D68-A164-641CD8181D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46ED8079-E8AB-4D68-A164-641CD8181D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46ED8079-E8AB-4D68-A164-641CD8181D3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{77FD20C8-9EFC-490C-837B-91304C377847} = {8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}
 		{B3DC1E0B-C8B9-40B7-ABD3-F16098697561} = {8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}
 		{EC691AF4-A32A-438E-89AF-6EC828C3D8D1} = {4FE6C31F-532C-4998-B449-29962EEFE353}
+		{46ED8079-E8AB-4D68-A164-641CD8181D3F} = {8E8A7B8B-FEA6-49A4-8AD6-27BD519ABF80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4E8ED3B0-5AFF-43FD-B007-1EA5EF5A768A}

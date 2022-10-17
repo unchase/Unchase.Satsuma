@@ -41,7 +41,7 @@ namespace Unchase.Satsuma.Adapters.Contracts
         /// </summary>
         /// <param name="id">Added node Id (or will be allocated if null).</param>
         /// <returns>Return new added node.</returns>
-        public Node AddNode(long? id);
+        public Node AddNode(long? id = null);
 
         /// <summary>
         /// Adds a directed arc or an edge (undirected arc) between u and v to the graph.

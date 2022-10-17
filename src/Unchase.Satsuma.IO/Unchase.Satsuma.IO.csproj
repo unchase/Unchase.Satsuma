@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Company>Unchase</Company>
+    <Description>Satsuma is a graph library for .NET, written in C# (IO).</Description>
+    <Copyright>Copyright © 2013 Balázs Szalkai (updated by Unchase)</Copyright>
+    <PackageProjectUrl>https://github.com/unchase/Unchase.Satsuma</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Unchase.Satsuma.Adapters\Unchase.Satsuma.Adapters.csproj" />
+  </ItemGroup>
+
+</Project>
