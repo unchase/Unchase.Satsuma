@@ -95,19 +95,19 @@ namespace Unchase.Satsuma.Algorithms
 		// This is the graph augmented with a node and artificial arcs 
 		private Supergraph _myGraph;
 		private Node _artificialNode;
-		private HashSet<Arc> _artificialArcs;
+		private HashSet<Arc> _artificialArcs = new();
 
 		// During execution, the network simplex method maintains a basis.
 		// This consists of:
 		// - a spanning tree
 		// - a partition of the non-tree arcs into empty and saturated arcs
 		// ** Primal vector
-		private Dictionary<Arc, long> _tree;
+		private Dictionary<Arc, long> _tree = new();
 		private Subgraph _treeSubgraph;
-		private HashSet<Arc> _saturated;
+		private HashSet<Arc> _saturated = new();
 
 		// ** Dual vector
-		private Dictionary<Node, double> _potential;
+		private Dictionary<Node, double> _potential = new();
 
 		// An enumerator for finding an entering arc
 		private IEnumerator<Arc> _enteringArcEnumerator;
@@ -144,6 +144,9 @@ namespace Unchase.Satsuma.Algorithms
 				if (x > 0 && x < _epsilon) _epsilon = x;
 			}
 			_epsilon *= 1e-12;
+
+            _enteringArcEnumerator = _myGraph.Arcs().GetEnumerator();
+            _treeSubgraph = new(_myGraph);
 
 			Clear();
 		}

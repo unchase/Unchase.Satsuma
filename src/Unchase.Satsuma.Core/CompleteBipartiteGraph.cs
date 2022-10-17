@@ -41,7 +41,11 @@ namespace Unchase.Satsuma.Core
 	public sealed class CompleteBipartiteGraph : 
         IGraph
 	{
-        private readonly Dictionary<Node, NodeProperties> _nodeProperties;
+		/// <inheritdoc />
+        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+
+        /// <inheritdoc />
+        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
 
 		/// <summary>
 		/// The count of nodes in the first color class.
@@ -83,40 +87,25 @@ namespace Unchase.Satsuma.Core
 			RedNodeCount = redNodeCount;
 			BlueNodeCount = blueNodeCount;
 			Directed = directedness == Directedness.Directed;
-            _nodeProperties = new();
         }
 
 		/// <summary>
 		/// Gets a red node by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and RedNodeCount (exclusive).</param>
-		/// <param name="properties">The node properties.</param>
-		public Node GetRedNode(int index, Dictionary<string, object>? properties = default)
+        public Node GetRedNode(int index)
 		{
-			var redNode = new Node(1L + index);
-			if (!_nodeProperties.ContainsKey(redNode))
-            {
-                _nodeProperties.Add(redNode, new(properties));
-            }
-
-			return redNode;
+			return new(1L + index);
         }
 
 		/// <summary>
 		/// Gets a blue node by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and BlueNodeCount (exclusive).</param>
-		/// <param name="properties">The node properties.</param>
-		public Node GetBlueNode(int index, Dictionary<string, object>? properties = default)
+        public Node GetBlueNode(int index)
 		{
-			var blueNode = new Node(1L + RedNodeCount + index);
-			if (!_nodeProperties.ContainsKey(blueNode))
-            {
-                _nodeProperties.Add(blueNode, new(properties));
-            }
-
-			return blueNode;
-        }
+            return new(1L + RedNodeCount + index);
+		}
 
 		/// <summary>
 		/// Node is red.
@@ -154,10 +143,18 @@ namespace Unchase.Satsuma.Core
 			return new(1 + (long)vIndex * RedNodeCount + uIndex);
 		}
 
-        /// <inheritdoc />
-        public Dictionary<string, object>? Properties(Node node)
+		/// <inheritdoc />
+        public Dictionary<string, object>? GetNodeProperties(Node node)
         {
-            return _nodeProperties.TryGetValue(node, out var p)
+            return NodePropertiesDictionary.TryGetValue(node, out var p)
+                ? p.Properties
+                : null;
+        }
+
+        /// <inheritdoc />
+        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        {
+            return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties
                 : null;
         }
@@ -331,5 +328,19 @@ namespace Unchase.Satsuma.Core
 		{
 			return arc.Id >= 1 && arc.Id <= RedNodeCount * BlueNodeCount;
 		}
+
+        /// <inheritdoc />
+        public void AddNodeProperties(Dictionary<Node, NodeProperties> nodeProperties)
+        {
+			IGraph graph = this;
+            graph.AddNodeProperties(nodeProperties);
+        }
+
+        /// <inheritdoc />
+        public void AddArcProperties(Dictionary<Arc, ArcProperties> arcProperties)
+        {
+			IGraph graph = this;
+            graph.AddArcProperties(arcProperties);
+        }
 	}
 }

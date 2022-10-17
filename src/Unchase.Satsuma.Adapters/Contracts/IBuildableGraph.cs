@@ -37,11 +37,11 @@ namespace Unchase.Satsuma.Adapters.Contracts
         IClearable
     {
         /// <summary>
-        /// Adds a new node to the graph.
+        /// Add a new node to the graph with id.
         /// </summary>
-        /// <param name="properties">Node properties.</param>
+        /// <param name="id">Added node Id (or will be allocated if null).</param>
         /// <returns>Return new added node.</returns>
-        public Node AddNode(Dictionary<string, object>? properties = default);
+        public Node AddNode(long? id);
 
         /// <summary>
         /// Adds a directed arc or an edge (undirected arc) between u and v to the graph.

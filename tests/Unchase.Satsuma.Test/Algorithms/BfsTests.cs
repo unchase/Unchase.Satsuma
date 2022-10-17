@@ -2,6 +2,7 @@
 using Unchase.Satsuma.Adapters;
 using Unchase.Satsuma.Algorithms;
 using Unchase.Satsuma.Core;
+using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
 using Xunit;
 
@@ -26,39 +27,33 @@ namespace Unchase.Satsuma.Test.Algorithms
                 var graph = new CompleteGraph(1, Directedness.Directed);
                 var superGraph = new Supergraph(graph);
                 superGraph.AddNode(1);
-                superGraph.AddNode(2, new()
-                {
-                    { "testProperty", 15 }
-                });
-                superGraph.AddNode(3, new()
-                {
-                    { "testProperty", 10 }
-                });
-                superGraph.AddNode(4, new()
-                {
-                    { "wrongProperty", 11 }
-                });
+                superGraph.AddNode(2);
+                superGraph.AddNode(3);
+                superGraph.AddNode(4);
                 superGraph.AddNode(5);
-                superGraph.AddNode(6, new()
-                {
-                    { "testProperty", 11 }
-                });
+                superGraph.AddNode(6);
+
                 superGraph.AddArc(new(1), new(2), Directedness.Directed);
                 superGraph.AddArc(new(2), new(3), Directedness.Directed);
                 superGraph.AddArc(new(3), new(5), Directedness.Directed);
                 superGraph.AddArc(new(5), new(4), Directedness.Directed);
                 superGraph.AddArc(new(4), new(6), Directedness.Directed);
 
+                ((IGraph)superGraph).AddNodeProperties(new()
+                {
+                    { new(4), new(new() { { "testProperty", 11 } }) }
+                });
+
                 var bfs = new Bfs(superGraph);
                 bfs.AddSource(superGraph.Nodes().First());
 
                 // Act
                 var resultNode = bfs.RunUntilReached(node => superGraph
-                    .Properties(node)?
+                    .GetNodeProperties(node)?
                     .Any(x => x.Key == "testProperty" && x.Value.Equals(11)) == true);
 
                 // Assert
-                resultNode.Id.Should().Be(6);
+                resultNode.Id.Should().Be(4);
             }
         }
     }

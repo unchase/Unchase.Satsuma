@@ -47,24 +47,24 @@ namespace Unchase.Satsuma.Adapters
 	{
 		private readonly IGraph _graph;
 		private readonly DisjointSet<Node> _nodeGroups;
-        private readonly Dictionary<Node, NodeProperties>? _nodeProperties;
-		private int _unionCount;
+        private int _unionCount;
 
-        /// <summary>
-        /// Initialize <see cref="ContractedGraph"/>.
-        /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
-        /// <param name="nodeProperties">Node properties dictionary.</param>
+        /// <inheritdoc />
+        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+
+        /// <inheritdoc />
+        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+
+		/// <summary>
+		/// Initialize <see cref="ContractedGraph"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
         public ContractedGraph(
-            IGraph graph,
-            Dictionary<Node, NodeProperties>? nodeProperties = default)
+            IGraph graph)
 		{
 			_graph = graph;
 			_nodeGroups = new();
-            _nodeProperties = _nodeProperties = nodeProperties?
-                .Where(x => _graph.HasNode(x.Key))
-                .ToDictionary(x => x.Key, y => y.Value);
-			Reset();
+            Reset();
 		}
 
 		/// <summary>
@@ -73,7 +73,8 @@ namespace Unchase.Satsuma.Adapters
 		public void Reset()
 		{
 			_nodeGroups.Clear();
-            _nodeProperties?.Clear();
+            NodePropertiesDictionary.Clear();
+            ArcPropertiesDictionary.Clear();
 			_unionCount = 0;
 		}
 
@@ -126,17 +127,20 @@ namespace Unchase.Satsuma.Adapters
 			return Merge(_graph.U(arc), _graph.V(arc));
 		}
 
-        /// <inheritdoc />
-        public Dictionary<string, object>? Properties(Node node)
+		/// <inheritdoc />
+        public Dictionary<string, object>? GetNodeProperties(Node node)
         {
-            if (_nodeProperties == null)
-            {
-                return null;
-            }
-
-            return _nodeProperties.TryGetValue(node, out var p)
+            return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
-                : _graph.Properties(node) ?? null;
+                : _graph.GetNodeProperties(node);
+        }
+
+        /// <inheritdoc />
+        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        {
+            return ArcPropertiesDictionary.TryGetValue(arc, out var p)
+                ? p.Properties
+                : _graph.GetArcProperties(arc);
         }
 
 		/// <inheritdoc />
@@ -240,5 +244,19 @@ namespace Unchase.Satsuma.Adapters
 		{
 			return _graph.HasArc(arc);
 		}
+
+        /// <inheritdoc />
+		public void AddNodeProperties(Dictionary<Node, NodeProperties> nodeProperties)
+        {
+            IGraph graph = this;
+            graph.AddNodeProperties(nodeProperties);
+        }
+
+        /// <inheritdoc />
+        public void AddArcProperties(Dictionary<Arc, ArcProperties> arcProperties)
+        {
+			IGraph graph = this;
+            graph.AddArcProperties(arcProperties);
+        }
 	}
 }

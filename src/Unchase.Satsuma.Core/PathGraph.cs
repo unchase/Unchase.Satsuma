@@ -46,7 +46,12 @@ namespace Unchase.Satsuma.Core
 	{
 		private readonly int _nodeCount;
 		private readonly bool _isCycle, _directed;
-        private readonly Dictionary<Node, NodeProperties> _nodeProperties;
+
+        /// <inheritdoc />
+        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+
+        /// <inheritdoc />
+        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
 
 		/// <summary>
 		/// The first node.
@@ -76,23 +81,15 @@ namespace Unchase.Satsuma.Core
 			_nodeCount = nodeCount;
 			_isCycle = topology == Topology.Cycle;
 			_directed = directedness == Directedness.Directed;
-            _nodeProperties = new();
         }
 
 		/// <summary>
 		/// Gets a node of the path by its index.
 		/// </summary>
 		/// <param name="index">An integer between 0 (inclusive) and NodeCount() (exclusive).</param>
-		/// <param name="properties">The node properties.</param>
-		public Node GetNode(int index, Dictionary<string, object>? properties = default)
+        public Node GetNode(int index)
 		{
-			var node = new Node(1L + index);
-			if (!_nodeProperties.ContainsKey(node))
-            {
-                _nodeProperties.Add(node, new(properties));
-            }
-
-			return node;
+			return new Node(1L + index);
         }
 
 		/// <summary>
@@ -129,10 +126,18 @@ namespace Unchase.Satsuma.Core
 			return new(node.Id - 1);
 		}
 
-        /// <inheritdoc />
-        public Dictionary<string, object>? Properties(Node node)
+		/// <inheritdoc />
+        public Dictionary<string, object>? GetNodeProperties(Node node)
         {
-            return _nodeProperties.TryGetValue(node, out var p)
+            return NodePropertiesDictionary.TryGetValue(node, out var p)
+                ? p.Properties
+                : null;
+        }
+
+        /// <inheritdoc />
+        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        {
+            return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties
                 : null;
         }

@@ -31,6 +31,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 superGraph.AddNode(4);
                 superGraph.AddNode(5);
                 superGraph.AddNode(6);
+
                 superGraph.AddArc(new(1), new(2), Directedness.Directed);
                 superGraph.AddArc(new(2), new(3), Directedness.Directed);
                 superGraph.AddArc(new(3), new(5), Directedness.Directed);
@@ -39,7 +40,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 var random = new Random();
 
                 // Act
-                var preflow = new Preflow(superGraph, arc => random.Next(6, 1000), new(1), new(6));
+                var preflow = new Preflow(superGraph, _ => random.Next(6, 1000), new(1), new(6));
 
                 // Assert
                 preflow.FlowSize.Should().BeGreaterOrEqualTo(6).And.BeLessOrEqualTo(1000);

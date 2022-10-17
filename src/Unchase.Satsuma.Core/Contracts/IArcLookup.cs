@@ -37,6 +37,11 @@ namespace Unchase.Satsuma.Core.Contracts
     public interface IArcLookup
     {
         /// <summary>
+        /// Arc properties dictionary.
+        /// </summary>
+        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; }
+
+        /// <summary>
         /// Get the first node of an arc.
         /// </summary>
         /// <remarks>
@@ -62,5 +67,12 @@ namespace Unchase.Satsuma.Core.Contracts
         /// <param name="arc">Arc.</param>
         /// <returns>Returns whether the arc is undirected (true) or directed (false).</returns>
         public bool IsEdge(Arc arc);
+
+        /// <summary>
+        /// Get the arc properties.
+        /// </summary>
+        /// <param name="arc">The arc.</param>
+        /// <returns>Returns the arc properties.</returns>
+        public Dictionary<string, object>? GetArcProperties(Arc arc);
     }
 }

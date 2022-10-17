@@ -50,21 +50,21 @@ namespace Unchase.Satsuma.Adapters
 		private readonly HashSet<Node> _nodeExceptions = new();
 		private bool _defaultArcEnabled;
 		private readonly HashSet<Arc> _arcExceptions = new();
-        private readonly Dictionary<Node, NodeProperties>? _nodeProperties;
 
-		/// <summary>
-		/// Initialize <see cref="Subgraph"/>.
-		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
-		/// <param name="nodeProperties">Node properties dictionary.</param>
-		public Subgraph(
-            IGraph graph,
-            Dictionary<Node, NodeProperties>? nodeProperties = default)
+        /// <inheritdoc />
+		public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+
+        /// <inheritdoc />
+		public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+
+        /// <summary>
+        /// Initialize <see cref="Subgraph"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public Subgraph(
+            IGraph graph)
 		{
 			_graph = graph;
-			_nodeProperties = _nodeProperties = nodeProperties?
-                .Where(x => _graph.HasNode(x.Key))
-                .ToDictionary(x => x.Key, y => y.Value);
 
 			EnableAllNodes(true);
 			EnableAllArcs(true);
@@ -145,16 +145,19 @@ namespace Unchase.Satsuma.Adapters
 		}
 
         /// <inheritdoc />
-        public Dictionary<string, object>? Properties(Node node)
+        public Dictionary<string, object>? GetNodeProperties(Node node)
         {
-            if (_nodeProperties == null)
-            {
-                return null;
-            }
-
-            return _nodeProperties.TryGetValue(node, out var p)
+            return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
-                : _graph.Properties(node) ?? null;
+                : _graph.GetNodeProperties(node);
+        }
+
+        /// <inheritdoc />
+        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        {
+            return ArcPropertiesDictionary.TryGetValue(arc, out var p)
+                ? p.Properties
+                : _graph.GetArcProperties(arc);
         }
 
 		/// <inheritdoc />
@@ -290,5 +293,19 @@ namespace Unchase.Satsuma.Adapters
 		{
 			return _graph.HasArc(arc) && IsEnabled(arc);
 		}
+
+        /// <inheritdoc />
+        public void AddNodeProperties(Dictionary<Node, NodeProperties> nodeProperties)
+        {
+			IGraph graph = this;
+            graph.AddNodeProperties(nodeProperties);
+        }
+
+        /// <inheritdoc />
+        public void AddArcProperties(Dictionary<Arc, ArcProperties> arcProperties)
+        {
+			IGraph graph = this;
+            graph.AddArcProperties(arcProperties);
+        }
 	}
 }

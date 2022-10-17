@@ -41,7 +41,12 @@ namespace Unchase.Satsuma.Adapters
         IGraph
     {
         private readonly IGraph _graph;
-        private readonly Dictionary<Node, NodeProperties>? _nodeProperties;
+
+        /// <inheritdoc />
+        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+
+        /// <inheritdoc />
+        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
 
         /// <summary>
         /// Initialize <see cref="UndirectedGraph"/>.
@@ -53,22 +58,22 @@ namespace Unchase.Satsuma.Adapters
             Dictionary<Node, NodeProperties>? nodeProperties = default)
         {
             _graph = graph;
-            _nodeProperties = nodeProperties?
-                .Where(x => _graph.HasNode(x.Key))
-                .ToDictionary(x => x.Key, y => y.Value);
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? Properties(Node node)
+        public Dictionary<string, object>? GetNodeProperties(Node node)
         {
-            if (_nodeProperties == null)
-            {
-                return null;
-            }
-
-            return _nodeProperties.TryGetValue(node, out var p)
+            return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
-                : _graph.Properties(node) ?? null;
+                : _graph.GetNodeProperties(node);
+        }
+
+        /// <inheritdoc />
+        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        {
+            return ArcPropertiesDictionary.TryGetValue(arc, out var p)
+                ? p.Properties
+                : _graph.GetArcProperties(arc);
         }
 
         /// <inheritdoc />
@@ -147,6 +152,20 @@ namespace Unchase.Satsuma.Adapters
         public bool HasArc(Arc arc)
         {
             return _graph.HasArc(arc);
+        }
+
+        /// <inheritdoc />
+        public void AddNodeProperties(Dictionary<Node, NodeProperties> nodeProperties)
+        {
+            IGraph graph = this;
+            graph.AddNodeProperties(nodeProperties);
+        }
+
+        /// <inheritdoc />
+        public void AddArcProperties(Dictionary<Arc, ArcProperties> arcProperties)
+        {
+            IGraph graph = this;
+            graph.AddArcProperties(arcProperties);
         }
     }
 }

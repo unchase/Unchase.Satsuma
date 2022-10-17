@@ -22,25 +22,52 @@ freely, subject to the following restrictions:
    distribution.
 
 Updated by Unchase © 2022*/
-# endregion
+#endregion
 
-namespace Unchase.Satsuma.Core.Contracts
+namespace Unchase.Satsuma.Core
 {
     /// <summary>
-    /// A graph which can provide information about its nodes.
+    /// The arc properties.
     /// </summary>
-    public interface INodeLookup
+    public class ArcProperties
     {
         /// <summary>
-        /// Node properties dictionary.
+        /// The first node.
         /// </summary>
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; }
+        public Node U { get; }
 
         /// <summary>
-        /// Get the node properties.
+        /// The second node.
         /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns>Returns the node properties.</returns>
-        public Dictionary<string, object>? GetNodeProperties(Node node);
-    }
+        public Node V { get; }
+
+        /// <summary>
+        /// The arc is edge.
+        /// </summary>
+        public bool IsEdge { get; }
+
+        /// <summary>
+        /// The arc properties.
+        /// </summary>
+        public Dictionary<string, object>? Properties { get; }
+
+        /// <summary>
+        /// Initialize <see cref="ArcProperties"/>.
+        /// </summary>
+        /// <param name="u">U node.</param>
+        /// <param name="v">V node.</param>
+        /// <param name="isEdge">Is edge.</param>
+        /// <param name="properties">The arc properties.</param>
+        public ArcProperties(
+            Node u,
+            Node v,
+            bool isEdge,
+            Dictionary<string, object>? properties = default)
+        {
+            U = u;
+            V = v;
+            IsEdge = isEdge;
+            Properties = properties;
+        }
+	}
 }
