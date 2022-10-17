@@ -73,7 +73,7 @@ namespace Unchase.Satsuma.Core
 		/// <param name="timeoutSeconds">Timeout in seconds.</param>
 		/// <param name="silent">Silent mode.</param>
 		/// <returns>Returns true in process completed execution, false if an error occurred or execution timed out.</returns>
-		internal static bool ExecuteCommand(
+		public static bool ExecuteCommand(
             string filename,
             string processArgs,
             int timeoutSeconds = 0,
