@@ -16,6 +16,7 @@
     <FileVersion>1.0.0</FileVersion>
     <ApplicationIcon>satsuma.ico</ApplicationIcon>
     <PackageIcon>satsuma.png</PackageIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

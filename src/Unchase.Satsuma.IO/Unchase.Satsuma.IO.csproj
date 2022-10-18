@@ -11,6 +11,7 @@
     <PackageProjectUrl>https://github.com/unchase/Unchase.Satsuma</PackageProjectUrl>
     <ApplicationIcon>satsuma.ico</ApplicationIcon>
     <PackageIcon>satsuma.png</PackageIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
