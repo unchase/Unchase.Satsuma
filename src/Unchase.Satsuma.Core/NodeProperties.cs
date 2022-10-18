@@ -51,5 +51,18 @@ namespace Unchase.Satsuma.Core
         {
             Properties = properties;
         }
+
+        /// <summary>
+        /// Initialize <see cref="NodeProperties{TProperty}"/>.
+        /// </summary>
+        /// <param name="propertyKey">The node property key.</param>
+        /// <param name="propertyValue">The node property value.</param>
+        public NodeProperties(string propertyKey, TProperty propertyValue)
+        {
+            Properties ??= new()
+            {
+                { propertyKey, propertyValue }
+            };
+        }
     }
 }

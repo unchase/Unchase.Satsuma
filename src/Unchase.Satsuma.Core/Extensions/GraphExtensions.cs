@@ -35,24 +35,113 @@ namespace Unchase.Satsuma.Core.Extensions
     {
         #region Properties
 
+        #region NodeProperties
+
         /// <summary>
         /// Add node properties to the graph.
         /// </summary>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
         /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="nodeProperties">Node properties dictionary.</param>
-        public static void AddNodeProperties<TNodeProperty, TArcProperty>(this IGraph<TNodeProperty, TArcProperty> graph, Dictionary<Node, NodeProperties<TNodeProperty>> nodeProperties)
+        public static void AddNodeProperties<TNodeProperty, TArcProperty>(
+            this IGraph<TNodeProperty, TArcProperty> graph,
+            Dictionary<Node, NodeProperties<TNodeProperty>> nodeProperties)
         {
             foreach (var node in nodeProperties.Keys)
             {
                 if (graph.NodePropertiesDictionary.ContainsKey(node))
                 {
-                    graph.NodePropertiesDictionary[node] = nodeProperties[node];
+                    var theNodeProperties = graph.NodePropertiesDictionary[node].Properties;
+                    foreach (var property in nodeProperties[node].Properties ?? new())
+                    {
+                        if (theNodeProperties?.ContainsKey(property.Key) == true)
+                        {
+                            theNodeProperties[property.Key] = property.Value;
+                        }
+                        else
+                        {
+                            theNodeProperties?.Add(property.Key, property.Value);
+                        }
+                    }
                 }
                 else
                 {
                     graph.NodePropertiesDictionary.Add(node, nodeProperties[node]);
                 }
             }
+        }
+
+        /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+        /// <param name="nodeProperties">Node properties dictionary.</param>
+        /// <returns>Returns <see cref="IGraph{TNodeProperty, TArcProperty}"/></returns>
+        public static TGraph WithNodeProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            Dictionary<Node, NodeProperties<TNodeProperty>> nodeProperties)
+                where TGraph : IGraph<TNodeProperty, TArcProperty>
+        {
+            graph.AddNodeProperties(nodeProperties);
+            return graph;
+        }
+
+        /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+        /// <param name="nodeProperties">Node properties dictionary.</param>
+        /// <returns>Returns <see cref="IGraph{TNodeProperty, TArcProperty}"/></returns>
+        public static TGraph WithNodeProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (Node Node, NodeProperties<TNodeProperty> Properties)[] nodeProperties)
+                where TGraph : IGraph<TNodeProperty, TArcProperty>
+        {
+            graph.AddNodeProperties(nodeProperties.ToDictionary(x => x.Node, y => y.Properties));
+            return graph;
+        }
+
+        /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+        /// <param name="nodeProperties">Node properties dictionary.</param>
+        /// <returns>Returns <see cref="IGraph{TNodeProperty, TArcProperty}"/></returns>
+        public static TGraph WithNodeProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (long NodeId, NodeProperties<TNodeProperty> Properties)[] nodeProperties)
+                where TGraph : IGraph<TNodeProperty, TArcProperty>
+        {
+            graph.AddNodeProperties(nodeProperties.ToDictionary(x => new Node(x.NodeId), y => y.Properties));
+            return graph;
+        }
+
+        /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+        /// <param name="nodeProperties">Node properties dictionary.</param>
+        /// <returns>Returns <see cref="IGraph{TNodeProperty, TArcProperty}"/></returns>
+        public static TGraph WithNodeProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (long NodeId, string NodePropertyKey, TNodeProperty NodePropertyValue)[] nodeProperties)
+                where TGraph : IGraph<TNodeProperty, TArcProperty>
+        {
+            graph.AddNodeProperties(nodeProperties.ToDictionary(x => new Node(x.NodeId), y => new NodeProperties<TNodeProperty>(y.NodePropertyKey, y.NodePropertyValue)));
+            return graph;
         }
 
         /// <summary>
@@ -60,13 +149,26 @@ namespace Unchase.Satsuma.Core.Extensions
         /// </summary>
         /// <param name="graph"><see cref="IGraph"/>.</param>
         /// <param name="nodeProperties">Node properties dictionary.</param>
-        public static void AddNodeProperties(this IGraph graph, Dictionary<Node, NodeProperties<object>> nodeProperties)
+        public static void AddNodeProperties(
+            this IGraph graph,
+            Dictionary<Node, NodeProperties<object>> nodeProperties)
         {
             foreach (var node in nodeProperties.Keys)
             {
                 if (graph.NodePropertiesDictionary.ContainsKey(node))
                 {
-                    graph.NodePropertiesDictionary[node] = nodeProperties[node];
+                    var theNodeProperties = graph.NodePropertiesDictionary[node].Properties;
+                    foreach (var property in nodeProperties[node].Properties ?? new())
+                    {
+                        if (theNodeProperties?.ContainsKey(property.Key) == true)
+                        {
+                            theNodeProperties[property.Key] = property.Value;
+                        }
+                        else
+                        {
+                            theNodeProperties?.Add(property.Key, property.Value);
+                        }
+                    }
                 }
                 else
                 {
@@ -76,11 +178,97 @@ namespace Unchase.Satsuma.Core.Extensions
         }
 
         /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="nodeProperties">Node properties dictionary.</param>
+        /// <returns>Returns <see cref="IGraph"/></returns>
+        public static TGraph WithNodeProperties<TGraph>(
+            this TGraph graph,
+            Dictionary<Node, NodeProperties<object>> nodeProperties)
+                where TGraph : IGraph<object, object>
+        {
+            graph.AddNodeProperties(nodeProperties);
+            return graph;
+        }
+
+        /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="nodeProperties">Node properties array.</param>
+        /// <returns>Returns <see cref="IGraph"/></returns>
+        public static TGraph WithNodeProperties<TGraph>(
+            this TGraph graph,
+            params (Node Node, NodeProperties<object> NodeProperties)[] nodeProperties)
+                where TGraph : IGraph<object, object>
+        {
+            graph.AddNodeProperties(nodeProperties.ToDictionary(x => x.Node, y => y.NodeProperties));
+            return graph;
+        }
+
+        /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="nodeProperties">Node properties array.</param>
+        /// <returns>Returns <see cref="IGraph"/></returns>
+        public static TGraph WithNodeProperties<TGraph>(
+            this TGraph graph,
+            params (Node Node, string NodePropertyKey, object NodePropertyValue)[] nodeProperties)
+                where TGraph : IGraph<object, object>
+        {
+            graph.AddNodeProperties(nodeProperties.ToDictionary(x => x.Node, y => new NodeProperties<object>(y.NodePropertyKey, y.NodePropertyValue)));
+            return graph;
+        }
+
+        /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="nodeProperties">Node properties array.</param>
+        /// <returns>Returns <see cref="IGraph"/></returns>
+        public static TGraph WithNodeProperties<TGraph>(
+            this TGraph graph,
+            params (long NodeId, NodeProperties<object> NodeProperties)[] nodeProperties)
+                where TGraph : IGraph<object, object>
+        {
+            graph.AddNodeProperties(nodeProperties.ToDictionary(x => new Node(x.NodeId), y => y.NodeProperties));
+            return graph;
+        }
+
+        /// <summary>
+        /// Add node properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="nodeProperties">Node properties array.</param>
+        /// <returns>Returns <see cref="IGraph"/></returns>
+        public static TGraph WithNodeProperties<TGraph>(
+            this TGraph graph,
+            params (long NodeId, string NodePropertyKey, object NodePropertyValue)[] nodeProperties)
+                where TGraph : IGraph<object, object>
+        {
+            graph.AddNodeProperties(nodeProperties.ToDictionary(x => new Node(x.NodeId), y => new NodeProperties<object>(y.NodePropertyKey, y.NodePropertyValue)));
+            return graph;
+        }
+
+        #endregion NodeProperties
+
+        #region ArcProperties
+
+        /// <summary>
         /// Add arc properties to the graph.
         /// </summary>
         /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="arcProperties">Arc properties dictionary.</param>
-        public static void AddArcProperties<TNodeProperty, TArcProperty>(this IGraph<TNodeProperty, TArcProperty> graph, Dictionary<Arc, ArcProperties<TArcProperty>> arcProperties)
+        public static void AddArcProperties<TNodeProperty, TArcProperty>(
+            this IGraph<TNodeProperty, TArcProperty> graph,
+            Dictionary<Arc, ArcProperties<TArcProperty>> arcProperties)
         {
             foreach (var arc in arcProperties.Keys)
             {
@@ -96,11 +284,31 @@ namespace Unchase.Satsuma.Core.Extensions
         }
 
         /// <summary>
+        /// Add arc properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+        /// <param name="arcProperties">Arc properties dictionary.</param>
+        /// <returns>Returns <see cref="IGraph{TNodeProperty, TArcProperty}"/></returns>
+        public static TGraph WithArcProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            Dictionary<Arc, ArcProperties<TArcProperty>> arcProperties)
+                where TGraph : IGraph<TNodeProperty, TArcProperty>
+        {
+            graph.AddArcProperties(arcProperties);
+            return graph;
+        }
+
+        /// <summary>
         /// Add arc properties to the graph.
         /// </summary>
         /// <param name="graph"><see cref="IGraph"/>.</param>
         /// <param name="arcProperties">Arc properties dictionary.</param>
-        public static void AddArcProperties(this IGraph graph, Dictionary<Arc, ArcProperties<object>> arcProperties)
+        public static void AddArcProperties(
+            this IGraph graph,
+            Dictionary<Arc, ArcProperties<object>> arcProperties)
         {
             foreach (var arc in arcProperties.Keys)
             {
@@ -114,6 +322,24 @@ namespace Unchase.Satsuma.Core.Extensions
                 }
             }
         }
+
+        /// <summary>
+        /// Add arc properties to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="arcProperties">Arc properties dictionary.</param>
+        /// <returns>Returns <see cref="IGraph"/></returns>
+        public static TGraph WithArcProperties<TGraph>(
+            this TGraph graph,
+            Dictionary<Arc, ArcProperties<object>> arcProperties)
+                where TGraph : IGraph
+        {
+            graph.AddArcProperties(arcProperties);
+            return graph;
+        }
+
+        #endregion ArcProperties
 
         #endregion Properties
     }

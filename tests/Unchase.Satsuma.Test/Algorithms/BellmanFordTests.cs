@@ -25,33 +25,25 @@ namespace Unchase.Satsuma.Test.Algorithms
             if (start)
             {
                 // Arrange
-                var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
-                var superGraph = graph.ToSupergraph();
-                superGraph.AddNode(1);
-                superGraph.AddNode(2);
-                superGraph.AddNode(3);
-                superGraph.AddNode(4);
-                superGraph.AddNode(5);
-                superGraph.AddNode(6);
-                superGraph.AddNode(7);
+                var graph = new CompleteGraph(1, Directedness.Directed);
+                var superGraph = graph.ToSupergraph()
+                    .WithNodes(1, 2, 3, 4, 5, 6, 7)
+                    .WithNodeProperties(
+                        (1, "testProperty", 0),
+                        (2, "testProperty", 0),
+                        (3, "testProperty", 15),
+                        (4, "testProperty", 10),
+                        (5, "testProperty", 11),
+                        (6, "testProperty", 3),
+                        (7, "testProperty", 8));
 
-                superGraph.AddNodeProperties(new()
-                {
-                    { new(1), new(new() { { "testProperty", 0 } }) },
-                    { new(2), new(new() { { "testProperty", 0 } }) },
-                    { new(3), new(new() { { "testProperty", 15 } }) },
-                    { new(4), new(new() { { "testProperty", 10 } }) },
-                    { new(5), new(new() { { "testProperty", 11 } }) },
-                    { new(6), new(new() { { "testProperty", 3 } }) },
-                    { new(7), new(new() { { "testProperty", 8 } }) }
-                });
-
-                superGraph.AddArc(new(1), new(2), Directedness.Directed); // cost = 0 for 1 -> 2
-                superGraph.AddArc(new(2), new(3), Directedness.Directed); // cost = 0 for 2 -> 3
-                superGraph.AddArc(new(3), new(4), Directedness.Directed); // cost = 15 for 3 -> 4
-                superGraph.AddArc(new(4), new(5), Directedness.Directed); // cost = 10 for 4 -> 5
-                superGraph.AddArc(new(5), new(6), Directedness.Directed); // cost = 11 for 5 -> 6
-                superGraph.AddArc(new(6), new(7), Directedness.Directed); // cost = 3 for 6 -> 7
+                superGraph.WithArcs(
+                    (1, 2, Directedness.Directed), // cost = 0 for 1 -> 2
+                    (2, 3, Directedness.Directed), // cost = 0 for 2 -> 3
+                    (3, 4, Directedness.Directed), // cost = 15 for 3 -> 4
+                    (4, 5, Directedness.Directed), // cost = 10 for 4 -> 5
+                    (5, 6, Directedness.Directed), // cost = 11 for 5 -> 6
+                    (6, 7, Directedness.Directed)); // cost = 3 for 6 -> 7
 
                 // Act
                 var bellmanFord = superGraph.ToBellmanFord(arc =>

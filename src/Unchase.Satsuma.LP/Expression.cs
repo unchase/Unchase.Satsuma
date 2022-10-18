@@ -26,6 +26,8 @@ Updated by Unchase © 2022*/
 
 using Unchase.Satsuma.LP.Enums;
 
+#pragma warning disable CS0660, CS0661
+
 namespace Unchase.Satsuma.LP
 {
     /// <summary>
@@ -392,7 +394,9 @@ namespace Unchase.Satsuma.LP
         /// <param name="x">The first operand.</param>
         /// <param name="y">The second operand.</param>
         /// <exception cref="InvalidOperationException">Not-equal LP constraints are not supported.</exception>
+#pragma warning disable IDE0060 // Remove unused parameter
         public static Constraint operator !=(Expression x, Expression y)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             throw new InvalidOperationException("Not-equal LP constraints are not supported.");
 		}

@@ -24,9 +24,12 @@ freely, subject to the following restrictions:
 Updated by Unchase © 2022*/
 #endregion
 
+using Unchase.Satsuma.Adapters.Contracts;
 using Unchase.Satsuma.Adapters.Enums;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
+using Unchase.Satsuma.Core.Enums;
+using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Adapters.Extensions
 {
@@ -262,5 +265,229 @@ namespace Unchase.Satsuma.Adapters.Extensions
         }
 
         #endregion Path
+
+        #region Nodes
+
+        /// <summary>
+        /// Add nodes to the buildable graph and return the graph.
+        /// </summary>
+        /// <param name="graph"><see cref="IBuildableGraph"/>.</param>
+        /// <param name="nodes"><see cref="Node"/> array.</param>
+        /// <returns>Returns <see cref="IBuildableGraph"/>.</returns>
+        public static TGraph WithNodes<TGraph>(
+            this TGraph graph,
+            params Node[] nodes)
+                where TGraph : IBuildableGraph
+        {
+            foreach (var node in nodes)
+            {
+                graph.AddNode(node.Id);
+            }
+            
+            return graph;
+        }
+
+        /// <summary>
+        /// Add nodes with properties to the buildable graph and return the graph.
+        /// </summary>
+        /// <param name="graph">The graph.</param>
+        /// <param name="nodesWithProperties">Array of <see cref="Node"/> with <see cref="NodeProperties{TProperty}"/>.</param>
+        /// <returns>Returns the graph.</returns>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        public static TGraph WithNodesWithProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (Node Node, NodeProperties<TNodeProperty> Properties)[] nodesWithProperties)
+                where TGraph : IBuildableGraph, IGraph<TNodeProperty, TArcProperty>
+        {
+            foreach (var nodeWithProperties in nodesWithProperties)
+            {
+                graph.AddNode(nodeWithProperties.Node.Id);
+                graph.WithNodeProperties<TGraph, TNodeProperty, TArcProperty>((nodeWithProperties.Node, nodeWithProperties.Properties));
+            }
+
+            return graph;
+        }
+
+        /// <summary>
+        /// Add nodes with properties to the buildable graph and return the graph.
+        /// </summary>
+        /// <param name="graph">The graph.</param>
+        /// <param name="nodesWithProperties">Array of <see cref="Node"/> with <see cref="NodeProperties{TProperty}"/>.</param>
+        /// <returns>Returns the graph.</returns>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        public static TGraph WithNodesWithProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (Node Node, string PropertyKey, TNodeProperty PropertyValue)[] nodesWithProperties)
+                where TGraph : IBuildableGraph, IGraph<TNodeProperty, TArcProperty>
+        {
+            foreach (var nodeWithProperties in nodesWithProperties)
+            {
+                graph.AddNode(nodeWithProperties.Node.Id);
+                graph.WithNodeProperties<TGraph, TNodeProperty, TArcProperty>(nodesWithProperties.ToDictionary(x => x.Node, y => new NodeProperties<TNodeProperty>(y.PropertyKey, y.PropertyValue)));
+            }
+
+            return graph;
+        }
+
+        /// <summary>
+        /// Add nodes to the buildable graph and return the graph.
+        /// </summary>
+        /// <param name="graph"><see cref="IBuildableGraph"/>.</param>
+        /// <param name="nodeIds"><see cref="Node"/> identifier array.</param>
+        /// <returns>Returns <see cref="IBuildableGraph"/>.</returns>
+        public static TGraph WithNodes<TGraph>(
+            this TGraph graph,
+            params long[] nodeIds)
+                where TGraph : IBuildableGraph
+        {
+            foreach (var nodeId in nodeIds)
+            {
+                graph.AddNode(nodeId);
+            }
+
+            return graph;
+        }
+
+        /// <summary>
+        /// Add nodes with properties to the buildable graph and return the graph.
+        /// </summary>
+        /// <param name="graph">The graph.</param>
+        /// <param name="nodesWithProperties">Array of <see cref="Node"/> with <see cref="NodeProperties{TProperty}"/>.</param>
+        /// <returns>Returns the graph.</returns>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        public static TGraph WithNodesWithProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (long NodeId, NodeProperties<TNodeProperty> Properties)[] nodesWithProperties)
+                where TGraph : IBuildableGraph, IGraph<TNodeProperty, TArcProperty>
+        {
+            foreach (var (nodeId, properties) in nodesWithProperties)
+            {
+                var node = new Node(nodeId);
+                graph.AddNode(nodeId);
+                graph.WithNodeProperties<TGraph, TNodeProperty, TArcProperty>((node, properties));
+            }
+
+            return graph;
+        }
+
+        /// <summary>
+        /// Add nodes with properties to the buildable graph and return the graph.
+        /// </summary>
+        /// <param name="graph">The graph.</param>
+        /// <param name="nodesWithProperties">Array of <see cref="Node"/> with <see cref="NodeProperties{TProperty}"/>.</param>
+        /// <returns>Returns the graph.</returns>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        public static TGraph WithNodesWithProperties<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (long NodeId, string PropertyKey, TNodeProperty PropertyValue)[] nodesWithProperties)
+                where TGraph : IBuildableGraph, IGraph<TNodeProperty, TArcProperty>
+        {
+            foreach (var (nodeId, propertyKey, propertyValue) in nodesWithProperties)
+            {
+                var node = new Node(nodeId);
+                graph.AddNode(nodeId);
+                graph.WithNodeProperties<TGraph, TNodeProperty, TArcProperty>((node, new(propertyKey, propertyValue)));
+            }
+
+            return graph;
+        }
+
+        #endregion Nodes
+
+        #region Arcs
+
+        /// <summary>
+        /// Add arcs to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <param name="arcs"><see cref="Arc"/> data array.</param>
+        /// <returns>Returns the graph.</returns>
+        public static TGraph WithArcs<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (Node U, Node V, Directedness Directedness)[] arcs)
+                where TGraph : IGraph<TNodeProperty, TArcProperty>, IBuildableGraph, IArcLookup<TArcProperty>
+        {
+            foreach (var arc in arcs)
+            {
+                graph.AddArc(arc.U, arc.V, arc.Directedness);
+            }
+
+            return graph;
+        }
+
+        /// <summary>
+        /// Add arcs to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <typeparam name="TNodeProperty">The type of node property.</typeparam>
+        /// <typeparam name="TArcProperty">The type of arc property.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <param name="arcs"><see cref="Arc"/> data array.</param>
+        /// <returns>Returns the graph.</returns>
+        public static TGraph WithArcs<TGraph, TNodeProperty, TArcProperty>(
+            this TGraph graph,
+            params (long UId, long VId, Directedness Directedness)[] arcs)
+                where TGraph : IGraph<TNodeProperty, TArcProperty>, IBuildableGraph, IArcLookup<TArcProperty>
+        {
+            foreach (var arc in arcs)
+            {
+                graph.AddArc(new(arc.UId), new(arc.VId), arc.Directedness);
+            }
+
+            return graph;
+        }
+
+        /// <summary>
+        /// Add arcs to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <param name="arcs"><see cref="Arc"/> data array.</param>
+        /// <returns>Returns the graph.</returns>
+        public static TGraph WithArcs<TGraph>(
+            this TGraph graph,
+            params (Node U, Node V, Directedness Directedness)[] arcs)
+                where TGraph : IBuildableGraph, IArcLookup<object>
+        {
+            foreach (var arc in arcs)
+            {
+                graph.AddArc(arc.U, arc.V, arc.Directedness);
+            }
+
+            return graph;
+        }
+
+        /// <summary>
+        /// Add arcs to the graph and return the graph.
+        /// </summary>
+        /// <typeparam name="TGraph">The type of graph.</typeparam>
+        /// <param name="graph">The graph.</param>
+        /// <param name="arcs"><see cref="Arc"/> data array.</param>
+        /// <returns>Returns the graph.</returns>
+        public static TGraph WithArcs<TGraph>(
+            this TGraph graph,
+            params (long UId, long VId, Directedness Directedness)[] arcs)
+                where TGraph : IBuildableGraph, IArcLookup<object>
+        {
+            foreach (var arc in arcs)
+            {
+                graph.AddArc(new(arc.UId), new(arc.VId), arc.Directedness);
+            }
+
+            return graph;
+        }
+
+        #endregion Arcs
     }
 }
