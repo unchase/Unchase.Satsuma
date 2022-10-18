@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Unchase.Satsuma.Adapters;
 using Unchase.Satsuma.Adapters.Extensions;
 using Unchase.Satsuma.Algorithms;
 using Unchase.Satsuma.Algorithms.Extensions;
@@ -25,7 +26,7 @@ namespace Unchase.Satsuma.Test.Algorithms
             if (start)
             {
                 // Arrange
-                var graph = new CompleteGraph(1, Directedness.Directed);
+                var graph = new CustomGraph();
                 var superGraph = graph.ToSupergraph()
                     .WithNodes(1, 2, 3, 4, 5, 6, 7)
                     .WithNodeProperties(

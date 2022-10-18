@@ -353,6 +353,25 @@ namespace Unchase.Satsuma.Adapters.Extensions
         }
 
         /// <summary>
+        /// Add <paramref name="count"/> nodes to the buildable graph and return the graph.
+        /// </summary>
+        /// <param name="graph"><see cref="IBuildableGraph"/>.</param>
+        /// <param name="count">Created <see cref="Node"/> count.</param>
+        /// <returns>Returns <see cref="IBuildableGraph"/>.</returns>
+        public static TGraph WithNodesCount<TGraph>(
+            this TGraph graph,
+            uint count)
+                where TGraph : IBuildableGraph
+        {
+            for (var i = 0; i < count; i++)
+            {
+                graph.AddNode();
+            }
+
+            return graph;
+        }
+
+        /// <summary>
         /// Add nodes with properties to the buildable graph and return the graph.
         /// </summary>
         /// <param name="graph">The graph.</param>

@@ -4,7 +4,6 @@ using Unchase.Satsuma.Adapters.Extensions;
 using Unchase.Satsuma.Algorithms;
 using Unchase.Satsuma.Algorithms.Enums;
 using Unchase.Satsuma.Algorithms.Extensions;
-using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
 using Xunit;
@@ -27,7 +26,7 @@ namespace Unchase.Satsuma.Test.Algorithms
             if (start)
             {
                 // Arrange
-                var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
+                var graph = new CustomGraph<int, int>();
                 var superGraph = graph.ToSupergraph()
                     .WithNodesWithProperties<Supergraph<int, int>, int, int>(
                         (1, "testProperty2", 12),
