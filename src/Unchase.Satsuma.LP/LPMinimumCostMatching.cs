@@ -38,14 +38,16 @@ namespace Unchase.Satsuma.LP
     /// Finds a minimum cost matching in an arbitrary graph using integer programming.
     /// </summary>
     /// <remarks>
-    /// See also <seealso cref="LpMaximumMatching"/>.
+    /// See also <seealso cref="LpMaximumMatching{TNodeProperty, TArcProperty}"/>.
     /// </remarks>
-    public sealed class LpMinimumCostMatching
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public sealed class LpMinimumCostMatching<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.
         /// </summary>
-        public IGraph Graph { get; }
+        public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// A finite cost function on the arcs of <see cref="Graph"/>.
@@ -67,7 +69,7 @@ namespace Unchase.Satsuma.LP
         /// </summary>
         public SolutionType SolutionType;
 
-        private readonly Matching? _matching;
+        private readonly Matching<TNodeProperty, TArcProperty>? _matching;
 
         /// <summary>
         /// Contains null, or a valid and possibly optimal matching, depending on <see cref="SolutionType"/>.
@@ -77,10 +79,10 @@ namespace Unchase.Satsuma.LP
         /// <para>If <see cref="SolutionType"/> is <see cref="Enums.SolutionType.Feasible"/>, <see cref="Matching"/> is valid but not optimal.</para>
         /// <para>Otherwise, <see cref="Matching"/> is null.</para>
         /// </remarks>
-        public IMatching? Matching => _matching;
+        public IMatching<TNodeProperty, TArcProperty>? Matching => _matching;
 
         /// <summary>
-        /// Initialize <see cref="LpMinimumCostMatching"/>.
+        /// Initialize <see cref="LpMinimumCostMatching{TNodeProperty, TArcProperty}"/>.
         /// </summary>
         /// <param name="solver"><see cref="ISolver"/>.</param>
         /// <param name="graph"><see cref="Graph"/>.</param>
@@ -89,7 +91,7 @@ namespace Unchase.Satsuma.LP
         /// <param name="maximumMatchingSize"><see cref="MaximumMatchingSize"/>.</param>
         public LpMinimumCostMatching(
             ISolver solver,
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
             Func<Arc, double> cost,
             int minimumMatchingSize = 0,
             int maximumMatchingSize = int.MaxValue)
@@ -99,13 +101,13 @@ namespace Unchase.Satsuma.LP
             MinimumMatchingSize = minimumMatchingSize;
             MaximumMatchingSize = maximumMatchingSize;
 
-            var g = new OptimalSubgraph(Graph)
+            var g = new OptimalSubgraph<TNodeProperty, TArcProperty>(Graph)
             {
                 MaxDegree = _ => 1.0,
                 MinArcCount = MinimumMatchingSize,
                 MaxArcCount = MaximumMatchingSize
             };
-            var c = new OptimalSubgraph.CostFunction(cost: cost, objectiveWeight: 1);
+            var c = new OptimalSubgraph<TNodeProperty, TArcProperty>.CostFunction(cost: cost, objectiveWeight: 1);
             g.CostFunctions.Add(c);
             g.Run(solver);
 

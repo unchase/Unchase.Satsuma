@@ -29,18 +29,19 @@ namespace Unchase.Satsuma.Core.Contracts
     /// <summary>
     /// A graph which can provide information about its nodes.
     /// </summary>
-    public interface INodeLookup
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    public interface INodeLookup<TNodeProperty>
     {
         /// <summary>
         /// Node properties dictionary.
         /// </summary>
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; }
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; }
 
         /// <summary>
         /// Get the node properties.
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns>Returns the node properties.</returns>
-        public Dictionary<string, object>? GetNodeProperties(Node node);
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node);
     }
 }

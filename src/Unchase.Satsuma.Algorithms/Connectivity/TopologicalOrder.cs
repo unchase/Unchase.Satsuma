@@ -38,12 +38,14 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
     /// <remarks>
     /// Edges count as 2-cycles.
     /// </remarks>
-    public sealed class TopologicalOrder
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public sealed class TopologicalOrder<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.
         /// </summary>
-        public IGraph Graph { get; }
+        public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// True if the digraph has no cycles.
@@ -60,18 +62,20 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
         public List<Node>? Order { get; }
 
         private class MyDfs : 
-            Dfs
+            Dfs<TNodeProperty, TArcProperty>
         {
-            private readonly TopologicalOrder _parent;
+            private readonly TopologicalOrder<TNodeProperty, TArcProperty> _parent;
             private HashSet<Node> _exited = new();
 
             /// <summary>
             /// Initialize <see cref="MyDfs"/>.
             /// </summary>
-            /// <param name="graph"><see cref="IGraph"/>.</param>
-            /// <param name="parent"><see cref="TopologicalOrder"/>.</param>
-            public MyDfs(IGraph graph, TopologicalOrder parent) 
-                : base(graph)
+            /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+            /// <param name="parent"><see cref="TopologicalOrder{TNodeProperty, TArcProperty}"/>.</param>
+            public MyDfs(
+                IGraph<TNodeProperty, TArcProperty> graph, 
+                TopologicalOrder<TNodeProperty, TArcProperty> parent) 
+                    : base(graph)
             {
                 _parent = parent;
             }
@@ -129,12 +133,12 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
         }
 
         /// <summary>
-        /// Initialize <see cref="TopologicalOrder"/>.
+        /// Initialize <see cref="TopologicalOrder{TNodeProperty, TArcProperty}"/>.
         /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="flags"><see cref="TopologicalOrderFlags"/>.</param>
         public TopologicalOrder(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             TopologicalOrderFlags flags = 0)
         {
             Graph = graph;

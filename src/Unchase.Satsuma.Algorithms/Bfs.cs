@@ -29,16 +29,14 @@ using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
 
-using Path = Unchase.Satsuma.Adapters.Path;
-
 namespace Unchase.Satsuma.Algorithms
 {
 	/// <summary>
 	/// Performs a breadth-first search (BFS) to find shortest paths from a set of source nodes to all nodes.
 	/// </summary>
 	/// <remarks>
-	/// <para>In other words, <see cref="Bfs"/> finds cheapest paths for the constant 1 cost function.</para>
-	/// <para>The advantage of <see cref="Bfs"/> over <see cref="Dijkstra"/> is its faster execution.</para>
+	/// <para>In other words, <see cref="Bfs{TNodeProperty, TArcProperty}"/> finds cheapest paths for the constant 1 cost function.</para>
+	/// <para>The advantage of <see cref="Bfs{TNodeProperty, TArcProperty}"/> over <see cref="Dijkstra{TNodeProperty, TArcProperty}"/> is its faster execution.</para>
 	/// <para>Usage:</para>
 	/// <para>- <see cref="AddSource"/> can be used to initialize the class by providing the source nodes.</para>
 	/// <para>- Then <see cref="Run"/> or <see cref="RunUntilReached(Node)"/> may be called to obtain a forest of shortest paths to a given set of nodes.</para>
@@ -48,22 +46,24 @@ namespace Unchase.Satsuma.Algorithms
 	/// <para>- For reached nodes, use <see cref="GetLevel"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/>.</para>
 	/// <para>- For currently unreached nodes, <see cref="GetLevel"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/> return -1, <see cref="Arc.Invalid"/> and null respectively.</para>
 	/// </remarks>
-	public sealed class Bfs
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class Bfs<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		private readonly Dictionary<Node, Arc> _parentArc;
 		private readonly Dictionary<Node, int> _level;
 		private readonly Queue<Node> _queue;
 
 		/// <summary>
-		/// Initialize <see cref="Bfs"/>.
+		/// Initialize <see cref="Bfs{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
-		public Bfs(IGraph graph)
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+		public Bfs(IGraph<TNodeProperty, TArcProperty> graph)
 		{
 			Graph = graph;
 
@@ -236,14 +236,14 @@ namespace Unchase.Satsuma.Algorithms
 		/// </summary>
 		/// <param name="node">Node.</param>
 		/// <returns>Returns a shortest path, or null if the node has not been reached yet.</returns>
-		public IPath? GetPath(Node node)
+		public IPath<TNodeProperty, TArcProperty>? GetPath(Node node)
 		{
             if (!Reached(node))
             {
                 return null;
             }
 
-			var result = new Path(Graph);
+			var result = new Adapters.Path<TNodeProperty, TArcProperty>(Graph);
 			result.Begin(node);
 			while (true)
 			{

@@ -52,7 +52,7 @@ namespace Unchase.Satsuma.IO.GraphML.Abstractions
 		/// The values of the property for the individual objects.
 		/// </summary>
 		/// <remarks>
-		/// <para>Keys must be of type <see cref="Node"/>, <see cref="Arc"/> or <see cref="IGraph"/>, as specified by #Domain.</para>
+		/// <para>Keys must be of type <see cref="Node"/>, <see cref="Arc"/> or <see cref="IGraph{TNodeProperty, TArcProperty}"/>, as specified by #Domain.</para>
 		/// <para>This dictionary need not contain entries for all objects (e.g. nodes, arcs).</para>
 		/// </remarks>
 		public Dictionary<object, T> Values { get; }
@@ -81,7 +81,7 @@ namespace Unchase.Satsuma.IO.GraphML.Abstractions
 		/// <remarks>
 		/// First, key is looked up in <see cref="Values"/>. If not found, <see cref="DefaultValue"/> is used, unless <see cref="HasDefaultValue"/> is false.
 		/// </remarks>
-		/// <param name="key">A <see cref="Node"/>, <see cref="Arc"/> or <see cref="IGraph"/>.</param>
+		/// <param name="key">A <see cref="Node"/>, <see cref="Arc"/> or <see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="result">The property value assigned to the key is returned here, or <tt>default(T)</tt> if none found.</param>
 		/// <returns>Returns true if key was found as a key in <see cref="Values"/>, or <see cref="HasDefaultValue"/> is true.</returns>
 		public bool TryGetValue(object key, out T? result)

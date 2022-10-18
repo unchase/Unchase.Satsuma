@@ -29,18 +29,19 @@ namespace Unchase.Satsuma.Core
     /// <summary>
     /// The node properties.
     /// </summary>
-    public class NodeProperties
+    /// <typeparam name="TProperty">The type of stored node properties.</typeparam>
+    public class NodeProperties<TProperty>
     {
         /// <summary>
         /// The node properties.
         /// </summary>
-        public Dictionary<string, object>? Properties { get; }
+        public Dictionary<string, TProperty>? Properties { get; }
 
         /// <summary>
-        /// Initialize <see cref="NodeProperties"/>.
+        /// Initialize <see cref="NodeProperties{TProperty}"/>.
         /// </summary>
         /// <param name="properties">The node properties.</param>
-        public NodeProperties(Dictionary<string, object>? properties = default)
+        public NodeProperties(Dictionary<string, TProperty>? properties = default)
         {
             Properties = properties;
         }

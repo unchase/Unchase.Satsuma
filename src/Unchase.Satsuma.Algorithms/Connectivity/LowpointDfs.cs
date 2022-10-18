@@ -35,18 +35,21 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
     /// <summary>
     /// Calculates the lowpoint for each node.
     /// </summary>
-    internal class LowpointDfs : 
-        Dfs
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    internal class LowpointDfs<TNodeProperty, TArcProperty> : 
+        Dfs<TNodeProperty, TArcProperty>
     {
         protected Dictionary<Node, int> Levels = new();
         protected Dictionary<Node, int> Lowpoints = new();
 
         /// <summary>
-        /// Initialize <see cref="LowpointDfs"/>.
+        /// Initialize <see cref="LowpointDfs{TNodeProperty, TArcProperty}"/>.
         /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
-        public LowpointDfs(IGraph graph) 
-            : base(graph)
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+        public LowpointDfs(
+            IGraph<TNodeProperty, TArcProperty> graph) 
+                : base(graph)
         {
         }
 

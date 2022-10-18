@@ -31,18 +31,20 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
-    /// <summary>
+	/// <summary>
 	/// Finds the strongly connected components of a digraph.
 	/// </summary>
 	/// <remarks>
 	/// Edges count as 2-cycles.
 	/// </remarks>
-	public sealed class StrongComponents
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class StrongComponents<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input digraph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// The number of strongly connected components in the digraph.
@@ -59,16 +61,17 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 		public List<HashSet<Node>>? Components { get; }
 
 		private class ForwardDfs : 
-            Dfs
+            Dfs<TNodeProperty, TArcProperty>
 		{
 			public List<Node> ReverseExitOrder = new();
 
 			/// <summary>
 			/// Initialize <see cref="ForwardDfs"/>.
 			/// </summary>
-			/// <param name="graph"><see cref="IGraph"/>.</param>
-			public ForwardDfs(IGraph graph) 
-                : base(graph)
+			/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+			public ForwardDfs(
+                IGraph<TNodeProperty, TArcProperty> graph) 
+                    : base(graph)
             {
             }
 
@@ -94,20 +97,22 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 		}
 
 		private class BackwardDfs : 
-            Dfs
+            Dfs<TNodeProperty, TArcProperty>
 		{
 			/// <summary>
-			/// Parent <see cref="StrongComponents"/>.
+			/// Parent <see cref="StrongComponents{TNodeProperty, TArcProperty}"/>.
 			/// </summary>
-            private readonly StrongComponents _parent;
+			private readonly StrongComponents<TNodeProperty, TArcProperty> _parent;
 
 			/// <summary>
 			/// Initialize <see cref="BackwardDfs"/>.
 			/// </summary>
-			/// <param name="graph"><see cref="IGraph"/>.</param>
-			/// <param name="parent"><see cref="StrongComponents"/>.</param>
-			public BackwardDfs(IGraph graph, StrongComponents parent) 
-                : base(graph)
+			/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+			/// <param name="parent"><see cref="StrongComponents{TNodeProperty, TArcProperty}"/>.</param>
+			public BackwardDfs(
+                IGraph<TNodeProperty, TArcProperty> graph, 
+                StrongComponents<TNodeProperty, TArcProperty> parent) 
+                    : base(graph)
             {
                 _parent = parent;
             }
@@ -136,12 +141,12 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 		}
 
 		/// <summary>
-		/// Initialize <see cref="StrongComponents"/>.
+		/// Initialize <see cref="StrongComponents{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="flags"><see cref="StrongComponentsFlags"/>.</param>
 		public StrongComponents(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             StrongComponentsFlags flags = 0)
 		{
 			Graph = graph;

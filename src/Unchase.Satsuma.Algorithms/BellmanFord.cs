@@ -28,8 +28,6 @@ using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Extensions;
 
-using Path = Unchase.Satsuma.Adapters.Path;
-
 namespace Unchase.Satsuma.Algorithms
 {
 	/// <summary>
@@ -38,11 +36,11 @@ namespace Unchase.Satsuma.Algorithms
 	/// <remarks>
 	/// <para>Edges count as 2-cycles.</para>
 	/// <para>
-	/// There is no restriction on the cost function (as opposed to <see cref="AStar"/> and <see cref="Dijkstra"/>),
+	/// There is no restriction on the cost function (as opposed to <see cref="AStar{TNodeProperty, TArcProperty}"/> and <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>),
 	/// but if a negative cycle is reachable from the sources, the algorithm terminates and
 	/// does not calculate the distances.
 	/// </para>
-	/// <para>If the cost function is non-negative, use <see cref="Dijkstra"/>, as it runs faster.</para>
+	/// <para>If the cost function is non-negative, use <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>, as it runs faster.</para>
 	/// <para>Querying the results:</para>
 	/// <para>- If a negative cycle has been reached, then <see cref="NegativeCycle"/> is not null and contains such a cycle.</para>
 	/// <para>  - In this case, <see cref="GetDistance"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/> throw an exception.</para>
@@ -50,12 +48,14 @@ namespace Unchase.Satsuma.Algorithms
 	/// <para>  - In this case, use <see cref="GetDistance"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/> for querying the results.</para>
 	/// <para>  - For unreachable nodes, <see cref="GetDistance"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/> <see cref="double.PositiveInfinity"/>, <see cref="Arc.Invalid"/> and null respectively.</para>
 	/// </remarks>
-	public sealed class BellmanFord
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class BellmanFord<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// The arc cost function. Each value must be finite or positive infinity.
@@ -68,7 +68,7 @@ namespace Unchase.Satsuma.Algorithms
 		/// <summary>
 		/// A negative cycle reachable from the sources, or null if none exists.
 		/// </summary>
-		public IPath? NegativeCycle { get; private set; }
+		public IPath<TNodeProperty, TArcProperty>? NegativeCycle { get; private set; }
 
 		private const string NegativeCycleMessage = "A negative cycle was found.";
 		private readonly Dictionary<Node, double> _distance;
@@ -77,11 +77,11 @@ namespace Unchase.Satsuma.Algorithms
 		/// <summary>
 		/// Runs the Bellman-Ford algorithm.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
 		/// <param name="sources">The source nodes.</param>
 		public BellmanFord(
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
             Func<Arc, double> cost,
             IEnumerable<Node> sources)
 		{
@@ -122,7 +122,7 @@ namespace Unchase.Satsuma.Algorithms
 
 						if (!double.IsPositiveInfinity(du) && c < 0)
 						{
-							var cycle = new Path(Graph);
+							var cycle = new Adapters.Path<TNodeProperty, TArcProperty>(Graph);
 							cycle.Begin(u);
 							cycle.AddLast(arc);
 							cycle.AddLast(arc);
@@ -144,7 +144,7 @@ namespace Unchase.Satsuma.Algorithms
                                 p = Graph.Other(_parentArc[p], p);
                             }
 
-							var cycle = new Path(Graph);
+							var cycle = new Adapters.Path<TNodeProperty, TArcProperty>(Graph);
 							cycle.Begin(p);
 							var x = p;
 							while (true)
@@ -219,7 +219,7 @@ namespace Unchase.Satsuma.Algorithms
 		/// <param name="node">Node.</param>
 		/// <returns>Returns a cheapest path, or null if the node is unreachable.</returns>
 		/// <exception cref="InvalidOperationException">A reachable negative cycle has been found (i.e. <see cref="NegativeCycle"/> is not null).</exception>
-		public IPath? GetPath(Node node)
+		public IPath<TNodeProperty, TArcProperty>? GetPath(Node node)
 		{
             if (NegativeCycle != null)
             {
@@ -231,7 +231,7 @@ namespace Unchase.Satsuma.Algorithms
                 return null;
             }
 
-			var result = new Path(Graph);
+			var result = new Adapters.Path<TNodeProperty, TArcProperty>(Graph);
 			result.Begin(node);
 			while (true)
 			{

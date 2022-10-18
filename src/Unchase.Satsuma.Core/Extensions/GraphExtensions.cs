@@ -29,16 +29,16 @@ using Unchase.Satsuma.Core.Contracts;
 namespace Unchase.Satsuma.Core.Extensions
 {
     /// <summary>
-    /// Extension methods to <see cref="IGraph"/>.
+    /// Extension methods to <see cref="IGraph{TNodeProperty, TArcProperty}"/>.
     /// </summary>
     public static class GraphExtensions
     {
         /// <summary>
         /// Add node properties to the graph.
         /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="nodeProperties">Node properties dictionary.</param>
-        public static void AddNodeProperties(this IGraph graph, Dictionary<Node, NodeProperties> nodeProperties)
+        public static void AddNodeProperties<TNodeProperty, TArcProperty>(this IGraph<TNodeProperty, TArcProperty> graph, Dictionary<Node, NodeProperties<TNodeProperty>> nodeProperties)
         {
             foreach (var node in nodeProperties.Keys)
             {
@@ -56,9 +56,9 @@ namespace Unchase.Satsuma.Core.Extensions
         /// <summary>
         /// Add arc properties to the graph.
         /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="arcProperties">Arc properties dictionary.</param>
-        public static void AddArcProperties(this IGraph graph, Dictionary<Arc, ArcProperties> arcProperties)
+        public static void AddArcProperties<TNodeProperty, TArcProperty>(this IGraph<TNodeProperty, TArcProperty> graph, Dictionary<Arc, ArcProperties<TArcProperty>> arcProperties)
         {
             foreach (var arc in arcProperties.Keys)
             {

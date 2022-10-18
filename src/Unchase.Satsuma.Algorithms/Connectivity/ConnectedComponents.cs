@@ -48,12 +48,14 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
     /// </code>
     /// </para>
     /// </remarks>
-    public sealed class ConnectedComponents
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public sealed class ConnectedComponents<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.
         /// </summary>
-        public IGraph Graph { get; }
+        public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// The number of connected components in the graph.
@@ -69,20 +71,22 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
         public List<HashSet<Node>>? Components { get; }
 
         private class MyDfs : 
-            Dfs
+            Dfs<TNodeProperty, TArcProperty>
         {
             /// <summary>
-            /// Parent <see cref="ConnectedComponents"/>.
+            /// Parent <see cref="ConnectedComponents{TNodeProperty, TArcProperty}"/>.
             /// </summary>
-            private readonly ConnectedComponents _parent;
+            private readonly ConnectedComponents<TNodeProperty, TArcProperty> _parent;
 
             /// <summary>
             /// Initialize <see cref="MyDfs"/>.
             /// </summary>
-            /// <param name="graph"><see cref="IGraph"/>.</param>
-            /// <param name="parent">Parent <see cref="ConnectedComponents"/>.</param>
-            public MyDfs(IGraph graph, ConnectedComponents parent) :
-                base(graph)
+            /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+            /// <param name="parent">Parent <see cref="ConnectedComponents{TNodeProperty, TArcProperty}"/>.</param>
+            public MyDfs(
+                IGraph<TNodeProperty, TArcProperty> graph,
+                ConnectedComponents<TNodeProperty, TArcProperty> parent)
+                    : base(graph)
             {
                 _parent = parent;
             }
@@ -111,12 +115,12 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
         }
 
         /// <summary>
-        /// Initialize <see cref="ConnectedComponents"/>.
+        /// Initialize <see cref="ConnectedComponents{TNodeProperty, TArcProperty}"/>.
         /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="flags"><see cref="ConnectedComponentsFlags"/>.</param>
         public ConnectedComponents(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             ConnectedComponentsFlags flags = 0)
         {
             Graph = graph;

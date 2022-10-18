@@ -173,7 +173,7 @@ namespace Unchase.Satsuma.IO.GraphML.Abstractions
 		/// <summary>
 		/// Writes an XML value definition.
 		/// </summary>
-		/// <param name="key">A <see cref="Node"/>, <see cref="Arc"/> or <see cref="IGraph"/>, whose value will be returned as an XML representation.</param>
+		/// <param name="key">A <see cref="Node"/>, <see cref="Arc"/> or <see cref="IGraph{TNodeProperty, TArcProperty}"/>, whose value will be returned as an XML representation.</param>
 		/// <returns>Returns a data element, or null if there was no special value stored for the object.</returns>
 		public abstract XElement? WriteData(object? key);
 	}

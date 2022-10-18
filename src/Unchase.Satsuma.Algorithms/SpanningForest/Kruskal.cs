@@ -56,16 +56,18 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 	/// and arbitrary arcs can be added to the forest at any time using <see cref="AddArc"/>.
 	/// </para>
 	/// <para>However, if using these features, the resulting forest may not be optimal.</para>
-	/// <para>See <see cref="Prim{TCost}"/> for a usage example.</para>
+	/// <para>See <see cref="Prim{TCost, TNodeProperty, TArcProperty}"/> for a usage example.</para>
 	/// </remarks>
 	/// <typeparam name="TCost">The arc cost type.</typeparam>
-	public sealed class Kruskal<TCost>
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class Kruskal<TCost, TNodeProperty, TArcProperty>
 		where TCost : IComparable<TCost>
 	{
 		/// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// An arbitrary function assigning costs to the arcs.
@@ -94,7 +96,7 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 		/// <summary>
 		/// The current forest as a subgraph of the original graph.
 		/// </summary>
-		public Subgraph ForestGraph { get; }
+		public Subgraph<TNodeProperty, TArcProperty> ForestGraph { get; }
 
 		/// <summary>
 		/// Contains the degree of a node in the found spanning forest.
@@ -113,13 +115,13 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 		private readonly DisjointSet<Node> _components;
 
 		/// <summary>
-		/// Initialize <see cref="Kruskal{TCost}"/>.
+		/// Initialize <see cref="Kruskal{TCost, TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="Graph"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
 		/// <param name="maxDegree"><see cref="MaxDegree"/>.</param>
 		public Kruskal(
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
             Func<Arc, TCost> cost,
             Func<Node, int>? maxDegree = null)
 		{
@@ -136,17 +138,19 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 			var arcs = Graph.Arcs().ToList();
 			arcs.Sort((a, b) => Cost(a).CompareTo(Cost(b)));
 			_arcEnumerator = arcs.GetEnumerator();
-			_arcsToGo = Graph.NodeCount() - new ConnectedComponents(Graph).Count;
+			_arcsToGo = Graph.NodeCount() - new ConnectedComponents<TNodeProperty, TArcProperty>(Graph).Count;
 			_components = new();
 		}
 
 		/// <summary>
-		/// Initialize <seealso cref="Kruskal{TCost}"/>.
+		/// Initialize <seealso cref="Kruskal{TCost, TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="Graph"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
-		public Kruskal(IGraph graph, Dictionary<Arc, TCost> cost)
-			: this(graph, arc => cost[arc])
+		public Kruskal(
+            IGraph<TNodeProperty, TArcProperty> graph, 
+            Dictionary<Arc, TCost> cost)
+			    : this(graph, arc => cost[arc])
 		{
 		}
 

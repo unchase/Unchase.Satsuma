@@ -37,9 +37,9 @@ namespace Unchase.Satsuma.Core.Extensions
         /// Get the node properties.
         /// </summary>
         /// <param name="node"><see cref="Node"/>.</param>
-        /// <param name="nodeLookup"><see cref="INodeLookup"/>.</param>
+        /// <param name="nodeLookup"><see cref="INodeLookup{TNodeProperty}"/>.</param>
         /// <returns>Returns the node properties.</returns>
-        public static Dictionary<string, object>? GetProperties(this Node node, INodeLookup nodeLookup)
+        public static Dictionary<string, TNodeProperty>? GetProperties<TNodeProperty>(this Node node, INodeLookup<TNodeProperty> nodeLookup)
         {
             return nodeLookup.GetNodeProperties(node);
         }

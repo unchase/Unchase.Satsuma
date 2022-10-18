@@ -32,15 +32,17 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.Abstractions
 {
-    /// <summary>
+	/// <summary>
 	/// Performs a customizable depth-first search (DFS).
 	/// </summary>
-	public abstract class Dfs
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public abstract class Dfs<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		protected IGraph Graph { get; }
+		protected IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		private HashSet<Node> _traversed = new();
 		private ArcFilter _arcFilter;
@@ -51,11 +53,11 @@ namespace Unchase.Satsuma.Algorithms.Abstractions
 		protected int Level { get; private set; }
 
 		/// <summary>
-		/// Initialize <see cref="Dfs"/>.
+		/// Initialize <see cref="Dfs{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="graph">The input graph.</param>
 		protected Dfs(
-            IGraph graph)
+            IGraph<TNodeProperty, TArcProperty> graph)
         {
             Graph = graph;
         }
@@ -140,13 +142,13 @@ namespace Unchase.Satsuma.Algorithms.Abstractions
 		/// <param name="direction"><see cref="Direction"/>.</param>
 		protected abstract void Start(out Direction direction);
 
-        /// <summary>
-        /// Called when entering a node through an arc.
-        /// </summary>
-        /// <param name="node">The node being entered.</param>
-        /// <param name="arc">The arc connecting the node to its parent in the <see cref="Dfs"/> forest, or <see cref="Arc.Invalid"/> if the node is a root.</param>
-        /// <returns>Returns true if the traversal should continue.</returns>
-        protected virtual bool NodeEnter(Node node, Arc arc)
+		/// <summary>
+		/// Called when entering a node through an arc.
+		/// </summary>
+		/// <param name="node">The node being entered.</param>
+		/// <param name="arc">The arc connecting the node to its parent in the <see cref="Dfs{TNodeProperty, TArcProperty}"/> forest, or <see cref="Arc.Invalid"/> if the node is a root.</param>
+		/// <returns>Returns true if the traversal should continue.</returns>
+		protected virtual bool NodeEnter(Node node, Arc arc)
         {
             return true;
         }
@@ -155,7 +157,7 @@ namespace Unchase.Satsuma.Algorithms.Abstractions
 		/// Called when exiting a node and going back through an arc.
 		/// </summary>
 		/// <param name="node">The node being exited.</param>
-		/// <param name="arc">The arc connecting the node to its parent in the <see cref="Dfs"/> forest, or <see cref="Arc.Invalid"/> if the node is a root.</param>
+		/// <param name="arc">The arc connecting the node to its parent in the <see cref="Dfs{TNodeProperty, TArcProperty}"/> forest, or <see cref="Arc.Invalid"/> if the node is a root.</param>
 		/// <returns>Returns true if the traversal should continue.</returns>
 		protected virtual bool NodeExit(Node node, Arc arc)
         {
@@ -165,7 +167,7 @@ namespace Unchase.Satsuma.Algorithms.Abstractions
 		/// <summary>
 		/// Called when encountering a non-forest arc pointing to an already visited node (this includes loop arcs).
 		/// </summary>
-		/// <param name="node">The node being processed by the <see cref="Dfs"/>.</param>
+		/// <param name="node">The node being processed by the <see cref="Dfs{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="arc">The non-forest arc encountered.</param>
 		/// <returns>Returns true if the traversal should continue.</returns>
 		protected virtual bool BackArc(Node node, Arc arc)

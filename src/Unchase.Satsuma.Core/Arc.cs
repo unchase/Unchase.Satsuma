@@ -34,7 +34,7 @@ namespace Unchase.Satsuma.Core
     /// <remarks>
     /// Arcs can be either directed or undirected. Undirected arcs are called edges.
     /// Endpoints and directedness of an arc are not stored in this object, but rather they can be queried
-    /// using methods of the containing graph (see <see cref="IArcLookup"/>).
+    /// using methods of the containing graph (see <see cref="IArcLookup{TArcProperty}"/>).
     /// </remarks>
     public readonly struct Arc : 
         IEquatable<Arc>

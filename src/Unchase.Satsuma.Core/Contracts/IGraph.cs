@@ -29,11 +29,13 @@ using Unchase.Satsuma.Core.Enums;
 namespace Unchase.Satsuma.Core.Contracts
 {
     /// <summary>
-	/// Interface to a read-only graph.
-	/// </summary>
-	public interface IGraph : 
-        IArcLookup,
-        INodeLookup
+    /// Interface to a read-only graph.
+    /// </summary>
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public interface IGraph<TNodeProperty, TArcProperty> : 
+        IArcLookup<TArcProperty>,
+        INodeLookup<TNodeProperty>
 	{
         /// <summary>
 		/// Get all nodes of the graph.

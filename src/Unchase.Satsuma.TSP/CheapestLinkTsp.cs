@@ -32,7 +32,7 @@ using Unchase.Satsuma.TSP.Contracts;
 
 namespace Unchase.Satsuma.TSP
 {
-    /// <summary>
+	/// <summary>
 	/// Solves the symmetric "traveling salesman problem" by using the cheapest link heuristic.
 	/// </summary>
 	/// <remarks>
@@ -43,8 +43,10 @@ namespace Unchase.Satsuma.TSP
 	/// <para>Running time: O(n<sup>2</sup> \e log n), memory usage: O(n<sup>2</sup>); where \e n is the number of nodes.</para>
 	/// </remarks>
 	/// </remarks>
-	/// <typeparam name="TNode"></typeparam>
-	public sealed class CheapestLinkTsp<TNode> : 
+	/// <typeparam name="TNode">Type of node.</typeparam>
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class CheapestLinkTsp<TNode, TNodeProperty, TArcProperty> : 
         ITsp<TNode>
 	{
         /// <summary>
@@ -69,7 +71,7 @@ namespace Unchase.Satsuma.TSP
 		public double TourCost { get; private set; }
 
 		/// <summary>
-		/// Initialize <see cref="CheapestLinkTsp{TNode}"/>.
+		/// Initialize <see cref="CheapestLinkTsp{TNode, TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="nodes"><see cref="Nodes"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
@@ -87,9 +89,9 @@ namespace Unchase.Satsuma.TSP
 		private void Run()
 		{
 			// create a complete graph and run Kruskal with maximum degree constraint 2
-			var graph = new CompleteGraph(Nodes.Count, Directedness.Undirected);
-            double ArcCost(Arc arc) => Cost(Nodes[CompleteGraph.GetNodeIndex(graph.U(arc))], Nodes[CompleteGraph.GetNodeIndex(graph.V(arc))]);
-            var kruskal = new Kruskal<double>(graph, ArcCost, _ => 2);
+			var graph = new CompleteGraph<TNodeProperty, TArcProperty>(Nodes.Count, Directedness.Undirected);
+            double ArcCost(Arc arc) => Cost(Nodes[CompleteGraph<TNodeProperty, TArcProperty>.GetNodeIndex(graph.U(arc))], Nodes[CompleteGraph<TNodeProperty, TArcProperty>.GetNodeIndex(graph.V(arc))]);
+            var kruskal = new Kruskal<double, TNodeProperty, TArcProperty>(graph, ArcCost, _ => 2);
 			kruskal.Run();
 
 			Dictionary<Node, Arc> firstArc = new();
@@ -110,7 +112,7 @@ namespace Unchase.Satsuma.TSP
 					var n = startNode;
 					while (true)
 					{
-						_tour.Add(Nodes[CompleteGraph.GetNodeIndex(n)]);
+						_tour.Add(Nodes[CompleteGraph<TNodeProperty, TArcProperty>.GetNodeIndex(n)]);
                         if (prevArc != Arc.Invalid && kruskal.Degree[n] == 1)
                         {
                             break;
@@ -121,7 +123,7 @@ namespace Unchase.Satsuma.TSP
 						n = graph.Other(prevArc, n);
 					}
 
-					_tour.Add(Nodes[CompleteGraph.GetNodeIndex(startNode)]);
+					_tour.Add(Nodes[CompleteGraph<TNodeProperty, TArcProperty>.GetNodeIndex(startNode)]);
 					break;
 				}
 			}

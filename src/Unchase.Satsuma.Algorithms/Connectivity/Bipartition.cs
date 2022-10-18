@@ -32,7 +32,7 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
-    /// <summary>
+	/// <summary>
 	/// Decides whether the graph is bipartite and finds a bipartition into red and blue nodes.
 	/// </summary>
 	/// <remarks>
@@ -40,22 +40,24 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 	/// <para>
 	/// <code>
 	/// var g = new PathGraph(12, PathGraph.Topology.Cycle, Directedness.Undirected);
-    /// var bp = new Bipartition(g, Bipartition.Flags.CreateRedNodes | Bipartition.Flags.CreateBlueNodes);
-    /// Console.WriteLine("Bipartite: " + (bp.Bipartite ? "yes" : "no")); // should print 'yes'
-    /// if (bp.Bipartite)
-    /// {
-    /// 	Console.WriteLine("Red nodes: " + string.Join(" ", bp.RedNodes));
-    /// 	Console.WriteLine("Blue nodes: " + string.Join(" ", bp.BlueNodes));
-    /// }
+	/// var bp = new Bipartition(g, Bipartition.Flags.CreateRedNodes | Bipartition.Flags.CreateBlueNodes);
+	/// Console.WriteLine("Bipartite: " + (bp.Bipartite ? "yes" : "no")); // should print 'yes'
+	/// if (bp.Bipartite)
+	/// {
+	/// 	Console.WriteLine("Red nodes: " + string.Join(" ", bp.RedNodes));
+	/// 	Console.WriteLine("Blue nodes: " + string.Join(" ", bp.BlueNodes));
+	/// }
 	/// </code>
 	/// </para>
 	/// </remarks>
-	public sealed class Bipartition
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class Bipartition<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// True if the graph is bipartite.
@@ -81,22 +83,24 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 		public HashSet<Node>? BlueNodes { get; }
 
 		private class MyDfs : 
-            Dfs
+            Dfs<TNodeProperty, TArcProperty>
 		{
 			/// <summary>
-			/// Parent <see cref="Bipartition"/>.
+			/// Parent <see cref="Bipartition{TNodeProperty, TArcProperty}"/>.
 			/// </summary>
-            private readonly Bipartition _parent;
+			private readonly Bipartition<TNodeProperty, TArcProperty> _parent;
 
 			private HashSet<Node> _redNodes = new();
 
 			/// <summary>
 			/// Initialize <see cref="MyDfs"/>.
 			/// </summary>
-			/// <param name="graph"><see cref="IGraph"/>.</param>
-			/// <param name="parent"><see cref="Bipartition"/>.</param>
-			public MyDfs(IGraph graph, Bipartition parent) 
-                : base(graph)
+			/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+			/// <param name="parent"><see cref="Bipartition{TNodeProperty, TArcProperty}"/>.</param>
+			public MyDfs(
+                IGraph<TNodeProperty, TArcProperty> graph, 
+                Bipartition<TNodeProperty, TArcProperty> parent) 
+                    : base(graph)
             {
                 _parent = parent;
             }
@@ -141,12 +145,12 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 		}
 
 		/// <summary>
-		/// Initialize <see cref="Bipartition"/>.
+		/// Initialize <see cref="Bipartition{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="flags"><see cref="BipartitionFlags"/>.</param>
 		public Bipartition(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             BipartitionFlags flags = 0)
 		{
 			Graph = graph;

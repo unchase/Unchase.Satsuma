@@ -34,7 +34,7 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.IO
 {
-    /// <summary>
+	/// <summary>
 	/// Loads and saves graphs which are stored in a very simple format.
 	/// </summary>
 	/// <remarks>
@@ -62,26 +62,28 @@ namespace Unchase.Satsuma.IO
 	/// <para>
 	/// <code>
 	/// SimpleGraphFormat loader = new SimpleGraphFormat { StartIndex = 1 };
-    /// Node[] nodes = loader.Load(@"c:\graph.txt", Directedness.Directed);
-    /// // retrieve the loaded data
-    /// IGraph graph = loader.Graph;
-    /// Dictionary&lt;Arc, string&gt; arcNames = loader.Extensions[0];
-    /// Dictionary&lt;Arc, double&gt; arcCosts = 
-    ///		loader.Extensions[1].ToDictionary(kv => kv.Key, kv => double.Parse(kv.Value, CultureInfo.InvariantCulture));
+	/// Node[] nodes = loader.Load(@"c:\graph.txt", Directedness.Directed);
+	/// // retrieve the loaded data
+	/// IGraph graph = loader.Graph;
+	/// Dictionary&lt;Arc, string&gt; arcNames = loader.Extensions[0];
+	/// Dictionary&lt;Arc, double&gt; arcCosts = 
+	///		loader.Extensions[1].ToDictionary(kv => kv.Key, kv => double.Parse(kv.Value, CultureInfo.InvariantCulture));
 	/// </code>
 	/// </para>
 	/// </remarks>
-	public sealed class SimpleGraphFormat
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class SimpleGraphFormat<TNodeProperty, TArcProperty>
     {
-        /// <summary>
+		/// <summary>
 		/// The graph itself.
 		/// </summary>
 		/// <remarks>
 		/// <para>- <b>When loading</b>: Must be an <see cref="IBuildableGraph"/> to accomodate the loaded graph.</para>
-		/// <para><see cref="CustomGraph"/> instance by default.</para>
+		/// <para><see cref="CustomGraph{TNodeProperty, TArcProperty}"/> instance by default.</para>
 		/// <para>- <b>When saving</b>: Can be an arbitrary graph (not null).</para>
 		/// </remarks>
-		public IGraph Graph { get; set; } = new CustomGraph();
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; set; } = new CustomGraph<TNodeProperty, TArcProperty>();
 
 		/// <summary>
 		/// The extensions (arc functions).
@@ -102,7 +104,7 @@ namespace Unchase.Satsuma.IO
 		public int StartIndex { get; set; }
 
 		/// <summary>
-		/// Initialize <see cref="SimpleGraphFormat"/>.
+		/// Initialize <see cref="SimpleGraphFormat{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		public SimpleGraphFormat()
 		{

@@ -37,9 +37,9 @@ namespace Unchase.Satsuma.Core.Extensions
         /// Get the arc properties.
         /// </summary>
         /// <param name="arc"><see cref="Arc"/>.</param>
-        /// <param name="arcLookup"><see cref="IArcLookup"/>.</param>
+        /// <param name="arcLookup"><see cref="IArcLookup{TArcProperty}"/>.</param>
         /// <returns>Returns the arc properties.</returns>
-        public static Dictionary<string, object>? GetProperties(this Arc arc, IArcLookup arcLookup)
+        public static Dictionary<string, TArcProperty>? GetProperties<TArcProperty>(this Arc arc, IArcLookup<TArcProperty> arcLookup)
         {
             return arcLookup.GetArcProperties(arc);
         }

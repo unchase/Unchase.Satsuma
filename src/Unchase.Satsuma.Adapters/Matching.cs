@@ -31,7 +31,7 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Adapters
 {
-    /// <summary>
+	/// <summary>
 	/// Adapter for storing a matching of an underlying graph.
 	/// </summary>
 	/// <remarks>
@@ -42,30 +42,32 @@ namespace Unchase.Satsuma.Adapters
 	/// </para>
 	/// <para>A newly created Matching object has zero arcs.</para>
 	/// </remarks>
-	public sealed class Matching : 
-        IMatching, 
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class Matching<TNodeProperty, TArcProperty> : 
+        IMatching<TNodeProperty, TArcProperty>, 
         IClearable
 	{
 		/// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <inheritdoc />
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; } = new();
 
         /// <inheritdoc />
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; } = new();
 
 		private readonly Dictionary<Node, Arc> _matchedArc;
 		private readonly HashSet<Arc> _arcs;
 		private int _edgeCount;
 
 		/// <summary>
-		/// Initialize <see cref="Matching"/>.
+		/// Initialize <see cref="Matching{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
-		public Matching(IGraph graph)
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+		public Matching(IGraph<TNodeProperty, TArcProperty> graph)
 		{
 			Graph = graph;
 
@@ -146,7 +148,7 @@ namespace Unchase.Satsuma.Adapters
 		}
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetNodeProperties(Node node)
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node)
         {
             return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
@@ -154,7 +156,7 @@ namespace Unchase.Satsuma.Adapters
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc)
         {
             return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties

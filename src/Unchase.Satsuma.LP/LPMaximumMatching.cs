@@ -38,21 +38,23 @@ namespace Unchase.Satsuma.LP
     /// Computes a maximum matching in an arbitrary graph, using integer programming.
     /// </summary>
     /// <remarks>
-    /// See also <seealso cref="LpMinimumCostMatching"/>.
+    /// See also <seealso cref="LpMinimumCostMatching{TNodeProperty, TArcProperty}"/>.
     /// </remarks>
-    public sealed class LpMaximumMatching
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public sealed class LpMaximumMatching<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.
         /// </summary>
-        public IGraph Graph { get; }
+        public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// LP solution type.
         /// </summary>
         public SolutionType SolutionType;
 
-        private readonly Matching? _matching;
+        private readonly Matching<TNodeProperty, TArcProperty>? _matching;
 
         /// <summary>
         /// Contains null, or a valid and possibly optimal matching, depending on <see cref="SolutionType"/>.
@@ -62,20 +64,20 @@ namespace Unchase.Satsuma.LP
         /// <para>If <see cref="SolutionType"/> is <see cref="Enums.SolutionType.Feasible"/>, <see cref="Matching"/> is valid but not optimal.</para>
         /// <para>Otherwise, <see cref="Matching"/> is null.</para>
         /// </remarks>
-        public IMatching? Matching => _matching;
+        public IMatching<TNodeProperty, TArcProperty>? Matching => _matching;
 
         /// <summary>
-        /// Initialize <see cref="LpMaximumMatching"/>.
+        /// Initialize <see cref="LpMaximumMatching{TNodeProperty, TArcProperty}"/>.
         /// </summary>
         /// <param name="solver"><see cref="ISolver"/>.</param>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         public LpMaximumMatching(
             ISolver solver, 
-            IGraph graph)
+            IGraph<TNodeProperty, TArcProperty> graph)
         {
             Graph = graph;
 
-            var g = new OptimalSubgraph(Graph)
+            var g = new OptimalSubgraph<TNodeProperty, TArcProperty>(Graph)
             {
                 MaxDegree = _ => 1.0,
                 ArcCountWeight = -1.0

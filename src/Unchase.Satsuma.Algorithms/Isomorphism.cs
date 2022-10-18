@@ -32,24 +32,26 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Algorithms
 {
-    /// <summary>
+	/// <summary>
 	/// Determines whether two graphs, digraphs or mixed graphs are isomorphic.
 	/// </summary>
 	/// <remarks>
 	/// <para>Uses simple color refinement, but the multisets are hashed at every step, so only the hashes are stored.</para>
 	/// <para>The current implementation is fast but will not be able to identify isomorphisms in many cases.</para>
 	/// </remarks>
-	public class Isomorphism
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class Isomorphism<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The first of the two input graphs.
 		/// </summary>
-		public IGraph FirstGraph;
+		public IGraph<TNodeProperty, TArcProperty> FirstGraph;
 
 		/// <summary>
 		/// The second of the two input graphs.
 		/// </summary>
-		public IGraph SecondGraph;
+		public IGraph<TNodeProperty, TArcProperty> SecondGraph;
 
 		/// <summary>
 		/// Whether the graphs are isomorphic. Will be null if the algorithm could not decide.
@@ -72,7 +74,7 @@ namespace Unchase.Satsuma.Algorithms
 
 		private class NodeHash
 		{
-            private readonly IGraph _graph;
+            private readonly IGraph<TNodeProperty, TArcProperty> _graph;
             private readonly int _minDegree;
             private readonly int _maxDegree;
             private Dictionary<Node, ulong> _buffer;
@@ -80,8 +82,8 @@ namespace Unchase.Satsuma.Algorithms
 			/// <summary>
 			/// Initialize <seealso cref="NodeHash"/>.
 			/// </summary>
-			/// <param name="graph"><see cref="IGraph"/>.</param>
-			public NodeHash(IGraph graph)
+			/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+			public NodeHash(IGraph<TNodeProperty, TArcProperty> graph)
 			{
 				_graph = graph;
 				_minDegree = int.MaxValue;
@@ -167,14 +169,14 @@ namespace Unchase.Satsuma.Algorithms
 		}
 
 		/// <summary>
-		/// Initialize <seealso cref="Isomorphism"/>.
+		/// Initialize <seealso cref="Isomorphism{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="firstGraph"><see cref="FirstGraph"/>.</param>
 		/// <param name="secondGraph"><see cref="SecondGraph"/>.</param>
 		/// <param name="maxIterations">Maximum iterations.</param>
 		public Isomorphism(
-            IGraph firstGraph, 
-            IGraph secondGraph, 
+            IGraph<TNodeProperty, TArcProperty> firstGraph, 
+            IGraph<TNodeProperty, TArcProperty> secondGraph, 
             int maxIterations = 16)
 		{
 			FirstGraph = firstGraph;
@@ -189,8 +191,8 @@ namespace Unchase.Satsuma.Algorithms
 			}
 			else
 			{
-				var firstCc = new ConnectedComponents(firstGraph, ConnectedComponentsFlags.CreateComponents);
-				var secondCc = new ConnectedComponents(secondGraph, ConnectedComponentsFlags.CreateComponents);
+				var firstCc = new ConnectedComponents<TNodeProperty, TArcProperty>(firstGraph, ConnectedComponentsFlags.CreateComponents);
+				var secondCc = new ConnectedComponents<TNodeProperty, TArcProperty>(secondGraph, ConnectedComponentsFlags.CreateComponents);
 
                 if (firstCc.Count != secondCc.Count || firstCc.Components != null && secondCc.Components != null &&
                     !firstCc.Components.Select(s => s.Count).OrderBy(x => x)

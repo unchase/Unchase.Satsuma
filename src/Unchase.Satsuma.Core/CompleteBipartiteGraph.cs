@@ -29,7 +29,7 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Core
 {
-    /// <summary>
+	/// <summary>
 	/// A complete bipartite graph on a given number of nodes.
 	/// </summary>
 	/// <remarks>
@@ -38,14 +38,16 @@ namespace Unchase.Satsuma.Core
 	/// <para>Memory usage: O(1).</para>
 	/// <para>This type is thread safe.</para>
 	/// </remarks>
-	public sealed class CompleteBipartiteGraph : 
-        IGraph
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class CompleteBipartiteGraph<TNodeProperty, TArcProperty> : 
+        IGraph<TNodeProperty, TArcProperty>
 	{
 		/// <inheritdoc />
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; } = new();
 
         /// <inheritdoc />
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; } = new();
 
 		/// <summary>
 		/// The count of nodes in the first color class.
@@ -64,12 +66,12 @@ namespace Unchase.Satsuma.Core
 		public bool Directed { get; }
 
 		/// <summary>
-		/// Initialize <see cref="CompleteBipartiteGraph"/>.
+		/// Initialize <see cref="CompleteBipartiteGraph{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="redNodeCount">Red node count.</param>
 		/// <param name="blueNodeCount">Blue node count.</param>
 		/// <param name="directedness">If <see cref="Directedness.Directed"/>, then the graph is directed from the red to the blue nodes. Otherwise, the graph is undirected.</param>
-        public CompleteBipartiteGraph(
+		public CompleteBipartiteGraph(
             int redNodeCount, 
             int blueNodeCount, 
             Directedness directedness)
@@ -144,7 +146,7 @@ namespace Unchase.Satsuma.Core
 		}
 
 		/// <inheritdoc />
-        public Dictionary<string, object>? GetNodeProperties(Node node)
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node)
         {
             return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
@@ -152,7 +154,7 @@ namespace Unchase.Satsuma.Core
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc)
         {
             return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties

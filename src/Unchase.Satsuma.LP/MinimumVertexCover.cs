@@ -33,7 +33,7 @@ using Unchase.Satsuma.LP.Enums;
 
 namespace Unchase.Satsuma.LP
 {
-    /// <summary>
+	/// <summary>
 	/// Finds a minimum cost vertex cover.
 	/// </summary>
 	/// <remarks>
@@ -41,15 +41,17 @@ namespace Unchase.Satsuma.LP
 	/// <para>Also the vertex cover may be relaxed (fractional weights per node).</para>
 	/// <para>
 	/// A vertex cover is a multiset of nodes so that each arc
-    /// is incident to at least a given number of nodes in the set.
+	/// is incident to at least a given number of nodes in the set.
 	/// </para>
 	/// </remarks>
-	public sealed class MinimumVertexCover
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class MinimumVertexCover<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// A finite cost function on the nodes of <see cref="Graph"/>.
@@ -93,7 +95,7 @@ namespace Unchase.Satsuma.LP
 		public Dictionary<Node, double>? Nodes { get; }
 
 		/// <summary>
-		/// Initialize <see cref="MinimumVertexCover"/>.
+		/// Initialize <see cref="MinimumVertexCover{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="solver"><see cref="ISolver"/>.</param>
 		/// <param name="graph"><see cref="Graph"/>.</param>
@@ -102,7 +104,7 @@ namespace Unchase.Satsuma.LP
 		/// <param name="relaxed"><see cref="Relaxed"/>.</param>
 		public MinimumVertexCover(
             ISolver solver, 
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
 			Func<Node, double>? nodeCost = null, 
             Func<Arc, double>? arcWeight = null,
 			bool relaxed = false)

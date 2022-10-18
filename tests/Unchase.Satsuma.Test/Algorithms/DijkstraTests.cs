@@ -10,7 +10,7 @@ using Xunit;
 namespace Unchase.Satsuma.Test.Algorithms
 {
     /// <summary>
-    /// <see cref="Dijkstra"/> tests.
+    /// <see cref="Dijkstra{TNodeProperty, TArcProperty}"/> tests.
     /// </summary>
     public class DijkstraTests
     {
@@ -25,8 +25,8 @@ namespace Unchase.Satsuma.Test.Algorithms
             if (start)
             {
                 // Arrange
-                var graph = new CompleteGraph(1, Directedness.Directed);
-                var superGraph = new Supergraph(graph);
+                var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
+                var superGraph = new Supergraph<int, int>(graph);
                 superGraph.AddNode(1);
                 superGraph.AddNode(2);
                 superGraph.AddNode(3);
@@ -53,7 +53,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 superGraph.AddArc(new(5), new(6), Directedness.Directed); // cost = 11 for 5 -> 6
                 superGraph.AddArc(new(6), new(7), Directedness.Directed); // cost = 3 for 6 -> 7
 
-                var dijkstra = new Dijkstra(superGraph, arc =>
+                var dijkstra = new Dijkstra<int, int>(superGraph, arc =>
                 {
                     var u = superGraph.U(arc);
                     var uProperties = u.GetProperties(superGraph);

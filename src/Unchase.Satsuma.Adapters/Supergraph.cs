@@ -44,7 +44,7 @@ namespace Unchase.Satsuma.Adapters
 	/// <para>The adapter is an <see cref="IDestroyableGraph"/>, but only the nodes/arcs added by the adapter can be deleted.</para>
 	/// <para>Memory usage: O(n+m), where n is the number of new nodes and m is the number of new arcs.</para>
 	/// <para>
-	/// The following example demonstrates how nodes and arcs can be added to a(n otherwise immutable) <see cref="CompleteGraph"/>:
+	/// The following example demonstrates how nodes and arcs can be added to a(n otherwise immutable) <see cref="CompleteGraph{TNodeProperty, TArcProperty}"/>:
 	/// <code>
 	/// var g = new CompleteGraph(10);
 	/// var sg = new Supergraph(g);
@@ -55,22 +55,24 @@ namespace Unchase.Satsuma.Adapters
 	/// </code>
 	/// </para>
 	/// </remarks>
-	public class Supergraph : 
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class Supergraph<TNodeProperty, TArcProperty> : 
         IBuildableGraph, 
         IDestroyableGraph, 
-        IGraph
+        IGraph<TNodeProperty, TArcProperty>
 	{
         /// <inheritdoc cref="IdAllocator" />
 		private class NodeAllocator : 
             IdAllocator
 		{
-            private readonly Supergraph? _parent;
+            private readonly Supergraph<TNodeProperty, TArcProperty>? _parent;
 
 			/// <summary>
 			/// Initialize <see cref="NodeAllocator"/>.
 			/// </summary>
-			/// <param name="parent">Parens <see cref="Subgraph"/>.</param>
-			public NodeAllocator(Supergraph? parent)
+			/// <param name="parent">Parens <see cref="Subgraph{TNodeProperty, TArcProperty}"/>.</param>
+			public NodeAllocator(Supergraph<TNodeProperty, TArcProperty>? parent)
             {
                 _parent = parent;
 			}
@@ -86,13 +88,13 @@ namespace Unchase.Satsuma.Adapters
 		private class ArcAllocator : 
             IdAllocator
 		{
-            private readonly Supergraph? _parent;
+            private readonly Supergraph<TNodeProperty, TArcProperty>? _parent;
 
 			/// <summary>
 			/// Initialize <see cref="ArcAllocator"/>.
-            /// </summary>
-            /// <param name="parent">Parens <see cref="Subgraph"/>.</param>
-			public ArcAllocator(Supergraph? parent)
+			/// </summary>
+			/// <param name="parent">Parens <see cref="Subgraph{TNodeProperty, TArcProperty}"/>.</param>
+			public ArcAllocator(Supergraph<TNodeProperty, TArcProperty>? parent)
             {
 				_parent = parent;
             }
@@ -104,7 +106,7 @@ namespace Unchase.Satsuma.Adapters
             }
 		}
 
-		private readonly IGraph? _graph;
+		private readonly IGraph<TNodeProperty, TArcProperty>? _graph;
 
 		private readonly NodeAllocator _nodeAllocator;
 		private readonly ArcAllocator _arcAllocator;
@@ -119,17 +121,17 @@ namespace Unchase.Satsuma.Adapters
 		private readonly Dictionary<Node, List<Arc>> _nodeArcsBackward;
 
         /// <inheritdoc />
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; } = new();
 
         /// <inheritdoc />
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; } = new();
 
 		/// <summary>
-		/// Initialize <see cref="Supergraph"/>.
+		/// Initialize <see cref="Supergraph{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
-        public Supergraph(
-            IGraph? graph)
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+		public Supergraph(
+            IGraph<TNodeProperty, TArcProperty>? graph)
 		{
 			_graph = graph;
 
@@ -291,7 +293,7 @@ namespace Unchase.Satsuma.Adapters
 		}
 
 		/// <inheritdoc />
-        public Dictionary<string, object>? GetNodeProperties(Node node)
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node)
         {
             return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
@@ -299,7 +301,7 @@ namespace Unchase.Satsuma.Adapters
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc)
         {
             return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties

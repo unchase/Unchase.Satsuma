@@ -34,12 +34,13 @@ namespace Unchase.Satsuma.Core.Contracts
     /// <remarks>
     /// <seealso cref="ArcLookupExtensions"/>.
     /// </remarks>
-    public interface IArcLookup
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public interface IArcLookup<TArcProperty>
     {
         /// <summary>
         /// Arc properties dictionary.
         /// </summary>
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; }
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; }
 
         /// <summary>
         /// Get the first node of an arc.
@@ -73,6 +74,6 @@ namespace Unchase.Satsuma.Core.Contracts
         /// </summary>
         /// <param name="arc">The arc.</param>
         /// <returns>Returns the arc properties.</returns>
-        public Dictionary<string, object>? GetArcProperties(Arc arc);
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc);
     }
 }

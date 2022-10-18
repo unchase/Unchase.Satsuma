@@ -27,7 +27,7 @@ Updated by Unchase © 2022*/
 namespace Unchase.Satsuma.Algorithms.Enums
 {
     /// <summary>
-    /// The path cost calculation mode for <see cref="Dijkstra"/>'s algorithm.
+    /// The path cost calculation mode for <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>'s algorithm.
     /// </summary>
     public enum DijkstraMode
     {
@@ -36,7 +36,7 @@ namespace Unchase.Satsuma.Algorithms.Enums
         /// </summary>
         /// <remarks>
         /// <para>This is the default mode.</para>
-        /// <para>In this mode, <see cref="Dijkstra.Cost"/> must be nonnegative.</para>
+        /// <para>In this mode, <see cref="Dijkstra{TNodeProperty, TArcProperty}.Cost"/> must be nonnegative.</para>
         /// </remarks>
         Sum,
 
@@ -44,7 +44,7 @@ namespace Unchase.Satsuma.Algorithms.Enums
         /// The cost of a path equals to the maximum of the costs of its arcs.
         /// </summary>
         /// <remarks>
-        /// In this mode, <see cref="Dijkstra.Cost"/> can be arbitrary.
+        /// In this mode, <see cref="Dijkstra{TNodeProperty, TArcProperty}.Cost"/> can be arbitrary.
         /// </remarks>
         Maximum
     }

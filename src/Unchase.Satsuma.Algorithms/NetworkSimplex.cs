@@ -35,23 +35,25 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
-    /// <summary>
+	/// <summary>
 	/// Finds a minimum cost feasible circulation using the network simplex method.
 	/// </summary>
 	/// <remarks>
 	/// <para>Lower/upper bounds and supply must be integral, but cost can be double.</para>
 	/// <para>
 	/// Edges are treated as directed arcs, but this is not a real restriction 
-    /// if, for all edges, lower bound + upper bound = 0.
+	/// if, for all edges, lower bound + upper bound = 0.
 	/// </para>
 	/// </remarks>
-	public sealed class NetworkSimplex : 
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class NetworkSimplex<TNodeProperty, TArcProperty> : 
         IClearable
 	{
 		/// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// The lower bound for the circulation.
@@ -93,7 +95,7 @@ namespace Unchase.Satsuma.Algorithms
 
 		// *** Current state
 		// This is the graph augmented with a node and artificial arcs 
-		private Supergraph _myGraph;
+		private Supergraph<TNodeProperty, TArcProperty> _myGraph;
 		private Node _artificialNode;
 		private HashSet<Arc> _artificialArcs = new();
 
@@ -103,7 +105,7 @@ namespace Unchase.Satsuma.Algorithms
 		// - a partition of the non-tree arcs into empty and saturated arcs
 		// ** Primal vector
 		private Dictionary<Arc, long> _tree = new();
-		private Subgraph _treeSubgraph;
+		private Subgraph<TNodeProperty, TArcProperty> _treeSubgraph;
 		private HashSet<Arc> _saturated = new();
 
 		// ** Dual vector
@@ -116,15 +118,15 @@ namespace Unchase.Satsuma.Algorithms
 		public SimplexState State { get; private set; }
 
 		/// <summary>
-		/// Initialize <see cref="NetworkSimplex"/>.
+		/// Initialize <see cref="NetworkSimplex{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="lowerBound"><see cref="LowerBound"/>.</param>
 		/// <param name="upperBound"><see cref="UpperBound"/>.</param>
 		/// <param name="supply"><see cref="Supply"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
 		public NetworkSimplex(
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
 			Func<Arc, long>? lowerBound = null, 
             Func<Arc, long>? upperBound = null,
 			Func<Node, long>? supply = null, 
@@ -278,21 +280,21 @@ namespace Unchase.Satsuma.Algorithms
 		/// Recalculates the potential at the beginning of the second phase.
 		/// </summary>
 		private class RecalculatePotentialDfs : 
-            Dfs
+            Dfs<TNodeProperty, TArcProperty>
 		{
 			/// <summary>
 			/// Parent.
 			/// </summary>
-            private readonly NetworkSimplex _parent;
+            private readonly NetworkSimplex<TNodeProperty, TArcProperty> _parent;
 
 			/// <summary>
 			/// Initialize <see cref="RecalculatePotentialDfs"/>.
 			/// </summary>
-			/// <param name="parent">Parent <see cref="NetworkSimplex"/>.</param>
-            /// <param name="graph"><see cref="IGraph"/>.</param>
+			/// <param name="parent">Parent <see cref="NetworkSimplex{TNodeProperty, TArcProperty}"/>.</param>
+			/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 			public RecalculatePotentialDfs(
-                NetworkSimplex parent,
-                IGraph graph)
+                NetworkSimplex<TNodeProperty, TArcProperty> parent,
+                IGraph<TNodeProperty, TArcProperty> graph)
                     : base(graph)
             {
                 _parent = parent;
@@ -326,12 +328,12 @@ namespace Unchase.Satsuma.Algorithms
 		}
 
 		private class UpdatePotentialDfs : 
-            Dfs
+            Dfs<TNodeProperty, TArcProperty>
         {
             /// <summary>
             /// Parent.
             /// </summary>
-            private readonly NetworkSimplex _parent;
+            private readonly NetworkSimplex<TNodeProperty, TArcProperty> _parent;
 
 			/// <summary>
 			/// Diff.
@@ -341,11 +343,11 @@ namespace Unchase.Satsuma.Algorithms
 			/// <summary>
 			/// Initialize <see cref="UpdatePotentialDfs"/>.
 			/// </summary>
-			/// <param name="parent">Parent <see cref="NetworkSimplex"/>.</param>
-            /// <param name="graph"><see cref="IGraph"/>.</param>
+			/// <param name="parent">Parent <see cref="NetworkSimplex{TNodeProperty, TArcProperty}"/>.</param>
+			/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 			public UpdatePotentialDfs(
-                NetworkSimplex parent,
-                IGraph graph)
+                NetworkSimplex<TNodeProperty, TArcProperty> parent,
+                IGraph<TNodeProperty, TArcProperty> graph)
 			        : base(graph)
             {
                 _parent = parent;

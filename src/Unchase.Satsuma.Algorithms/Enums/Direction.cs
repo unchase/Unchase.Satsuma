@@ -34,17 +34,17 @@ namespace Unchase.Satsuma.Algorithms.Enums
 	public enum Direction
     {
         /// <summary>
-        /// The <see cref="Dfs"/> treats each arc as bidirectional.
+        /// The <see cref="Dfs{TNodeProperty, TArcProperty}"/> treats each arc as bidirectional.
         /// </summary>
         Undirected,
 
         /// <summary>
-        /// The <see cref="Dfs"/> respects the orientation of each arc.
+        /// The <see cref="Dfs{TNodeProperty, TArcProperty}"/> respects the orientation of each arc.
         /// </summary>
         Forward,
 
         /// <summary>
-        /// The <see cref="Dfs"/> runs on the reverse graph.
+        /// The <see cref="Dfs{TNodeProperty, TArcProperty}"/> runs on the reverse graph.
         /// </summary>
         Backward
     }

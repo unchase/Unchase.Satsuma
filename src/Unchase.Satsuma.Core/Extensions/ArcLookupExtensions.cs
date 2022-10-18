@@ -29,17 +29,17 @@ using Unchase.Satsuma.Core.Contracts;
 namespace Unchase.Satsuma.Core.Extensions
 {
     /// <summary>
-    /// Extension methods for <see cref="IArcLookup"/>.
+    /// Extension methods for <see cref="IArcLookup{TArcProperty}"/>.
     /// </summary>
     public static class ArcLookupExtensions
     {
         /// <summary>
         /// Converts an arc to a readable string representation by looking up its nodes.
         /// </summary>
-        /// <param name="graph"><see cref="IArcLookup"/>.</param>
+        /// <param name="graph"><see cref="IArcLookup{TArcProperty}"/>.</param>
         /// <param name="arc">An arc belonging to the graph, or Arc.Invalid.</param>
-        public static string ArcToString(
-            this IArcLookup graph, 
+        public static string ArcToString<TArcProperty>(
+            this IArcLookup<TArcProperty> graph, 
             Arc arc)
         {
             if (arc == Arc.Invalid)
@@ -57,11 +57,11 @@ namespace Unchase.Satsuma.Core.Extensions
         /// <remarks>
         /// If the given node is on the given arc, then this function returns the other node of the arc.
         /// </remarks>
-        /// <param name="graph"><see cref="IArcLookup"/>.</param>
+        /// <param name="graph"><see cref="IArcLookup{TArcProperty}"/>.</param>
         /// <param name="arc">An arc belonging to the graph.</param>
         /// <param name="node">An arbitrary node, may even be Node.Invalid.</param>
-        public static Node Other(
-            this IArcLookup graph, 
+        public static Node Other<TArcProperty>(
+            this IArcLookup<TArcProperty> graph, 
             Arc arc, 
             Node node)
         {
@@ -74,15 +74,15 @@ namespace Unchase.Satsuma.Core.Extensions
         /// <summary>
         /// Get the two nodes of an arc.
         /// </summary>
-        /// <param name="graph"><see cref="IArcLookup"/>.</param>
+        /// <param name="graph"><see cref="IArcLookup{TArcProperty}"/>.</param>
         /// <param name="arc">An arc belonging to the graph.</param>
         /// <param name="allowDuplicates">
         /// If true, then the resulting array always contains two items, even if the arc connects a node with itself.
         /// If false, then the resulting array contains only one node if the arc is a loop.
         /// </param>
         /// <returns>Returns the two nodes of an arc.</returns>
-        public static Node[] Nodes(
-            this IArcLookup graph, 
+        public static Node[] Nodes<TArcProperty>(
+            this IArcLookup<TArcProperty> graph, 
             Arc arc, 
             bool allowDuplicates = true)
         {

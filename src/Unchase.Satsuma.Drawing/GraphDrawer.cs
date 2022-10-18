@@ -32,7 +32,7 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Drawing
 {
-    /// <summary>
+	/// <summary>
 	/// Draws a graph on a Graphics.
 	/// </summary>
 	/// <remarks>
@@ -57,12 +57,14 @@ namespace Unchase.Satsuma.Drawing
 	/// </code>
 	/// </para>
 	/// </remarks>
-	public sealed class GraphDrawer
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class GraphDrawer<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The graph to draw.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// Assigns its position to a node.
@@ -114,13 +116,13 @@ namespace Unchase.Satsuma.Drawing
 		/// </remarks>
 		public Pen UndirectedPen { get; set; }
 
-        /// <summary>
-        /// Initialize <see cref="GraphDrawer"/>.
-        /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
-        /// <param name="nodePosition"><see cref="NodePosition"/>.</param>
-        public GraphDrawer(
-            IGraph graph,
+		/// <summary>
+		/// Initialize <see cref="GraphDrawer{TNodeProperty, TArcProperty}"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+		/// <param name="nodePosition"><see cref="NodePosition"/>.</param>
+		public GraphDrawer(
+            IGraph<TNodeProperty, TArcProperty> graph,
             Func<Node, PointF> nodePosition)
 		{
 			Graph = graph;

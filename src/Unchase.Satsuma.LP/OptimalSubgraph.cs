@@ -32,7 +32,7 @@ using Unchase.Satsuma.LP.Enums;
 
 namespace Unchase.Satsuma.LP
 {
-    /// <summary>
+	/// <summary>
 	/// Finds a degree-bounded subgraph with one or more cost functions on the edges.
 	/// </summary>
 	/// <remarks>
@@ -41,7 +41,9 @@ namespace Unchase.Satsuma.LP
 	/// <para>Number of variables: O(ArcCount)</para>
 	/// <para>Number of equations: O(NodeCount + CostFunctionCount)</para>
 	/// </remarks>
-	public sealed class OptimalSubgraph
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class OptimalSubgraph<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The definition of a cost function.
@@ -115,7 +117,7 @@ namespace Unchase.Satsuma.LP
 		/// <summary>
 		/// The original graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// The weight of a specific arc when calculating the weighted node degrees.
@@ -208,13 +210,14 @@ namespace Unchase.Satsuma.LP
 		/// <remarks>
 		/// A subgraph of <see cref="Graph"/>.
 		/// </remarks>
-		public Subgraph? ResultGraph { get; private set; }
+		public Subgraph<TNodeProperty, TArcProperty>? ResultGraph { get; private set; }
 
 		/// <summary>
-		/// Initialize <see cref="OptimalSubgraph"/>.
+		/// Initialize <see cref="OptimalSubgraph{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="Graph"/>.</param>
-		public OptimalSubgraph(IGraph graph)
+		public OptimalSubgraph(
+            IGraph<TNodeProperty, TArcProperty> graph)
 		{
 			Graph = graph;
 			DegreeWeight = null;

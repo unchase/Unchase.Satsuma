@@ -8,12 +8,12 @@ using Xunit;
 namespace Unchase.Satsuma.Test.Algorithms
 {
     /// <summary>
-    /// <see cref="Preflow"/> tests.
+    /// <see cref="Preflow{TNodeProperty, TArcProperty}"/> tests.
     /// </summary>
     public class PreflowTests
     {
         /// <summary>
-        /// <see cref="Preflow"/> tests.
+        /// <see cref="Preflow{TNodeProperty, TArcProperty}"/> tests.
         /// </summary>
         /// <param name="start">Start test.</param>
         [Theory]
@@ -23,8 +23,8 @@ namespace Unchase.Satsuma.Test.Algorithms
             if (start)
             {
                 // Arrange
-                var graph = new CompleteGraph(1, Directedness.Directed);
-                var superGraph = new Supergraph(graph);
+                var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
+                var superGraph = new Supergraph<int, int>(graph);
                 superGraph.AddNode(1);
                 superGraph.AddNode(2);
                 superGraph.AddNode(3);
@@ -40,7 +40,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 var random = new Random();
 
                 // Act
-                var preflow = new Preflow(superGraph, _ => random.Next(6, 1000), new(1), new(6));
+                var preflow = new Preflow<int, int>(superGraph, _ => random.Next(6, 1000), new(1), new(6));
 
                 // Assert
                 preflow.FlowSize.Should().BeGreaterOrEqualTo(6).And.BeLessOrEqualTo(1000);

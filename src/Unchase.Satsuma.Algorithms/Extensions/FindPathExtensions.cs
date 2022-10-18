@@ -31,13 +31,13 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms.Extensions
 {
-    /// <summary>
-	/// Extension methods for <see cref="IGraph"/>, for finding paths.
+	/// <summary>
+	/// Extension methods for <see cref="IGraph{TNodeProperty, TArcProperty}"/>, for finding paths.
 	/// </summary>
 	public static class FindPathExtensions
 	{
-		private class PathDfs : 
-            Dfs
+		private class PathDfs<TNodeProperty, TArcProperty> : 
+            Dfs<TNodeProperty, TArcProperty>
 		{
 			// input
             private readonly Direction _pathDirection;
@@ -49,13 +49,13 @@ namespace Unchase.Satsuma.Algorithms.Extensions
 			public Node EndNode;
 
 			/// <summary>
-			/// Initialize <see cref="PathDfs"/>.
+			/// Initialize <see cref="PathDfs{TNodeProperty, TArcProperty}"/>.
 			/// </summary>
-			/// <param name="graph"><see cref="IGraph"/>.</param>
+			/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 			/// <param name="direction">The direction of the Dfs used to search for the path.</param>
 			/// <param name="target">A function determining whether a node belongs to the set of target nodes.</param>
 			public PathDfs(
-                IGraph graph,
+                IGraph<TNodeProperty, TArcProperty> graph,
                 Direction direction,
                 Func<Node, bool> target)
 			        : base(graph)
@@ -110,21 +110,25 @@ namespace Unchase.Satsuma.Algorithms.Extensions
 		/// <summary>
 		/// Finds a path in a graph from a source node to a target node.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="source">The set of source nodes.</param>
 		/// <param name="target">A function determining whether a node belongs to the set of target nodes.</param>
 		/// <param name="direction">The direction of the Dfs used to search for the path.</param>
 		/// <returns>Returns a path from a source node to a target node, or null if none exists.</returns>
-		public static IPath? FindPath(this IGraph graph, IEnumerable<Node> source, Func<Node, bool> target, Direction direction)
+		public static IPath<TNodeProperty, TArcProperty>? FindPath<TNodeProperty, TArcProperty>(
+            this IGraph<TNodeProperty, TArcProperty> graph, 
+            IEnumerable<Node> source, 
+            Func<Node, bool> target, 
+            Direction direction)
 		{
-			var dfs = new PathDfs(graph, direction, target);
+			var dfs = new PathDfs<TNodeProperty, TArcProperty>(graph, direction, target);
             dfs.Run(source);
             if (dfs.EndNode == Node.Invalid)
             {
                 return null;
             }
 
-			var result = new Adapters.Path(graph);
+			var result = new Adapters.Path<TNodeProperty, TArcProperty>(graph);
 			result.Begin(dfs.StartNode);
 
             foreach (var arc in dfs.Path ?? new())
@@ -138,11 +142,15 @@ namespace Unchase.Satsuma.Algorithms.Extensions
 		/// <summary>
 		/// Convenience function for finding a path between two nodes.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="source">The source node.</param>
 		/// <param name="target">The target node.</param>
 		/// <param name="direction"><see cref="Direction"/>.</param>
-        public static IPath? FindPath(this IGraph graph, Node source, Node target, Direction direction)
+		public static IPath<TNodeProperty, TArcProperty>? FindPath<TNodeProperty, TArcProperty>(
+            this IGraph<TNodeProperty, TArcProperty> graph,
+            Node source,
+            Node target,
+            Direction direction)
 		{
 			return FindPath(graph, new[] { source }, x => x == target, direction);
 		}

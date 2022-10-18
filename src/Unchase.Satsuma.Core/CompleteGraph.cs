@@ -29,7 +29,7 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Core
 {
-    /// <summary>
+	/// <summary>
 	/// A complete undirected or directed graph on a given number of nodes.
 	/// </summary>
 	/// <remarks>
@@ -38,14 +38,16 @@ namespace Unchase.Satsuma.Core
 	/// <para>Memory usage: O(1).</para>
 	/// <para>This type is thread safe.</para>
 	/// </remarks>
-	public sealed class CompleteGraph : 
-        IGraph
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class CompleteGraph<TNodeProperty, TArcProperty> : 
+        IGraph<TNodeProperty, TArcProperty>
 	{
 		/// <inheritdoc />
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; } = new();
 
         /// <inheritdoc />
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; } = new();
 
 		/// <summary>
 		/// True if the graph contains all the possible directed arcs, 
@@ -56,11 +58,11 @@ namespace Unchase.Satsuma.Core
 		private readonly int _nodeCount;
 
 		/// <summary>
-		/// Initialize <see cref="CompleteGraph"/>.
+		/// Initialize <see cref="CompleteGraph{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="nodeCount">Node count.</param>
 		/// <param name="directedness"><see cref="Directedness"/>.</param>
-        public CompleteGraph(
+		public CompleteGraph(
             int nodeCount, 
             Directedness directedness)
 		{
@@ -136,7 +138,7 @@ namespace Unchase.Satsuma.Core
 		}
 
 		/// <inheritdoc />
-        public Dictionary<string, object>? GetNodeProperties(Node node)
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node)
         {
             return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
@@ -144,7 +146,7 @@ namespace Unchase.Satsuma.Core
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc)
         {
             return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties

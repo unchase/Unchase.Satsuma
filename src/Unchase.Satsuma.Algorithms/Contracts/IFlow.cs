@@ -36,12 +36,14 @@ namespace Unchase.Satsuma.Algorithms.Contracts
     /// Edges work as bidirectional channels, as if they were two separate arcs.
     /// </remarks>
     /// <typeparam name="TCapacity">The arc capacity type.</typeparam>
-    public interface IFlow<TCapacity>
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public interface IFlow<TCapacity, TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The graph of the network.
         /// </summary>
-        public IGraph Graph { get; }
+        public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// The capacity of the arcs.

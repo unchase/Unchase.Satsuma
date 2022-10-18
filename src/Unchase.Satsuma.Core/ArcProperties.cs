@@ -29,7 +29,8 @@ namespace Unchase.Satsuma.Core
     /// <summary>
     /// The arc properties.
     /// </summary>
-    public class ArcProperties
+    /// <typeparam name="TProperty">The type of stored arc properties.</typeparam>
+    public class ArcProperties<TProperty>
     {
         /// <summary>
         /// The first node.
@@ -49,10 +50,10 @@ namespace Unchase.Satsuma.Core
         /// <summary>
         /// The arc properties.
         /// </summary>
-        public Dictionary<string, object>? Properties { get; }
+        public Dictionary<string, TProperty>? Properties { get; }
 
         /// <summary>
-        /// Initialize <see cref="ArcProperties"/>.
+        /// Initialize <see cref="ArcProperties{TProperty}"/>.
         /// </summary>
         /// <param name="u">U node.</param>
         /// <param name="v">V node.</param>
@@ -62,7 +63,7 @@ namespace Unchase.Satsuma.Core
             Node u,
             Node v,
             bool isEdge,
-            Dictionary<string, object>? properties = default)
+            Dictionary<string, TProperty>? properties = default)
         {
             U = u;
             V = v;

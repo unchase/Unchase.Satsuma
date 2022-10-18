@@ -34,7 +34,7 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
-    /// <summary>
+	/// <summary>
 	/// Finds a maximum flow using the Goldberg-Tarjan preflow algorithm.
 	/// </summary>
 	/// <remarks>
@@ -42,13 +42,15 @@ namespace Unchase.Satsuma.Algorithms
 	/// <para>- If all capacities are integers, and D &lt; 2<sup>53</sup>, then the returned flow is exact and optimal.</para>
 	/// <para>- Otherwise, small round-off errors may occur and the returned flow is \"almost-optimal\" (see <see cref="Error"/>).</para>
 	/// </remarks>
-	public sealed class Preflow : 
-        IFlow<double>
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class Preflow<TNodeProperty, TArcProperty> : 
+        IFlow<double, TNodeProperty, TArcProperty>
 	{
 		/// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// The arc capacity function.
@@ -82,14 +84,14 @@ namespace Unchase.Satsuma.Algorithms
 		public double Error { get; }
 
 		/// <summary>
-		/// Initialize <see cref="Preflow"/>.
+		/// Initialize <see cref="Preflow{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="capacity"><see cref="Capacity"/>.</param>
 		/// <param name="source"><see cref="Source"/>.</param>
 		/// <param name="target"><see cref="Target"/>.</param>
 		public Preflow(
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
             Func<Arc, double> capacity,
             Node source,
             Node target)
@@ -102,7 +104,7 @@ namespace Unchase.Satsuma.Algorithms
 			_flow = new();
 
 			// calculate bottleneck capacity to get an upper bound for the flow value
-			var dijkstra = new Dijkstra(Graph, a => -Capacity(a), DijkstraMode.Maximum);
+			var dijkstra = new Dijkstra<TNodeProperty, TArcProperty>(Graph, a => -Capacity(a), DijkstraMode.Maximum);
 			dijkstra.AddSource(Source);
 			dijkstra.RunUntilFixed(Target);
 			var bottleneckCapacity = -dijkstra.GetDistance(Target);
@@ -153,7 +155,7 @@ namespace Unchase.Satsuma.Algorithms
 
 				_u = Math.Min(_u, uTarget);
 
-				var sg = new Supergraph(Graph);
+				var sg = new Supergraph<TNodeProperty, TArcProperty>(Graph);
 				var newSource = sg.AddNode();
 				_artificialArc = sg.AddArc(newSource, Source, Directedness.Directed);
 
@@ -163,7 +165,7 @@ namespace Unchase.Satsuma.Algorithms
                     _capacityMultiplier = 1;
                 }
 
-				var p = new IntegerPreflow(sg, IntegralCapacity, newSource, Target);
+				var p = new IntegerPreflow<TNodeProperty, TArcProperty>(sg, IntegralCapacity, newSource, Target);
 				FlowSize = p.FlowSize / _capacityMultiplier;
 				Error = Graph.ArcCount() / _capacityMultiplier;
                 foreach (var kv in p.NonzeroArcs)

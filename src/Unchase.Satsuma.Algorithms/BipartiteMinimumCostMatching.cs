@@ -34,18 +34,20 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Algorithms
 {
-    /// <summary>
+	/// <summary>
 	/// Finds a minimum cost matching in a bipartite graph using the network simplex method.
 	/// </summary>
 	/// <remarks>
-	/// See also <seealso cref="BipartiteMaximumMatching"/>.
+	/// See also <seealso cref="BipartiteMaximumMatching{TNodeProperty, TArcProperty}"/>.
 	/// </remarks>
-	public sealed class BipartiteMinimumCostMatching
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class BipartiteMinimumCostMatching<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// Describes a bipartition of <see cref="Graph"/> by dividing its nodes into red and blue ones.
@@ -73,18 +75,18 @@ namespace Unchase.Satsuma.Algorithms
 		/// <remarks>
 		/// Null if a matching of the specified size could not be found.
 		/// </remarks>
-		public IMatching? Matching { get; private set; }
+		public IMatching<TNodeProperty, TArcProperty>? Matching { get; private set; }
 
 		/// <summary>
-		/// Initialize <see cref="BipartiteMinimumCostMatching"/>.
+		/// Initialize <see cref="BipartiteMinimumCostMatching{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="isRed"><see cref="IsRed"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
 		/// <param name="minimumMatchingSize"><see cref="MinimumMatchingSize"/>.</param>
 		/// <param name="maximumMatchingSize"><see cref="MaximumMatchingSize"/>.</param>
 		public BipartiteMinimumCostMatching(
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
             Func<Node, bool> isRed,
             Func<Arc, double> cost,
 			int minimumMatchingSize = 0,
@@ -102,11 +104,11 @@ namespace Unchase.Satsuma.Algorithms
 		private void Run()
 		{
 			// direct all edges from the red nodes to the blue nodes
-			var redToBlue = new RedirectedGraph(Graph,
+			var redToBlue = new RedirectedGraph<TNodeProperty, TArcProperty>(Graph,
 				x => (IsRed(Graph.U(x)) ? ArcDirection.Forward : ArcDirection.Backward));
 
 			// add a source and a target to the graph and some edges
-			var flowGraph = new Supergraph(redToBlue);
+			var flowGraph = new Supergraph<TNodeProperty, TArcProperty>(redToBlue);
 			var source = flowGraph.AddNode();
 			var target = flowGraph.AddNode();
 			foreach (var node in Graph.Nodes())
@@ -123,7 +125,7 @@ namespace Unchase.Satsuma.Algorithms
 			var reflow = flowGraph.AddArc(target, source, Directedness.Directed);
 
 			// run the network simplex
-			var ns = new NetworkSimplex(flowGraph,
+			var ns = new NetworkSimplex<TNodeProperty, TArcProperty>(flowGraph,
 				lowerBound: x => (x == reflow ? MinimumMatchingSize : 0),
 				upperBound: x => (x == reflow ? MaximumMatchingSize : 1),
 				cost: x => (Graph.HasArc(x) ? Cost(x) : 0));
@@ -131,7 +133,7 @@ namespace Unchase.Satsuma.Algorithms
 
 			if (ns.State == SimplexState.Optimal)
 			{
-				var matching = new Matching(Graph);
+				var matching = new Matching<TNodeProperty, TArcProperty>(Graph);
 				foreach (var arc in ns.UpperBoundArcs.Concat(ns.Forest.Where(kv => kv.Value == 1).Select(kv => kv.Key)))
                 {
                     if (Graph.HasArc(arc))

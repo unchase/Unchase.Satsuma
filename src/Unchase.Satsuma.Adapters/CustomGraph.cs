@@ -33,11 +33,13 @@ namespace Unchase.Satsuma.Adapters
     /// Use this class to create custom graphs.
     /// Memory usage: O(n+m), where n is the number of nodes and m is the number of arcs.
     /// </remarks>
-    public sealed class CustomGraph : 
-        Supergraph
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public sealed class CustomGraph<TNodeProperty, TArcProperty> : 
+        Supergraph<TNodeProperty, TArcProperty>
     {
         /// <summary>
-        /// Initialize <see cref="CustomGraph"/>.
+        /// Initialize <see cref="CustomGraph{TNodeProperty, TArcProperty}"/>.
         /// </summary>
         public CustomGraph()
             : base(null)

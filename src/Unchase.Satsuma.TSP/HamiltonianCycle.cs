@@ -30,7 +30,7 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.TSP
 {
-    /// <summary>
+	/// <summary>
 	/// Attempts to find a (directed) Hamiltonian cycle in a graph using TSP solvers.
 	/// </summary>
 	/// <remarks>
@@ -39,15 +39,17 @@ namespace Unchase.Satsuma.TSP
 	/// <para>However, there are some easy graph properties which prohibit the existence of a Hamiltonian cycle.</para>
 	/// <para>
 	/// Namely, if a graph is not 2-connected (see Connectivity.BiNodeConnectedComponents), 
-    /// then it cannot contain a Hamiltonian cycle.
+	/// then it cannot contain a Hamiltonian cycle.
 	/// </para>
 	/// </remarks>
-	public sealed class HamiltonianCycle
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class HamiltonianCycle<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// A Hamiltonian cycle in the input graph, or null if none has been found.
@@ -58,13 +60,14 @@ namespace Unchase.Satsuma.TSP
 		/// <para>The existence of a Hamiltonian cycle does not guarantee that this class finds it.</para>
 		/// </remarks>
 		/// </remarks>
-		public IPath? Cycle { get; private set; }
+		public IPath<TNodeProperty, TArcProperty>? Cycle { get; private set; }
 
 		/// <summary>
-		/// Initialize <see cref="HamiltonianCycle"/>.
+		/// Initialize <see cref="HamiltonianCycle{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="Graph"/>.</param>
-		public HamiltonianCycle(IGraph graph)
+		public HamiltonianCycle(
+            IGraph<TNodeProperty, TArcProperty> graph)
 		{
 			Graph = graph;
 			Cycle = null;
@@ -102,7 +105,7 @@ namespace Unchase.Satsuma.TSP
             }
 			else
 			{
-				var cycle = new Adapters.Path(Graph);
+				var cycle = new Adapters.Path<TNodeProperty, TArcProperty>(Graph);
                 var tourList = tour.ToList();
 				if (tourList.Any())
 				{

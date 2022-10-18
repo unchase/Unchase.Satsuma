@@ -31,7 +31,7 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Adapters
 {
-    /// <summary>
+	/// <summary>
 	/// Adapter for modifying the direction of some arcs of an underlying graph.
 	/// </summary>
 	/// <remarks>
@@ -39,17 +39,19 @@ namespace Unchase.Satsuma.Adapters
 	/// <para>The underlying graph can be freely modified while using this adapter.</para>
 	/// <para>For special cases, consider the UndirectedGraph and ReverseGraph classes for performance.</para>
 	/// </remarks>
-	public sealed class RedirectedGraph : 
-        IGraph
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class RedirectedGraph<TNodeProperty, TArcProperty> : 
+        IGraph<TNodeProperty, TArcProperty>
 	{
-        private readonly IGraph _graph;
+        private readonly IGraph<TNodeProperty, TArcProperty> _graph;
 		private readonly Func<Arc, ArcDirection> _getDirection;
 
         /// <inheritdoc />
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; } = new();
 
         /// <inheritdoc />
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; } = new();
 
 		/// <summary>
 		/// Creates an adapter over the given graph for redirecting its arcs.
@@ -57,7 +59,7 @@ namespace Unchase.Satsuma.Adapters
 		/// <param name="graph">The graph to redirect.</param>
 		/// <param name="getDirection">The function which modifies the arc directions.</param>
         public RedirectedGraph(
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
             Func<Arc, ArcDirection> getDirection)
 		{
 			_graph = graph;
@@ -65,7 +67,7 @@ namespace Unchase.Satsuma.Adapters
         }
 
 		/// <inheritdoc />
-        public Dictionary<string, object>? GetNodeProperties(Node node)
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node)
         {
             return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
@@ -73,7 +75,7 @@ namespace Unchase.Satsuma.Adapters
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc)
         {
             return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties

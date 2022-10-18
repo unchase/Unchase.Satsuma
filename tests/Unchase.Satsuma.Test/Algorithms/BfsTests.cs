@@ -9,7 +9,7 @@ using Xunit;
 namespace Unchase.Satsuma.Test.Algorithms
 {
     /// <summary>
-    /// <see cref="Bfs"/> tests.
+    /// <see cref="Bfs{TNodeProperty, TArcProperty}"/> tests.
     /// </summary>
     public class BfsTests
     {
@@ -24,8 +24,8 @@ namespace Unchase.Satsuma.Test.Algorithms
             if (start)
             {
                 // Arrange
-                var graph = new CompleteGraph(1, Directedness.Directed);
-                var superGraph = new Supergraph(graph);
+                var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
+                var superGraph = new Supergraph<int, int>(graph);
                 superGraph.AddNode(1);
                 superGraph.AddNode(2);
                 superGraph.AddNode(3);
@@ -44,7 +44,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                     { new(4), new(new() { { "testProperty", 11 } }) }
                 });
 
-                var bfs = new Bfs(superGraph);
+                var bfs = new Bfs<int, int>(superGraph);
                 bfs.AddSource(superGraph.Nodes().First());
 
                 // Act

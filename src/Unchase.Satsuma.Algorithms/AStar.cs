@@ -30,41 +30,43 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms
 {
-    /// <summary>
+	/// <summary>
 	/// Uses the A* search algorithm to find cheapest paths in a graph.
 	/// </summary>
 	/// <remarks>
-	/// <para><see cref="AStar"/> is essentially <see cref="Dijkstra"/>'s algorithm with an optional heuristic which can speed up path search.</para>
+	/// <para><see cref="AStar{TNodeProperty, TArcProperty}"/> is essentially <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>'s algorithm with an optional heuristic which can speed up path search.</para>
 	/// <para>Usage:</para>
 	/// <para>- <see cref="AddSource"/> can be used to initialize the class by providing the source nodes.</para>
 	/// <para>- Then <see cref="RunUntilReached(Node)"/> can be called to obtain cheapest paths to a target set.</para>
 	/// <para>
 	/// A target node is reached if a cheapest path leading to it is known.
-	/// Unlike <see cref="Dijkstra"/>, A* does not use the notion of fixed nodes.
+	/// Unlike <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>, A* does not use the notion of fixed nodes.
 	/// </para>
 	/// <para>Example (finding a shortest path between two nodes):</para>
 	/// <para>
 	/// <code>
 	/// var g = new CompleteGraph(50);
-    /// var pos = new Dictionary&lt;Node, double&gt;();
-    /// var r = new Random();
-    /// foreach (var node in g.Nodes())
-    /// 	pos[node] = r.NextDouble();
-    /// Node source = g.GetNode(0);
-    /// Node target = g.GetNode(1);
-    /// var astar = new AStar(g, arc => Math.Abs(pos[g.U(arc)] - pos[g.V(arc)]), node => Math.Abs(pos[node] - pos[target]));
-    /// astar.AddSource(source);
-    /// astar.RunUntilReached(target);
-    /// Console.WriteLine("Distance of target from source: "+astar.GetDistance(target));
+	/// var pos = new Dictionary&lt;Node, double&gt;();
+	/// var r = new Random();
+	/// foreach (var node in g.Nodes())
+	/// 	pos[node] = r.NextDouble();
+	/// Node source = g.GetNode(0);
+	/// Node target = g.GetNode(1);
+	/// var astar = new AStar(g, arc => Math.Abs(pos[g.U(arc)] - pos[g.V(arc)]), node => Math.Abs(pos[node] - pos[target]));
+	/// astar.AddSource(source);
+	/// astar.RunUntilReached(target);
+	/// Console.WriteLine("Distance of target from source: "+astar.GetDistance(target));
 	/// </code>
 	/// </para>
 	/// </remarks>
-	public sealed class AStar
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class AStar<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// A non-negative arc cost function.
@@ -80,20 +82,20 @@ namespace Unchase.Satsuma.Algorithms
 		/// <para>- admissible: it must assign for each node a lower bound on the cost of the cheapest path from the given node to the target node set,</para>
 		/// <para>- and consistent: for each uv arc, <tt>Heuristic(u) &lt;= Cost(uv) + Heuristic(v)</tt>.</para>
 		/// <para>From the above it follows that <see cref="Heuristic"/> must return 0 for all target nodes.</para>
-		/// <para>If <see cref="Heuristic"/> is the constant zero function, then the algorithm is equivalent to <see cref="Dijkstra"/>'s algorithm.</para>
+		/// <para>If <see cref="Heuristic"/> is the constant zero function, then the algorithm is equivalent to <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>'s algorithm.</para>
 		/// </remarks>
 		public Func<Node, double> Heuristic { get; }
 
-		private readonly Dijkstra _dijkstra;
+		private readonly Dijkstra<TNodeProperty, TArcProperty> _dijkstra;
 
 		/// <summary>
-		/// Initialize <see cref="AStar"/>.
+		/// Initialize <see cref="AStar{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
 		/// <param name="heuristic"><see cref="Heuristic"/>.</param>
 		public AStar(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             Func<Arc, double> cost, 
             Func<Node, double> heuristic)
 		{
@@ -167,7 +169,7 @@ namespace Unchase.Satsuma.Algorithms
 		/// <param name="node"></param>
 		/// <returns>Returns a cheapest path, or null if the node has not been reached yet.</returns>
 		/// <exception cref="ArgumentException"><see cref="Heuristic"/> is not 0.</exception>
-		public IPath? GetPath(Node node)
+		public IPath<TNodeProperty, TArcProperty>? GetPath(Node node)
 		{
 			CheckTarget(node);
             if (!_dijkstra.Fixed(node))

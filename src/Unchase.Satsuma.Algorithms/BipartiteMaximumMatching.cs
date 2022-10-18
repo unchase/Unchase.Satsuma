@@ -32,46 +32,48 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
-    /// <summary>
+	/// <summary>
 	/// Finds a maximum matching in a bipartite graph using the alternating path algorithm.
 	/// </summary>
 	/// <remarks>
-	/// See also <seealso cref="BipartiteMinimumCostMatching"/>.
+	/// See also <seealso cref="BipartiteMinimumCostMatching{TNodeProperty, TArcProperty}"/>.
 	/// </remarks>
-	public sealed class BipartiteMaximumMatching : 
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class BipartiteMaximumMatching<TNodeProperty, TArcProperty> : 
         IClearable
 	{
 		/// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// Describes a bipartition of the input graph by dividing its nodes into red and blue ones.
 		/// </summary>
 		public Func<Node, bool> IsRed { get; }
 
-		private readonly Matching _matching;
+		private readonly Matching<TNodeProperty, TArcProperty> _matching;
 
 		/// <summary>
 		/// The current matching.
 		/// </summary>
-		public IMatching Matching => _matching;
+		public IMatching<TNodeProperty, TArcProperty> Matching => _matching;
 
         private readonly HashSet<Node>? _unmatchedRedNodes;
 
 		/// <summary>
-		/// Initialize <see cref="BipartiteMaximumMatching"/>.
+		/// Initialize <see cref="BipartiteMaximumMatching{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="isRed">Describes a bipartition of the input graph by dividing its nodes into red and blue ones.</param>
 		public BipartiteMaximumMatching(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             Func<Node, bool> isRed)
 		{
 			Graph = graph;
 			IsRed = isRed;
-			_matching = new Matching(Graph);
+			_matching = new(Graph);
 			_unmatchedRedNodes = new();
 
 			Clear();

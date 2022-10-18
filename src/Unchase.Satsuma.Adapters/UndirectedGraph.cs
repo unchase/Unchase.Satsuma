@@ -37,29 +37,31 @@ namespace Unchase.Satsuma.Adapters
     /// <para>Node and Arc objects are interchangeable between the adapter and the original graph.</para>
     /// <para>The underlying graph can be freely modified while using this adapter.</para>
     /// </remarks>
-    public sealed class UndirectedGraph : 
-        IGraph
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public sealed class UndirectedGraph<TNodeProperty, TArcProperty> : 
+        IGraph<TNodeProperty, TArcProperty>
     {
-        private readonly IGraph _graph;
+        private readonly IGraph<TNodeProperty, TArcProperty> _graph;
 
         /// <inheritdoc />
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; } = new();
 
         /// <inheritdoc />
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; } = new();
 
         /// <summary>
-        /// Initialize <see cref="UndirectedGraph"/>.
+        /// Initialize <see cref="UndirectedGraph{TNodeProperty, TArcProperty}"/>.
         /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         public UndirectedGraph(
-            IGraph graph)
+            IGraph<TNodeProperty, TArcProperty> graph)
         {
             _graph = graph;
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetNodeProperties(Node node)
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node)
         {
             return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
@@ -67,7 +69,7 @@ namespace Unchase.Satsuma.Adapters
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc)
         {
             return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties

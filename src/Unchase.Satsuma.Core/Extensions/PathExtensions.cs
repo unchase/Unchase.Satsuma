@@ -30,15 +30,15 @@ using Unchase.Satsuma.Core.Enums;
 namespace Unchase.Satsuma.Core.Extensions
 {
     /// <summary>
-    /// Extension methods to <see cref="IPath"/>.
+    /// Extension methods to <see cref="IPath{TNodeProperty, TArcProperty}"/>.
     /// </summary>
     public static class PathExtensions
     {
         /// <summary>
         /// Returns true if FirstNode equals LastNode and the path has at least one arc.
         /// </summary>
-        /// <param name="path"><see cref="IPath"/>.</param>
-        public static bool IsCycle(this IPath path)
+        /// <param name="path"><see cref="IPath{TNodeProperty, TArcProperty}"/>.</param>
+        public static bool IsCycle<TNodeProperty, TArcProperty>(this IPath<TNodeProperty, TArcProperty> path)
         {
             return path.FirstNode == path.LastNode && path.ArcCount() > 0;
         }
@@ -50,10 +50,10 @@ namespace Unchase.Satsuma.Core.Extensions
         /// Returns <see cref="Node.Invalid"/> if the node is not on the path or has no successor.
         /// If the path is a cycle, then each node has a successor.
         /// </remarks>
-        /// <param name="path"><see cref="IPath"/>.</param>
+        /// <param name="path"><see cref="IPath{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="node">The node.</param>
         /// <returns>Returns the successor of a node in the path.</returns>
-        public static Node NextNode(this IPath path, Node node)
+        public static Node NextNode<TNodeProperty, TArcProperty>(this IPath<TNodeProperty, TArcProperty> path, Node node)
         {
             var arc = path.NextArc(node);
             if (arc == Arc.Invalid)
@@ -71,10 +71,10 @@ namespace Unchase.Satsuma.Core.Extensions
         /// Returns <see cref="Node.Invalid"/> if the node is not on the path or has no predecessor.
         /// If the path is a cycle, then each node has a predecessor.
         /// </remarks>
-        /// <param name="path"><see cref="IPath"/>.</param>
+        /// <param name="path"><see cref="IPath{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="node">The node.</param>
         /// <returns>Returns the predecessor of a node in the path.</returns>
-        public static Node PrevNode(this IPath path, Node node)
+        public static Node PrevNode<TNodeProperty, TArcProperty>(this IPath<TNodeProperty, TArcProperty> path, Node node)
         {
             var arc = path.PrevArc(node);
             if (arc == Arc.Invalid)
@@ -88,10 +88,10 @@ namespace Unchase.Satsuma.Core.Extensions
         /// <summary>
         /// Implements IGraph.Arcs for paths.
         /// </summary>
-        /// <param name="path"><see cref="IPath"/>.</param>
+        /// <param name="path"><see cref="IPath{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="u">U node.</param>
         /// <param name="filter"><see cref="ArcFilter"/>.</param>
-        public static IEnumerable<Arc> ArcsHelper(this IPath path, Node u, ArcFilter filter)
+        public static IEnumerable<Arc> ArcsHelper<TNodeProperty, TArcProperty>(this IPath<TNodeProperty, TArcProperty> path, Node u, ArcFilter filter)
         {
             Arc arc1 = path.PrevArc(u), arc2 = path.NextArc(u);
             if (arc1 == arc2) 

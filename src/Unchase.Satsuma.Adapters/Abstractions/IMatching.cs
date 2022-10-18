@@ -39,13 +39,15 @@ namespace Unchase.Satsuma.Adapters.Abstractions
     /// </para>
     /// <para>The node set of a matching consists of those nodes whose degree is 1 in the matching.</para>
     /// </remarks>
-    public interface IMatching : 
-        IGraph
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public interface IMatching<TNodeProperty, TArcProperty> : 
+        IGraph<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The underlying graph, i.e. the graph containing the matching.
         /// </summary>
-        public IGraph Graph { get; }
+        public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// Gets the matching arc which contains the given node.

@@ -37,7 +37,18 @@ using Unchase.Satsuma.IO.GraphML.Enums;
 
 namespace Unchase.Satsuma.IO.GraphML
 {
-    /// <summary>
+	/// <inheritdoc cref="GraphMlFormat{TNodeProperty, TArcProperty}"/>
+	public static class GraphMlFormat
+    {
+        internal static readonly XNamespace Xmlns = "http://graphml.graphdrawing.org/xmlns";
+        internal static readonly XNamespace XmlnsXsi = "http://www.w3.org/2001/XMLSchema-instance"; // xmlns:xsi
+        internal static readonly XNamespace XmlnsY = "http://www.yworks.com/xml/graphml"; // xmlns:y
+        internal static readonly XNamespace XmlnsYed = "http://www.yworks.com/xml/yed/3"; // xmlns:yed
+        internal const string XsiSchemaLocation = "http://graphml.graphdrawing.org/xmlns\n" + // xsi:schemaLocation
+                                                  "http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd";
+	}
+
+	/// <summary>
 	/// Loads and saves graphs stored in GraphML format.
 	/// </summary>
 	/// <remarks>
@@ -109,24 +120,19 @@ namespace Unchase.Satsuma.IO.GraphML
 	/// For more detailed examples on saving extra values for nodes, arcs or the graph itself;
 	/// see the descendants of <see cref="GraphMLProperty"/>, such as <see cref="StandardProperty{T}"/> and <see cref="NodeGraphicsProperty"/>.
 	/// </para>
-    /// </remarks>
-	public sealed class GraphMlFormat
+	/// </remarks>
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class GraphMlFormat<TNodeProperty, TArcProperty>
 	{
-		internal static readonly XNamespace Xmlns = "http://graphml.graphdrawing.org/xmlns";
-		private static readonly XNamespace XmlnsXsi = "http://www.w3.org/2001/XMLSchema-instance"; // xmlns:xsi
-		internal static readonly XNamespace XmlnsY = "http://www.yworks.com/xml/graphml"; // xmlns:y
-		private static readonly XNamespace XmlnsYed = "http://www.yworks.com/xml/yed/3"; // xmlns:yed
-		private const string XsiSchemaLocation = "http://graphml.graphdrawing.org/xmlns\n" + // xsi:schemaLocation
-				"http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd";
-
-		/// <summary>
+        /// <summary>
 		/// The graph itself.
 		/// </summary>
 		/// <remarks>
 		/// <para>- <b>When loading</b>: Must be an <see cref="IBuildableGraph"/> to accomodate the loaded graph, or null.</para>
 		/// <para>- <b>When saving</b>: Can be an arbitrary graph (not null).</para>
 		/// </remarks>
-		public IGraph Graph { get; set; } = new CustomGraph();
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; set; } = new CustomGraph<TNodeProperty, TArcProperty>();
   
 		/// <summary>
 		/// Returns a GraphML identifier for each node. May be null.
@@ -153,7 +159,7 @@ namespace Unchase.Satsuma.IO.GraphML
 		private readonly List<Func<XElement, GraphMLProperty>> _propertyLoaders;
 
 		/// <summary>
-		/// Initialize <seealso cref="GraphMlFormat"/>.
+		/// Initialize <seealso cref="GraphMlFormat{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		public GraphMlFormat()
 		{
@@ -327,7 +333,7 @@ namespace Unchase.Satsuma.IO.GraphML
                     continue;
                 }
 
-				x.Name = Xmlns + "data";
+				x.Name = GraphMlFormat.Xmlns + "data";
 				x.SetAttributeValue("key", p.Id);
 				x.WriteTo(xml);
 			}
@@ -394,11 +400,11 @@ namespace Unchase.Satsuma.IO.GraphML
 		private void Save(XmlWriter xml)
 		{
 			xml.WriteStartDocument();
-			xml.WriteStartElement("graphml", Xmlns.NamespaceName);
-			xml.WriteAttributeString("xmlns", "xsi", null, XmlnsXsi.NamespaceName);
-			xml.WriteAttributeString("xmlns", "y", null, XmlnsY.NamespaceName);
-			xml.WriteAttributeString("xmlns", "yed", null, XmlnsYed.NamespaceName);
-			xml.WriteAttributeString("xsi", "schemaLocation", null, XsiSchemaLocation);
+			xml.WriteStartElement("graphml", GraphMlFormat.Xmlns.NamespaceName);
+			xml.WriteAttributeString("xmlns", "xsi", null, GraphMlFormat.XmlnsXsi.NamespaceName);
+			xml.WriteAttributeString("xmlns", "y", null, GraphMlFormat.XmlnsY.NamespaceName);
+			xml.WriteAttributeString("xmlns", "yed", null, GraphMlFormat.XmlnsYed.NamespaceName);
+			xml.WriteAttributeString("xsi", "schemaLocation", null, GraphMlFormat.XsiSchemaLocation);
 
 			for (var i = 0; i < Properties.Count; i++)
 			{
@@ -407,7 +413,7 @@ namespace Unchase.Satsuma.IO.GraphML
 				p.GetKeyElement().WriteTo(xml);
 			}
 
-			xml.WriteStartElement("graph", Xmlns.NamespaceName);
+			xml.WriteStartElement("graph", GraphMlFormat.Xmlns.NamespaceName);
 			xml.WriteAttributeString("id", "G");
 			xml.WriteAttributeString("edgedefault", "directed");
 			xml.WriteAttributeString("parse.nodes", Graph.NodeCount().ToString(CultureInfo.InvariantCulture));
@@ -442,7 +448,7 @@ namespace Unchase.Satsuma.IO.GraphML
 					nodeById[id] = node;
 				}
 
-				xml.WriteStartElement("node", Xmlns.NamespaceName);
+				xml.WriteStartElement("node", GraphMlFormat.Xmlns.NamespaceName);
 				xml.WriteAttributeString("id", id);
 				DefinePropertyValues(xml, node);
 				xml.WriteEndElement(); // node
@@ -460,7 +466,7 @@ namespace Unchase.Satsuma.IO.GraphML
                     id = null;
                 }
 
-				xml.WriteStartElement("edge", Xmlns.NamespaceName);
+				xml.WriteStartElement("edge", GraphMlFormat.Xmlns.NamespaceName);
                 if (id != null)
                 {
                     xml.WriteAttributeString("id", id);

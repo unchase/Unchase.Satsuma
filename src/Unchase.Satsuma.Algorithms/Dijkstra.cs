@@ -30,12 +30,10 @@ using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
 
-using Path = Unchase.Satsuma.Adapters.Path;
-
 namespace Unchase.Satsuma.Algorithms
 {
-    /// <summary>
-	/// Uses <see cref="Dijkstra"/>'s algorithm to find cheapest paths in a graph.
+	/// <summary>
+	/// Uses <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>'s algorithm to find cheapest paths in a graph.
 	/// </summary>
 	/// <remarks>
 	/// <para>See <see cref="DijkstraMode"/> for constraints on the cost function.</para>
@@ -52,24 +50,26 @@ namespace Unchase.Satsuma.Algorithms
 	/// <para>
 	/// <code>
 	/// var g = new CompleteGraph(50);
-    /// var pos = new Dictionary&lt;Node, double&gt;();
-    /// var r = new Random();
-    /// foreach (var node in g.Nodes())
-    /// 	pos[node] = r.NextDouble();
-    /// var dijkstra = new Dijkstra(g, arc =&gt; Math.Abs(pos[g.U(arc)] - pos[g.V(arc)]), DijkstraMode.Sum);
-    /// Node a = g.GetNode(0), b = g.GetNode(1);
-    /// dijkstra.AddSource(a);
-    /// dijkstra.RunUntilFixed(b);
-    /// Console.WriteLine("Distance of b from a: "+dijkstra.GetDistance(b));
+	/// var pos = new Dictionary&lt;Node, double&gt;();
+	/// var r = new Random();
+	/// foreach (var node in g.Nodes())
+	/// 	pos[node] = r.NextDouble();
+	/// var dijkstra = new Dijkstra(g, arc =&gt; Math.Abs(pos[g.U(arc)] - pos[g.V(arc)]), DijkstraMode.Sum);
+	/// Node a = g.GetNode(0), b = g.GetNode(1);
+	/// dijkstra.AddSource(a);
+	/// dijkstra.RunUntilFixed(b);
+	/// Console.WriteLine("Distance of b from a: "+dijkstra.GetDistance(b));
 	/// </code>
 	/// </para>
 	/// </remarks>
-	public sealed class Dijkstra
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class Dijkstra<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// The arc cost function.
@@ -99,13 +99,13 @@ namespace Unchase.Satsuma.Algorithms
 		private readonly Core.Collections.PriorityQueue<Node, double> _priorityQueue;
 
 		/// <summary>
-		/// Initialize <see cref="Dijkstra"/>.
+		/// Initialize <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
 		/// <param name="mode"><see cref="Mode"/>.</param>
 		public Dijkstra(
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
             Func<Arc, double> cost,
             DijkstraMode mode)
 		{
@@ -335,14 +335,14 @@ namespace Unchase.Satsuma.Algorithms
 		/// </summary>
 		/// <param name="node">Node.</param>
 		/// <returns>Returns a current cheapest path, or null if the node has not been reached yet.</returns>
-		public IPath? GetPath(Node node)
+		public IPath<TNodeProperty, TArcProperty>? GetPath(Node node)
 		{
             if (!Reached(node))
             {
                 return null;
             }
 
-			var result = new Path(Graph);
+			var result = new Adapters.Path<TNodeProperty, TArcProperty>(Graph);
 			result.Begin(node);
 			while (true)
 			{

@@ -34,24 +34,26 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.IO
 {
-    /// <summary>
+	/// <summary>
 	/// Loads and saves graphs stored in the <em>Lemon Graph Format</em>.
 	/// </summary>
 	/// <remarks>
 	/// See <a href='https://projects.coin-or.org/svn/LEMON/trunk/doc/lgf.dox'>this documentation page</a>
-    /// for a specification of the LGF.
+	/// for a specification of the LGF.
 	/// </remarks>
-	public sealed class LemonGraphFormat
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class LemonGraphFormat<TNodeProperty, TArcProperty>
     {
 		/// <summary>
-        /// The graph itself.
-        /// </summary>
-        /// <remarks>
-        /// <para>- <b>When loading</b>: Must be an <see cref="IBuildableGraph"/> to accomodate the loaded graph.</para>
-        /// <para><see cref="CustomGraph"/> instance by default.</para>
-        /// <para>- <b>When saving</b>: Can be an arbitrary graph (not null).</para>
-        /// </remarks>
-		public IGraph Graph { get; set; } = new CustomGraph();
+		/// The graph itself.
+		/// </summary>
+		/// <remarks>
+		/// <para>- <b>When loading</b>: Must be an <see cref="IBuildableGraph"/> to accomodate the loaded graph.</para>
+		/// <para><see cref="CustomGraph{TNodeProperty, TArcProperty}"/> instance by default.</para>
+		/// <para>- <b>When saving</b>: Can be an arbitrary graph (not null).</para>
+		/// </remarks>
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; set; } = new CustomGraph<TNodeProperty, TArcProperty>();
 
 		/// <summary>
 		/// The node maps, as contained in the nodes section of the input.
@@ -74,7 +76,7 @@ namespace Unchase.Satsuma.IO
 		public Dictionary<string, string> Attributes { get; }
 
 		/// <summary>
-		/// Initialize <seealso cref="LemonGraphFormat"/>.
+		/// Initialize <seealso cref="LemonGraphFormat{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		public LemonGraphFormat()
 		{

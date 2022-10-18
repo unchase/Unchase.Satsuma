@@ -31,18 +31,20 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
-    /// <summary>
+	/// <summary>
 	/// Finds the cutvertices and blocks (2-node-connected components) of a graph.
 	/// </summary>
 	/// <remarks>
 	/// Blocks (2-node-connected components) are maximal 2-node-connected subgraphs and bridge arcs.
 	/// </remarks>
-	public class BiNodeConnectedComponents
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class BiNodeConnectedComponents<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// The number of blocks (2-node-connected components) in the graph.
@@ -68,20 +70,20 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 		public Dictionary<Node, int>? Cutvertices { get; }
 
 		private class BlockDfs : 
-            LowpointDfs
+            LowpointDfs<TNodeProperty, TArcProperty>
 		{
-            private readonly BiNodeConnectedComponents _parent;
+            private readonly BiNodeConnectedComponents<TNodeProperty, TArcProperty> _parent;
 			private Stack<Node> _blockStack = new();
 			private bool _oneNodeComponent;
 
 			/// <summary>
 			/// Initialize <see cref="BlockDfs"/>.
 			/// </summary>
-			/// <param name="graph"><see cref="IGraph"/>.</param>
-			/// <param name="parent"><see cref="BiNodeConnectedComponents"/>.</param>
+			/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+			/// <param name="parent"><see cref="BiNodeConnectedComponents{TNodeProperty, TArcProperty}"/>.</param>
 			public BlockDfs(
-                IGraph graph, 
-                BiNodeConnectedComponents parent) 
+                IGraph<TNodeProperty, TArcProperty> graph, 
+                BiNodeConnectedComponents<TNodeProperty, TArcProperty> parent) 
                 : base(graph)
             {
                 _parent = parent;
@@ -165,12 +167,12 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 		}
 
 		/// <summary>
-		/// Initialize <see cref="BiNodeConnectedComponents"/>.
+		/// Initialize <see cref="BiNodeConnectedComponents{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
 		/// <param name="flags"><see cref="BiNodeConnectedComponentsFlags"/>.</param>
 		public BiNodeConnectedComponents(
-            IGraph graph,
+            IGraph<TNodeProperty, TArcProperty> graph,
             BiNodeConnectedComponentsFlags flags = 0)
 		{
 			Graph = graph;

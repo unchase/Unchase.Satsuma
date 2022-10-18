@@ -34,12 +34,14 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
     /// <summary>
     /// Finds the bridges and 2-edge-connected components in a graph.
     /// </summary>
-    public sealed class BiEdgeConnectedComponents
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public sealed class BiEdgeConnectedComponents<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.
         /// </summary>
-        public IGraph Graph { get; }
+        public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// The number of 2-edge-connected components in the graph.
@@ -63,16 +65,16 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
         public HashSet<Arc>? Bridges { get; }
 
         /// <summary>
-        /// Initialize <see cref="BiEdgeConnectedComponents"/>.
+        /// Initialize <see cref="BiEdgeConnectedComponents{TNodeProperty, TArcProperty}"/>.
         /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="flags"><see cref="BiEdgeConnectedComponentsFlags"/>.</param>
         public BiEdgeConnectedComponents(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             BiEdgeConnectedComponentsFlags flags = 0)
         {
             Graph = graph;
-            var dfs = new BridgeDfs(graph);
+            var dfs = new BridgeDfs<TNodeProperty, TArcProperty>(graph);
             dfs.Run();
 
             Count = dfs.ComponentCount;
@@ -83,13 +85,14 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 
             if (0 != (flags & BiEdgeConnectedComponentsFlags.CreateComponents))
             {
-                var withoutBridges = new Subgraph(graph);
+                var withoutBridges = new Subgraph<TNodeProperty, TArcProperty>(graph);
                 foreach (var arc in dfs.Bridges ?? new())
                 {
                     withoutBridges.Enable(arc, false);
                 }
 
-                Components = new ConnectedComponents(withoutBridges, ConnectedComponentsFlags.CreateComponents).Components;
+                Components = 
+                    new ConnectedComponents<TNodeProperty, TArcProperty>(withoutBridges, ConnectedComponentsFlags.CreateComponents).Components;
             }
         }
     }

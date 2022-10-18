@@ -9,7 +9,7 @@ using Xunit;
 namespace Unchase.Satsuma.Test.Algorithms
 {
     /// <summary>
-    /// <see cref="BellmanFord"/> tests.
+    /// <see cref="BellmanFord{TNodeProperty, TArcProperty}"/> tests.
     /// </summary>
     public class BellmanFordTests
     {
@@ -24,8 +24,8 @@ namespace Unchase.Satsuma.Test.Algorithms
             if (start)
             {
                 // Arrange
-                var graph = new CompleteGraph(1, Directedness.Directed);
-                var superGraph = new Supergraph(graph);
+                var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
+                var superGraph = new Supergraph<int, int>(graph);
                 superGraph.AddNode(1);
                 superGraph.AddNode(2);
                 superGraph.AddNode(3);
@@ -53,7 +53,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 superGraph.AddArc(new(6), new(7), Directedness.Directed); // cost = 3 for 6 -> 7
 
                 // Act
-                var bellmanFord = new BellmanFord(superGraph, arc =>
+                var bellmanFord = new BellmanFord<int, int>(superGraph, arc =>
                 {
                     var u = superGraph.U(arc);
                     var uProperties = u.GetProperties(superGraph);

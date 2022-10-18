@@ -39,12 +39,14 @@ namespace Unchase.Satsuma.LP
     /// <remarks>
     /// A stable set is a set of nodes with no arcs between any of the nodes.
     /// </remarks>
-    public sealed class MaximumStableSet
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public sealed class MaximumStableSet<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.
         /// </summary>
-        public IGraph Graph { get; }
+        public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
         /// <summary>
         /// A finite weight function on the nodes of <see cref="Graph"/>.
@@ -70,14 +72,14 @@ namespace Unchase.Satsuma.LP
         public HashSet<Node>? Nodes { get; }
 
         /// <summary>
-        /// Initialize <see cref="MaximumStableSet"/>.
+        /// Initialize <see cref="MaximumStableSet{TNodeProperty, TArcProperty}"/>.
         /// </summary>
         /// <param name="solver"><see cref="ISolver"/>.</param>
         /// <param name="graph"><see cref="Graph"/>.</param>
         /// <param name="weight"><see cref="Weight"/>.</param>
         public MaximumStableSet(
             ISolver solver, 
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             Func<Node, double>? weight = null)
         {
             Graph = graph;

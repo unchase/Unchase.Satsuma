@@ -33,8 +33,10 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
     /// <summary>
     /// Calculates bridges.
     /// </summary>
-	internal class BridgeDfs : 
-        LowpointDfs
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	internal class BridgeDfs<TNodeProperty, TArcProperty> : 
+        LowpointDfs<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// Component count.
@@ -47,11 +49,12 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
         public HashSet<Arc>? Bridges;
 
         /// <summary>
-        /// Initialize <see cref="BridgeDfs"/>.
+        /// Initialize <see cref="BridgeDfs{TNodeProperty, TArcProperty}"/>.
         /// </summary>
-        /// <param name="graph"><see cref="IGraph"/>.</param>
-        public BridgeDfs(IGraph graph) 
-            : base(graph)
+        /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+        public BridgeDfs(
+            IGraph<TNodeProperty, TArcProperty> graph) 
+                : base(graph)
         {
         }
 

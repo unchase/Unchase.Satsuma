@@ -46,8 +46,10 @@ namespace Unchase.Satsuma.Core.Contracts
     /// A path is called empty if it has no nodes.
     /// </para>
     /// </remarks>
-    public interface IPath : 
-        IGraph
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+    public interface IPath<TNodeProperty, TArcProperty> : 
+        IGraph<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The first node of the path, or Node.Invalid if the path is empty.

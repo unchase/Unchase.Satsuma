@@ -24,34 +24,37 @@ freely, subject to the following restrictions:
 Updated by Unchase © 2022*/
 #endregion
 
+using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Contracts;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
 
-namespace Unchase.Satsuma.Core
+namespace Unchase.Satsuma.Adapters
 {
-    /// <summary>
+	/// <summary>
 	/// A path or cycle graph on a given number of nodes.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// Not to be confused with <see cref="Path"/>. <see cref="Path"/> is an adapter which stores a path or cycle of some other graph,
-	/// while <see cref="PathGraph"/> is a standalone graph (a "graph constant").
+	/// Not to be confused with <see cref="Path{TNodeProperty, TArcProperty}"/>. <see cref="Path{TNodeProperty, TArcProperty}"/> is an adapter which stores a path or cycle of some other graph,
+	/// while <see cref="PathGraph{TNodeProperty, TArcProperty}"/> is a standalone graph (a "graph constant").
 	/// </para>
 	/// <para>Memory usage: O(1).</para>
 	/// <para>This type is thread safe.</para>
 	/// </remarks>
-	public sealed class PathGraph : 
-        IPath
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class PathGraph<TNodeProperty, TArcProperty> : 
+        IPath<TNodeProperty, TArcProperty>
 	{
 		private readonly int _nodeCount;
 		private readonly bool _isCycle, _directed;
 
         /// <inheritdoc />
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; } = new();
 
         /// <inheritdoc />
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; } = new();
 
 		/// <summary>
 		/// The first node.
@@ -68,7 +71,7 @@ namespace Unchase.Satsuma.Core
             : Node.Invalid;
 
 		/// <summary>
-		/// Initialize <see cref="PathGraph"/>.
+		/// Initialize <see cref="PathGraph{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="nodeCount">Node count.</param>
 		/// <param name="topology"><see cref="Topology"/>.</param>
@@ -127,7 +130,7 @@ namespace Unchase.Satsuma.Core
 		}
 
 		/// <inheritdoc />
-        public Dictionary<string, object>? GetNodeProperties(Node node)
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node)
         {
             return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
@@ -135,7 +138,7 @@ namespace Unchase.Satsuma.Core
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc)
         {
             return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties

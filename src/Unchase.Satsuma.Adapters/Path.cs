@@ -31,7 +31,7 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Adapters
 {
-    /// <summary>
+	/// <summary>
 	/// Adapter for storing a path of an underlying graph.
 	/// </summary>
 	/// <remarks>
@@ -44,24 +44,26 @@ namespace Unchase.Satsuma.Adapters
 	/// Example (building a path):
 	/// <code>
 	/// var g = new CompleteGraph(15);
-    /// var p = new Path(g);
-    /// var u = g.GetNode(0), v = g.GetNode(1), w = g.GetNode(2);
-    /// p.Begin(u);
-    /// p.AddLast(g.GetArc(u, v));
-    /// p.AddFirst(g.GetArc(w, u));
-    /// // now we have the w--u--v path
-    /// p.Reverse();
-    /// // now we have the v--u--w path
+	/// var p = new Path(g);
+	/// var u = g.GetNode(0), v = g.GetNode(1), w = g.GetNode(2);
+	/// p.Begin(u);
+	/// p.AddLast(g.GetArc(u, v));
+	/// p.AddFirst(g.GetArc(w, u));
+	/// // now we have the w--u--v path
+	/// p.Reverse();
+	/// // now we have the v--u--w path
 	/// </code>
 	/// </para>
 	/// <para></para>
 	/// </remarks>
-	public sealed class Path : 
-        IPath, 
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class Path<TNodeProperty, TArcProperty> : 
+        IPath<TNodeProperty, TArcProperty>, 
         IClearable
 	{
 		/// The graph containing the path.
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// The first node.
@@ -74,10 +76,10 @@ namespace Unchase.Satsuma.Adapters
 		public Node LastNode { get; private set; }
 
         /// <inheritdoc />
-        public Dictionary<Node, NodeProperties> NodePropertiesDictionary { get; } = new();
+        public Dictionary<Node, NodeProperties<TNodeProperty>> NodePropertiesDictionary { get; } = new();
 
         /// <inheritdoc />
-        public Dictionary<Arc, ArcProperties> ArcPropertiesDictionary { get; } = new();
+        public Dictionary<Arc, ArcProperties<TArcProperty>> ArcPropertiesDictionary { get; } = new();
 
 		private int _nodeCount;
 		private Dictionary<Node, Arc> _nextArc;
@@ -88,9 +90,9 @@ namespace Unchase.Satsuma.Adapters
 		/// <summary>
 		/// Initialize and empty <see cref="Path"/>.
 		/// </summary>
-		/// <param name="graph"><see cref="IGraph"/>.</param>
-        public Path(
-            IGraph graph)
+		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
+		public Path(
+            IGraph<TNodeProperty, TArcProperty> graph)
 		{
 			Graph = graph;
 
@@ -229,7 +231,7 @@ namespace Unchase.Satsuma.Adapters
 		}
 
 		/// <inheritdoc />
-        public Dictionary<string, object>? GetNodeProperties(Node node)
+        public Dictionary<string, TNodeProperty>? GetNodeProperties(Node node)
         {
             return NodePropertiesDictionary.TryGetValue(node, out var p)
                 ? p.Properties
@@ -237,7 +239,7 @@ namespace Unchase.Satsuma.Adapters
         }
 
         /// <inheritdoc />
-        public Dictionary<string, object>? GetArcProperties(Arc arc)
+        public Dictionary<string, TArcProperty>? GetArcProperties(Arc arc)
         {
             return ArcPropertiesDictionary.TryGetValue(arc, out var p)
                 ? p.Properties

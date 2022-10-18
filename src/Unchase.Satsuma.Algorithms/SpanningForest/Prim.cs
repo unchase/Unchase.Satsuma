@@ -33,11 +33,11 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.SpanningForest
 {
-    /// <summary>
+	/// <summary>
 	/// Finds a minimum cost spanning forest in a graph using Prim's algorithm.
 	/// </summary>
 	/// <remarks>
-	/// <para>Most suitable for dense graphs. For sparse (i.e. everyday) graphs, use <see cref="Kruskal{TCost}"/>.</para>
+	/// <para>Most suitable for dense graphs. For sparse (i.e. everyday) graphs, use <see cref="Kruskal{TCost, TNodeProperty, TArcProperty}"/>.</para>
 	/// <para>
 	/// Running time: O((m+n) log n), memory usage: O(n); 
 	/// where n is the number of nodes and m is the number of arcs.
@@ -59,16 +59,18 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 	/// </code>
 	/// </para>
 	/// <para>The graph in the example is a complete graph, which is dense.</para>
-	/// <para>That's why we have used <see cref="Prim{TCost}"/> instead of <see cref="Kruskal{TCost}"/>.</para>
+	/// <para>That's why we have used <see cref="Prim{TCost, TNodeProperty, TArcProperty}"/> instead of <see cref="Kruskal{TCost, TNodeProperty, TArcProperty}"/>.</para>
 	/// </remarks>
 	/// <typeparam name="TCost">The arc cost type.</typeparam>
-	public sealed class Prim<TCost>
+	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public sealed class Prim<TCost, TNodeProperty, TArcProperty>
 		where TCost : IComparable<TCost>
 	{
 		/// <summary>
 		/// The input graph.
 		/// </summary>
-		public IGraph Graph { get; }
+		public IGraph<TNodeProperty, TArcProperty> Graph { get; }
 
 		/// <summary>
 		/// An arbitrary function assigning costs to the arcs.
@@ -83,15 +85,15 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 		/// <summary>
 		/// The cheapest spanning forest as a subgraph of the original graph.
 		/// </summary>
-		public Subgraph ForestGraph { get; }
+		public Subgraph<TNodeProperty, TArcProperty> ForestGraph { get; }
 
 		/// <summary>
-		/// 
+		/// Initialize <see cref="Prim{TCost,TNodeProperty,TArcProperty}"/>.
 		/// </summary>
-		/// <param name="graph"></param>
-		/// <param name="cost"></param>
+		/// <param name="graph"><see cref="Graph"/>.</param>
+		/// <param name="cost"><see cref="Cost"/>.</param>
 		public Prim(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             Func<Arc, TCost> cost)
 		{
 			Graph = graph;
@@ -104,12 +106,12 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 		}
 
 		/// <summary>
-		/// Initialize <see cref="Prim{TCost}"/>.
+		/// Initialize <see cref="Prim{TCost, TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="Graph"/>.</param>
 		/// <param name="cost"><see cref="Cost"/>.</param>
 		public Prim(
-            IGraph graph, 
+            IGraph<TNodeProperty, TArcProperty> graph, 
             Dictionary<Arc, TCost> cost)
 			    : this(graph, arc => cost[arc])
 		{
@@ -123,7 +125,7 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 			var parentArc = new Dictionary<Node, Arc>();
 
 			// start with one point from each component
-			var components = new ConnectedComponents(Graph, ConnectedComponentsFlags.CreateComponents);
+			var components = new ConnectedComponents<TNodeProperty, TArcProperty>(Graph, ConnectedComponentsFlags.CreateComponents);
 			foreach (var c in components.Components ?? new())
 			{
 				var root = c.First();
