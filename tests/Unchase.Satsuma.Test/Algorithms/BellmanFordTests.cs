@@ -28,6 +28,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 // Arrange
                 var graph = new CustomGraph();
                 var superGraph = graph.ToSupergraph()
+                    .WithNodesCount(10)
                     .WithNodes(1, 2, 3, 4, 5, 6, 7)
                     .WithNodeProperties(
                         (1, "testProperty", 0),
@@ -36,15 +37,14 @@ namespace Unchase.Satsuma.Test.Algorithms
                         (4, "testProperty", 10),
                         (5, "testProperty", 11),
                         (6, "testProperty", 3),
-                        (7, "testProperty", 8));
-
-                superGraph.WithArcs(
-                    (1, 2, Directedness.Directed), // cost = 0 for 1 -> 2
-                    (2, 3, Directedness.Directed), // cost = 0 for 2 -> 3
-                    (3, 4, Directedness.Directed), // cost = 15 for 3 -> 4
-                    (4, 5, Directedness.Directed), // cost = 10 for 4 -> 5
-                    (5, 6, Directedness.Directed), // cost = 11 for 5 -> 6
-                    (6, 7, Directedness.Directed)); // cost = 3 for 6 -> 7
+                        (7, "testProperty", 8))
+                    .WithArcs(
+                        (1, 2, Directedness.Directed), // cost = 0 for 1 -> 2
+                        (2, 3, Directedness.Directed), // cost = 0 for 2 -> 3
+                        (3, 4, Directedness.Directed), // cost = 15 for 3 -> 4
+                        (4, 5, Directedness.Directed), // cost = 10 for 4 -> 5
+                        (5, 6, Directedness.Directed), // cost = 11 for 5 -> 6
+                        (6, 7, Directedness.Directed)); // cost = 3 for 6 -> 7
 
                 // Act
                 var bellmanFord = superGraph.ToBellmanFord(arc =>

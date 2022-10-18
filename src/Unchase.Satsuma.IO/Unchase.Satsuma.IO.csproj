@@ -12,6 +12,8 @@
     <ApplicationIcon>satsuma.ico</ApplicationIcon>
     <PackageIcon>satsuma.png</PackageIcon>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +27,15 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="" />
+		<None Include="..\..\README.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
     <ProjectReference Include="..\Unchase.Satsuma.Adapters\Unchase.Satsuma.Adapters.csproj" />
   </ItemGroup>
 
