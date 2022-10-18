@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
-using Unchase.Satsuma.Adapters;
+using Unchase.Satsuma.Adapters.Extensions;
 using Unchase.Satsuma.Algorithms;
+using Unchase.Satsuma.Algorithms.Extensions;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Enums;
 using Xunit;
@@ -24,7 +25,7 @@ namespace Unchase.Satsuma.Test.Algorithms
             {
                 // Arrange
                 var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
-                var superGraph = new Supergraph<int, int>(graph);
+                var superGraph = graph.ToSupergraph();
                 superGraph.AddNode(1);
                 superGraph.AddNode(2);
                 superGraph.AddNode(3);
@@ -40,7 +41,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 var random = new Random();
 
                 // Act
-                var preflow = new Preflow<int, int>(superGraph, _ => random.Next(6, 1000), new(1), new(6));
+                var preflow = superGraph.ToPreflow(_ => random.Next(6, 1000), new(1), new(6));
 
                 // Assert
                 preflow.FlowSize.Should().BeGreaterOrEqualTo(6).And.BeLessOrEqualTo(1000);

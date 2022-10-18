@@ -29,16 +29,38 @@ using Unchase.Satsuma.Core.Contracts;
 namespace Unchase.Satsuma.Core.Extensions
 {
     /// <summary>
-    /// Extension methods to <see cref="IGraph{TNodeProperty, TArcProperty}"/>.
+    /// Extension methods for <see cref="IGraph{TNodeProperty, TArcProperty}"/> and <see cref="IGraph"/>.
     /// </summary>
     public static class GraphExtensions
     {
+        #region Properties
+
         /// <summary>
         /// Add node properties to the graph.
         /// </summary>
         /// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
         /// <param name="nodeProperties">Node properties dictionary.</param>
         public static void AddNodeProperties<TNodeProperty, TArcProperty>(this IGraph<TNodeProperty, TArcProperty> graph, Dictionary<Node, NodeProperties<TNodeProperty>> nodeProperties)
+        {
+            foreach (var node in nodeProperties.Keys)
+            {
+                if (graph.NodePropertiesDictionary.ContainsKey(node))
+                {
+                    graph.NodePropertiesDictionary[node] = nodeProperties[node];
+                }
+                else
+                {
+                    graph.NodePropertiesDictionary.Add(node, nodeProperties[node]);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add node properties to the graph.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="nodeProperties">Node properties dictionary.</param>
+        public static void AddNodeProperties(this IGraph graph, Dictionary<Node, NodeProperties<object>> nodeProperties)
         {
             foreach (var node in nodeProperties.Keys)
             {
@@ -72,5 +94,27 @@ namespace Unchase.Satsuma.Core.Extensions
                 }
             }
         }
+
+        /// <summary>
+        /// Add arc properties to the graph.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="arcProperties">Arc properties dictionary.</param>
+        public static void AddArcProperties(this IGraph graph, Dictionary<Arc, ArcProperties<object>> arcProperties)
+        {
+            foreach (var arc in arcProperties.Keys)
+            {
+                if (graph.ArcPropertiesDictionary.ContainsKey(arc))
+                {
+                    graph.ArcPropertiesDictionary[arc] = arcProperties[arc];
+                }
+                else
+                {
+                    graph.ArcPropertiesDictionary.Add(arc, arcProperties[arc]);
+                }
+            }
+        }
+
+        #endregion Properties
     }
 }

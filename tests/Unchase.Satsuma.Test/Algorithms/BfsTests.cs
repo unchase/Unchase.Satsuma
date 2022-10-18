@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
-using Unchase.Satsuma.Adapters;
+using Unchase.Satsuma.Adapters.Extensions;
 using Unchase.Satsuma.Algorithms;
+using Unchase.Satsuma.Algorithms.Extensions;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
@@ -25,7 +26,7 @@ namespace Unchase.Satsuma.Test.Algorithms
             {
                 // Arrange
                 var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
-                var superGraph = new Supergraph<int, int>(graph);
+                var superGraph = graph.ToSupergraph();
                 superGraph.AddNode(1);
                 superGraph.AddNode(2);
                 superGraph.AddNode(3);
@@ -44,7 +45,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                     { new(4), new(new() { { "testProperty", 11 } }) }
                 });
 
-                var bfs = new Bfs<int, int>(superGraph);
+                var bfs = superGraph.ToBfs();
                 bfs.AddSource(superGraph.Nodes().First());
 
                 // Act

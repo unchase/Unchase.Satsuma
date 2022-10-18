@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
-using Unchase.Satsuma.Adapters;
+using Unchase.Satsuma.Adapters.Extensions;
 using Unchase.Satsuma.Algorithms;
 using Unchase.Satsuma.Algorithms.Enums;
+using Unchase.Satsuma.Algorithms.Extensions;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
@@ -26,7 +27,7 @@ namespace Unchase.Satsuma.Test.Algorithms
             {
                 // Arrange
                 var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
-                var superGraph = new Supergraph<int, int>(graph);
+                var superGraph = graph.ToSupergraph();
                 superGraph.AddNode(1);
                 superGraph.AddNode(2);
                 superGraph.AddNode(3);
@@ -53,7 +54,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 superGraph.AddArc(new(5), new(6), Directedness.Directed); // cost = 11 for 5 -> 6
                 superGraph.AddArc(new(6), new(7), Directedness.Directed); // cost = 3 for 6 -> 7
 
-                var dijkstra = new Dijkstra<int, int>(superGraph, arc =>
+                var dijkstra = superGraph.ToDijkstra(arc =>
                 {
                     var u = superGraph.U(arc);
                     var uProperties = u.GetProperties(superGraph);

@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
-using Unchase.Satsuma.Adapters;
+using Unchase.Satsuma.Adapters.Extensions;
 using Unchase.Satsuma.Algorithms;
+using Unchase.Satsuma.Algorithms.Extensions;
 using Unchase.Satsuma.Core;
 using Unchase.Satsuma.Core.Enums;
 using Unchase.Satsuma.Core.Extensions;
@@ -25,7 +26,7 @@ namespace Unchase.Satsuma.Test.Algorithms
             {
                 // Arrange
                 var graph = new CompleteGraph<int, int>(1, Directedness.Directed);
-                var superGraph = new Supergraph<int, int>(graph);
+                var superGraph = graph.ToSupergraph();
                 superGraph.AddNode(1);
                 superGraph.AddNode(2);
                 superGraph.AddNode(3);
@@ -53,7 +54,7 @@ namespace Unchase.Satsuma.Test.Algorithms
                 superGraph.AddArc(new(6), new(7), Directedness.Directed); // cost = 3 for 6 -> 7
 
                 // Act
-                var bellmanFord = new BellmanFord<int, int>(superGraph, arc =>
+                var bellmanFord = superGraph.ToBellmanFord(arc =>
                 {
                     var u = superGraph.U(arc);
                     var uProperties = u.GetProperties(superGraph);
