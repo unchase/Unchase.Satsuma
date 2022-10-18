@@ -30,6 +30,21 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
+    /// <inheritdoc cref="BridgeDfs{TNodeProperty, TArcProperty}"/>
+    internal class BridgeDfs :
+        BridgeDfs<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="BridgeDfs"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public BridgeDfs(
+            IGraph graph)
+                : base(graph)
+        {
+        }
+    }
+
     /// <summary>
     /// Calculates bridges.
     /// </summary>

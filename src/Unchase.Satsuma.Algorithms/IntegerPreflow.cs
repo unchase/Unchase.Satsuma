@@ -32,6 +32,27 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="IntegerPreflow{TNodeProperty, TArcProperty}"/>
+	public sealed class IntegerPreflow :
+        IntegerPreflow<object, object>
+    {
+		/// <summary>
+		/// Initialize <see cref="IntegerPreflow"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="capacity">The arc capacity function.</param>
+		/// <param name="source">The source node.</param>
+		/// <param name="target">The target node.</param>
+		public IntegerPreflow(
+            IGraph graph,
+            Func<Arc, long> capacity,
+            Node source,
+            Node target)
+		        : base(graph, capacity, source, target)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds a maximum flow for integer capacities using the Goldberg-Tarjan preflow algorithm.
 	/// </summary>
@@ -39,8 +60,8 @@ namespace Unchase.Satsuma.Algorithms
 	/// The sum of capacities on the outgoing edges of Source must be at most <see cref="long.MaxValue"/>.
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class IntegerPreflow<TNodeProperty, TArcProperty> : 
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class IntegerPreflow<TNodeProperty, TArcProperty> : 
         IFlow<long, TNodeProperty, TArcProperty>
 	{
 		/// <summary>

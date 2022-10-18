@@ -35,6 +35,21 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Adapters
 {
+	/// <inheritdoc cref="Supergraph{TNodeProperty, TArcProperty}"/>
+	public class Supergraph :
+        Supergraph<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="Supergraph"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public Supergraph(
+            IGraph? graph)
+		        : base(graph)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Adapter for adding nodes/arcs to an underlying graph.
 	/// </summary>

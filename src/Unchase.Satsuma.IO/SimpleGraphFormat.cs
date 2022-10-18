@@ -34,6 +34,18 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.IO
 {
+	/// <inheritdoc cref="SimpleGraphFormat{TNodeProperty, TArcProperty}"/>
+	public sealed class SimpleGraphFormat :
+        SimpleGraphFormat<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="SimpleGraphFormat"/>.
+        /// </summary>
+        public SimpleGraphFormat()
+		{
+        }
+    }
+
 	/// <summary>
 	/// Loads and saves graphs which are stored in a very simple format.
 	/// </summary>
@@ -72,8 +84,8 @@ namespace Unchase.Satsuma.IO
 	/// </para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class SimpleGraphFormat<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class SimpleGraphFormat<TNodeProperty, TArcProperty>
     {
 		/// <summary>
 		/// The graph itself.

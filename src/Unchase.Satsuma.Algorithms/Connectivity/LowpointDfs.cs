@@ -32,6 +32,21 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
+    /// <inheritdoc cref="LowpointDfs{TNodeProperty, TArcProperty}"/>
+    internal class LowpointDfs :
+        LowpointDfs<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="LowpointDfs"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public LowpointDfs(
+            IGraph graph)
+            : base(graph)
+        {
+        }
+    }
+
     /// <summary>
     /// Calculates the lowpoint for each node.
     /// </summary>

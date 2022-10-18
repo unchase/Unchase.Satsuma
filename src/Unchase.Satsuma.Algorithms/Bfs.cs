@@ -31,6 +31,21 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="Bfs{TNodeProperty, TArcProperty}"/>
+	public sealed class Bfs :
+        Bfs<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="Bfs"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public Bfs(
+            IGraph graph)
+		        : base(graph)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Performs a breadth-first search (BFS) to find shortest paths from a set of source nodes to all nodes.
 	/// </summary>
@@ -48,7 +63,7 @@ namespace Unchase.Satsuma.Algorithms
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
 	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class Bfs<TNodeProperty, TArcProperty>
+	public class Bfs<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.
@@ -63,7 +78,8 @@ namespace Unchase.Satsuma.Algorithms
 		/// Initialize <see cref="Bfs{TNodeProperty, TArcProperty}"/>.
 		/// </summary>
 		/// <param name="graph"><see cref="IGraph{TNodeProperty, TArcProperty}"/>.</param>
-		public Bfs(IGraph<TNodeProperty, TArcProperty> graph)
+		public Bfs(
+            IGraph<TNodeProperty, TArcProperty> graph)
 		{
 			Graph = graph;
 

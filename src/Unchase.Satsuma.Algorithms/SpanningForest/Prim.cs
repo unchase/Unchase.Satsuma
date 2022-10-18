@@ -33,6 +33,25 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.SpanningForest
 {
+	/// <inheritdoc cref="Prim{TCost, TNodeProperty, TArcProperty}"/>
+	/// <typeparam name="TCost">The arc cost type.</typeparam>
+	public sealed class Prim<TCost> :
+        Prim<TCost, object, object>
+		    where TCost : IComparable<TCost>
+	{
+		/// <summary>
+		/// Initialize <see cref="Prim{TCost}"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="cost">An arbitrary function assigning costs to the arcs.</param>
+		public Prim(
+            IGraph graph,
+            Func<Arc, TCost> cost)
+		        : base(graph, cost)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds a minimum cost spanning forest in a graph using Prim's algorithm.
 	/// </summary>
@@ -63,8 +82,8 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 	/// </remarks>
 	/// <typeparam name="TCost">The arc cost type.</typeparam>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class Prim<TCost, TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class Prim<TCost, TNodeProperty, TArcProperty>
 		where TCost : IComparable<TCost>
 	{
 		/// <summary>

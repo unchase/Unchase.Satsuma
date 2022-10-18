@@ -32,6 +32,23 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
+	/// <inheritdoc cref="Bipartition{TNodeProperty, TArcProperty}"/>
+	public sealed class Bipartition :
+        Bipartition<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="Bipartition"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="flags"><see cref="BipartitionFlags"/>.</param>
+        public Bipartition(
+            IGraph graph,
+            BipartitionFlags flags = 0)
+		        : base(graph, flags)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Decides whether the graph is bipartite and finds a bipartition into red and blue nodes.
 	/// </summary>
@@ -51,8 +68,8 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 	/// </para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class Bipartition<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class Bipartition<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.

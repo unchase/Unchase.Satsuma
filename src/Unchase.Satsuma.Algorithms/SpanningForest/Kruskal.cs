@@ -31,6 +31,27 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms.SpanningForest
 {
+	/// <inheritdoc cref="Kruskal{TCost, TNodeProperty, TArcProperty}"/>
+	/// <typeparam name="TCost">The arc cost type.</typeparam>
+	public sealed class Kruskal<TCost> :
+        Kruskal<TCost, object, object>
+            where TCost : IComparable<TCost>
+    {
+		/// <summary>
+		/// Initialize <see cref="Kruskal{TCost}"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="cost">An arbitrary function assigning costs to the arcs.</param>
+		/// <param name="maxDegree">An optional per-node maximum degree constraint on the resulting spanning forest. Can be null.</param>
+		public Kruskal(
+            IGraph graph,
+            Func<Arc, TCost> cost,
+            Func<Node, int>? maxDegree = null)
+		        : base(graph, cost, maxDegree)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds a minimum cost spanning forest in a graph using Kruskal's algorithm.
 	/// </summary>
@@ -61,7 +82,7 @@ namespace Unchase.Satsuma.Algorithms.SpanningForest
 	/// <typeparam name="TCost">The arc cost type.</typeparam>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
 	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class Kruskal<TCost, TNodeProperty, TArcProperty>
+	public class Kruskal<TCost, TNodeProperty, TArcProperty>
 		where TCost : IComparable<TCost>
 	{
 		/// <summary>

@@ -33,6 +33,29 @@ using Unchase.Satsuma.LP.Enums;
 
 namespace Unchase.Satsuma.LP
 {
+	/// <inheritdoc cref="MinimumVertexCover{TNodeProperty, TArcProperty}"/>
+	public sealed class MinimumVertexCover :
+        MinimumVertexCover<object, object>
+    {
+		/// <summary>
+		/// Initialize <see cref="MinimumVertexCover"/>.
+		/// </summary>
+		/// <param name="solver"><see cref="ISolver"/>.</param>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="nodeCost">A finite cost function on the nodes of Graph.</param>
+		/// <param name="arcWeight">A finite weight function on the arcs of Graph.</param>
+		/// <param name="relaxed">If true, each node can be chosen with a fractional weight.</param>
+		public MinimumVertexCover(
+            ISolver solver,
+            IGraph graph,
+            Func<Node, double>? nodeCost = null,
+            Func<Arc, double>? arcWeight = null,
+            bool relaxed = false)
+		        : base(solver, graph, nodeCost, arcWeight, relaxed)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds a minimum cost vertex cover.
 	/// </summary>
@@ -45,8 +68,8 @@ namespace Unchase.Satsuma.LP
 	/// </para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class MinimumVertexCover<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class MinimumVertexCover<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.

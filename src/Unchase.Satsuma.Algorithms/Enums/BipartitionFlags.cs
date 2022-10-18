@@ -29,7 +29,7 @@ using Unchase.Satsuma.Algorithms.Connectivity;
 namespace Unchase.Satsuma.Algorithms.Enums
 {
     /// <summary>
-    /// <see cref="Bipartition"/> flags.
+    /// <see cref="Bipartition{TNodeProperty, TArcProperty}"/> flags.
     /// </summary>
     [Flags]
     public enum BipartitionFlags
@@ -40,12 +40,12 @@ namespace Unchase.Satsuma.Algorithms.Enums
         None = 0,
 
         /// <summary>
-        /// If set, <see cref="Bipartition.RedNodes"/> will contain the red nodes if the graph is bipartite.
+        /// If set, <see cref="Bipartition{TNodeProperty, TArcProperty}.RedNodes"/> will contain the red nodes if the graph is bipartite.
         /// </summary>
         CreateRedNodes = 1 << 0,
 
         /// <summary>
-        /// If set, <see cref="Bipartition.BlueNodes"/> will contain the blue nodes if the graph is bipartite.
+        /// If set, <see cref="Bipartition{TNodeProperty, TArcProperty}.BlueNodes"/> will contain the blue nodes if the graph is bipartite.
         /// </summary>
         CreateBlueNodes = 1 << 1
     }

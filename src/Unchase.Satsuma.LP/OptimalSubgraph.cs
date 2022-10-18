@@ -32,6 +32,21 @@ using Unchase.Satsuma.LP.Enums;
 
 namespace Unchase.Satsuma.LP
 {
+	/// <inheritdoc cref="OptimalSubgraph{TNodeProperty, TArcProperty}"/>
+	public sealed class OptimalSubgraph :
+        OptimalSubgraph<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="OptimalSubgraph"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public OptimalSubgraph(
+            IGraph graph)
+		        : base(graph)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds a degree-bounded subgraph with one or more cost functions on the edges.
 	/// </summary>
@@ -42,8 +57,8 @@ namespace Unchase.Satsuma.LP
 	/// <para>Number of equations: O(NodeCount + CostFunctionCount)</para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class OptimalSubgraph<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class OptimalSubgraph<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The definition of a cost function.

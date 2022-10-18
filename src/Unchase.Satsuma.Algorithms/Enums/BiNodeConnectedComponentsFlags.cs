@@ -29,7 +29,7 @@ using Unchase.Satsuma.Algorithms.Connectivity;
 namespace Unchase.Satsuma.Algorithms.Enums
 {
     /// <summary>
-    /// <see cref="BiNodeConnectedComponents"/> flags.
+    /// <see cref="BiNodeConnectedComponents{TNodeProperty, TArcProperty}"/> flags.
     /// </summary>
     [Flags]
     public enum BiNodeConnectedComponentsFlags
@@ -40,12 +40,12 @@ namespace Unchase.Satsuma.Algorithms.Enums
         None = 0,
 
         /// <summary>
-        /// If set, <see cref="BiNodeConnectedComponents.Components"/> will contain the 2-edge-connected components.
+        /// If set, <see cref="BiNodeConnectedComponents{TNodeProperty, TArcProperty}.Components"/> will contain the 2-edge-connected components.
         /// </summary>
         CreateComponents = 1 << 0,
 
         /// <summary>
-        /// If set, <see cref="BiNodeConnectedComponents.Cutvertices"/> will contain information about the cutvertices.
+        /// If set, <see cref="BiNodeConnectedComponents{TNodeProperty, TArcProperty}.Cutvertices"/> will contain information about the cutvertices.
         /// </summary>
         CreateCutvertices = 1 << 1
     }

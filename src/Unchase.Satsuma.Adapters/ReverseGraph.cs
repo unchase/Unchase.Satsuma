@@ -30,6 +30,21 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Adapters
 {
+    /// <inheritdoc cref="ReverseGraph{TNodeProperty, TArcProperty}"/>
+    public sealed class ReverseGraph :
+        ReverseGraph<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="ReverseGraph"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public ReverseGraph(
+            IGraph graph)
+                : base(graph)
+        {
+        }
+    }
+
     /// <summary>
     /// Adapter for reversing all arcs of an underlying graph.
     /// </summary>
@@ -39,7 +54,7 @@ namespace Unchase.Satsuma.Adapters
     /// </remarks>
     /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-    public sealed class ReverseGraph<TNodeProperty, TArcProperty> : 
+    public class ReverseGraph<TNodeProperty, TArcProperty> : 
         IGraph<TNodeProperty, TArcProperty>
     {
         private readonly IGraph<TNodeProperty, TArcProperty> _graph;

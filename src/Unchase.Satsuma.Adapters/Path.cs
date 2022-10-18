@@ -31,6 +31,21 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Adapters
 {
+	/// <inheritdoc cref="Path{TNodeProperty, TArcProperty}"/>
+	public sealed class Path :
+        Path<object, object>
+    {
+        /// <summary>
+        /// Initialize and empty <see cref="Path"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public Path(
+            IGraph graph)
+		        : base(graph)
+        {
+        }
+    }
+
 	/// <summary>
 	/// Adapter for storing a path of an underlying graph.
 	/// </summary>
@@ -57,8 +72,8 @@ namespace Unchase.Satsuma.Adapters
 	/// <para></para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class Path<TNodeProperty, TArcProperty> : 
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class Path<TNodeProperty, TArcProperty> : 
         IPath<TNodeProperty, TArcProperty>, 
         IClearable
 	{

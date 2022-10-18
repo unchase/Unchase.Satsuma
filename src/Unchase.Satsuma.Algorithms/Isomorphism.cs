@@ -32,6 +32,25 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="Isomorphism{TNodeProperty, TArcProperty}"/>
+	public class Isomorphism :
+        Isomorphism<object, object>
+    {
+		/// <summary>
+		/// Initialize <seealso cref="Isomorphism"/>.
+		/// </summary>
+		/// <param name="firstGraph">The first of the two input graphs.</param>
+		/// <param name="secondGraph">The second of the two input graphs.</param>
+		/// <param name="maxIterations">Maximum iterations.</param>
+		public Isomorphism(
+            IGraph firstGraph,
+            IGraph secondGraph,
+            int maxIterations = 16)
+		        : base(firstGraph, secondGraph, maxIterations)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Determines whether two graphs, digraphs or mixed graphs are isomorphic.
 	/// </summary>
@@ -40,7 +59,7 @@ namespace Unchase.Satsuma.Algorithms
 	/// <para>The current implementation is fast but will not be able to identify isomorphisms in many cases.</para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
 	public class Isomorphism<TNodeProperty, TArcProperty>
 	{
         /// <summary>

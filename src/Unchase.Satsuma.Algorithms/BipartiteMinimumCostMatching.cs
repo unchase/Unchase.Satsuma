@@ -34,6 +34,29 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="BipartiteMinimumCostMatching{TNodeProperty, TArcProperty}"/>
+	public sealed class BipartiteMinimumCostMatching :
+        BipartiteMinimumCostMatching<object, object>
+    {
+		/// <summary>
+		/// Initialize <see cref="BipartiteMinimumCostMatching"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="isRed">Describes a bipartition of Graph by dividing its nodes into red and blue ones.</param>
+		/// <param name="cost">A finite cost function on the arcs of Graph.</param>
+		/// <param name="minimumMatchingSize">Minimum constraint on the size (number of arcs) of the returned matching.</param>
+		/// <param name="maximumMatchingSize">Maximum constraint on the size (number of arcs) of the returned matching.</param>
+		public BipartiteMinimumCostMatching(
+            IGraph graph,
+            Func<Node, bool> isRed,
+            Func<Arc, double> cost,
+            int minimumMatchingSize = 0,
+            int maximumMatchingSize = int.MaxValue)
+		        : base(graph, isRed, cost, minimumMatchingSize, maximumMatchingSize)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds a minimum cost matching in a bipartite graph using the network simplex method.
 	/// </summary>
@@ -42,7 +65,7 @@ namespace Unchase.Satsuma.Algorithms
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
 	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class BipartiteMinimumCostMatching<TNodeProperty, TArcProperty>
+	public class BipartiteMinimumCostMatching<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.

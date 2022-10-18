@@ -28,6 +28,12 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Core.Contracts
 {
+    /// <inheritdoc cref="IArcLookup{TArcProperty}"/>
+    public interface IArcLookup :
+        IArcLookup<object>
+    {
+    }
+
     /// <summary>
     /// A graph which can provide information about its arcs.
     /// </summary>

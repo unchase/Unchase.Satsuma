@@ -29,7 +29,7 @@ using Unchase.Satsuma.Algorithms.Connectivity;
 namespace Unchase.Satsuma.Algorithms.Enums
 {
     /// <summary>
-    /// <see cref="ConnectedComponents"/> flag.
+    /// <see cref="ConnectedComponents{TNodeProperty, TArcProperty}"/> flag.
     /// </summary>
     [Flags]
     public enum ConnectedComponentsFlags
@@ -40,7 +40,7 @@ namespace Unchase.Satsuma.Algorithms.Enums
         None = 0,
 
         /// <summary>
-        /// If set, <see cref="ConnectedComponents.Components"/> will contain the connected components.
+        /// If set, <see cref="ConnectedComponents{TNodeProperty, TArcProperty}.Components"/> will contain the connected components.
         /// </summary>
         CreateComponents = 1 << 0
     }

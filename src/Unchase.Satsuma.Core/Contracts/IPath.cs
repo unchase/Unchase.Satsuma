@@ -26,6 +26,12 @@ Updated by Unchase © 2022*/
 
 namespace Unchase.Satsuma.Core.Contracts
 {
+    /// <inheritdoc cref="IPath{TNodeProperty, TArcProperty}"/>
+    public interface IPath :
+        IPath<object, object>
+    {
+    }
+
     /// <summary>
     /// Interface to a read-only path.
     /// </summary>

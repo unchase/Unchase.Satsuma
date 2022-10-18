@@ -30,6 +30,21 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.TSP
 {
+	/// <inheritdoc cref="HamiltonianCycle{TNodeProperty, TArcProperty}"/>
+	public sealed class HamiltonianCycle :
+        HamiltonianCycle<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="HamiltonianCycle"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public HamiltonianCycle(
+            IGraph graph)
+		        : base(graph)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Attempts to find a (directed) Hamiltonian cycle in a graph using TSP solvers.
 	/// </summary>
@@ -43,8 +58,8 @@ namespace Unchase.Satsuma.TSP
 	/// </para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class HamiltonianCycle<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class HamiltonianCycle<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph

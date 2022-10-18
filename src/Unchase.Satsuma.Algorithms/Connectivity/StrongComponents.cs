@@ -31,6 +31,23 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
+	/// <inheritdoc cref="StrongComponents{TNodeProperty, TArcProperty}"/>
+	public sealed class StrongComponents :
+        StrongComponents<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="StrongComponents"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="flags"><see cref="StrongComponentsFlags"/>.</param>
+        public StrongComponents(
+            IGraph graph,
+            StrongComponentsFlags flags = 0)
+		        : base(graph, flags)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds the strongly connected components of a digraph.
 	/// </summary>
@@ -38,8 +55,8 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 	/// Edges count as 2-cycles.
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class StrongComponents<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class StrongComponents<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input digraph.

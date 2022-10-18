@@ -31,6 +31,23 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
+	/// <inheritdoc cref="BiNodeConnectedComponents{TNodeProperty, TArcProperty}"/>
+	public class BiNodeConnectedComponents :
+        BiNodeConnectedComponents<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="BiNodeConnectedComponents"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="flags"><see cref="BiNodeConnectedComponentsFlags"/>.</param>
+        public BiNodeConnectedComponents(
+            IGraph graph,
+            BiNodeConnectedComponentsFlags flags = 0)
+		        : base(graph, flags)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds the cutvertices and blocks (2-node-connected components) of a graph.
 	/// </summary>
@@ -38,7 +55,7 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
 	/// Blocks (2-node-connected components) are maximal 2-node-connected subgraphs and bridge arcs.
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
 	public class BiNodeConnectedComponents<TNodeProperty, TArcProperty>
 	{
         /// <summary>

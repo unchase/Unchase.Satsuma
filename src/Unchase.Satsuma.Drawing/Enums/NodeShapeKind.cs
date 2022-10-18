@@ -52,7 +52,7 @@ namespace Unchase.Satsuma.Drawing.Enums
         Triangle,
 
         /// <summary>
-        /// UpsideDownTriangle.
+        /// Upside down triangle.
         /// </summary>
         UpsideDownTriangle
     }

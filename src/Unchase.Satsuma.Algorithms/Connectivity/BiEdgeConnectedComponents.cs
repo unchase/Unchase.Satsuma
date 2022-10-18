@@ -31,12 +31,29 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
+    /// <inheritdoc cref="BiEdgeConnectedComponents{TNodeProperty, TArcProperty}"/>
+    public class BiEdgeConnectedComponents :
+        BiEdgeConnectedComponents<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="BiEdgeConnectedComponents"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="flags"><see cref="BiEdgeConnectedComponentsFlags"/>.</param>
+        public BiEdgeConnectedComponents(
+            IGraph graph,
+            BiEdgeConnectedComponentsFlags flags = 0)
+                : base(graph, flags)
+        {
+        }
+    }
+
     /// <summary>
     /// Finds the bridges and 2-edge-connected components in a graph.
     /// </summary>
     /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-    public sealed class BiEdgeConnectedComponents<TNodeProperty, TArcProperty>
+    public class BiEdgeConnectedComponents<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.

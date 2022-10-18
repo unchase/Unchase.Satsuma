@@ -31,6 +31,23 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
+    /// <inheritdoc cref="ConnectedComponents{TNodeProperty, TArcProperty}"/>
+    public sealed class ConnectedComponents :
+        ConnectedComponents<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="ConnectedComponents"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="flags"><see cref="ConnectedComponentsFlags"/>.</param>
+        public ConnectedComponents(
+            IGraph graph,
+            ConnectedComponentsFlags flags = 0)
+                : base(graph, flags)
+        {
+        }
+    }
+
     /// <summary>
     /// Finds the connected components of a graph.
     /// </summary>
@@ -50,7 +67,7 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
     /// </remarks>
     /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-    public sealed class ConnectedComponents<TNodeProperty, TArcProperty>
+    public class ConnectedComponents<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.

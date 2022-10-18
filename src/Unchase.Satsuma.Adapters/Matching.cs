@@ -31,7 +31,22 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Adapters
 {
-	/// <summary>
+    /// <inheritdoc cref="Matching{TNodeProperty, TArcProperty}"/>
+    public sealed class Matching :
+        Matching<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="Matching"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public Matching(
+            IGraph graph)
+		        : base(graph)
+        {
+        }
+    }
+
+    /// <summary>
 	/// Adapter for storing a matching of an underlying graph.
 	/// </summary>
 	/// <remarks>
@@ -43,8 +58,8 @@ namespace Unchase.Satsuma.Adapters
 	/// <para>A newly created Matching object has zero arcs.</para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class Matching<TNodeProperty, TArcProperty> : 
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class Matching<TNodeProperty, TArcProperty> : 
         IMatching<TNodeProperty, TArcProperty>, 
         IClearable
 	{

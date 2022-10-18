@@ -29,18 +29,35 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Core
 {
-	/// <summary>
-	/// A complete undirected or directed graph on a given number of nodes.
-	/// </summary>
-	/// <remarks>
-	/// <para>A complete undirected graph is defined as a graph which has all the possible edges.</para>
-	/// <para>A complete directed graph is defined as a graph which has all the possible directed arcs.</para>
-	/// <para>Memory usage: O(1).</para>
-	/// <para>This type is thread safe.</para>
-	/// </remarks>
-	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <inheritdoc cref="CompleteGraph{TNodeProperty, TArcProperty}"/>
+    public sealed class CompleteGraph :
+        CompleteGraph<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="CompleteGraph"/>.
+        /// </summary>
+        /// <param name="nodeCount">Node count.</param>
+        /// <param name="directedness"><see cref="Directedness"/>.</param>
+        public CompleteGraph(
+            int nodeCount,
+            Directedness directedness)
+                : base(nodeCount, directedness)
+        {
+        }
+    }
+
+    /// <summary>
+    /// A complete undirected or directed graph on a given number of nodes.
+    /// </summary>
+    /// <remarks>
+    /// <para>A complete undirected graph is defined as a graph which has all the possible edges.</para>
+    /// <para>A complete directed graph is defined as a graph which has all the possible directed arcs.</para>
+    /// <para>Memory usage: O(1).</para>
+    /// <para>This type is thread safe.</para>
+    /// </remarks>
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class CompleteGraph<TNodeProperty, TArcProperty> : 
+    public class CompleteGraph<TNodeProperty, TArcProperty> : 
         IGraph<TNodeProperty, TArcProperty>
 	{
 		/// <inheritdoc />

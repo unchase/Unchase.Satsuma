@@ -32,6 +32,23 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.Connectivity
 {
+    /// <inheritdoc cref="TopologicalOrder{TNodeProperty, TArcProperty}"/>
+    public sealed class TopologicalOrder :
+        TopologicalOrder<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="TopologicalOrder"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="flags"><see cref="TopologicalOrderFlags"/>.</param>
+        public TopologicalOrder(
+            IGraph graph,
+            TopologicalOrderFlags flags = 0)
+                : base(graph, flags)
+        {
+        }
+    }
+
     /// <summary>
     /// Decides whether a digraph is acyclic and finds a topological order of its nodes.
     /// </summary>
@@ -40,7 +57,7 @@ namespace Unchase.Satsuma.Algorithms.Connectivity
     /// </remarks>
     /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-    public sealed class TopologicalOrder<TNodeProperty, TArcProperty>
+    public class TopologicalOrder<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.

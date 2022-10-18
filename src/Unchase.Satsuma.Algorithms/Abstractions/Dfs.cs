@@ -32,11 +32,26 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms.Abstractions
 {
+	/// <inheritdoc cref="Dfs{TNodeProperty, TArcProperty}"/>
+	public abstract class Dfs :
+        Dfs<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="Dfs"/>.
+        /// </summary>
+        /// <param name="graph">The input graph.</param>
+        protected Dfs(
+            IGraph graph)
+		        : base(graph)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Performs a customizable depth-first search (DFS).
 	/// </summary>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
 	public abstract class Dfs<TNodeProperty, TArcProperty>
 	{
         /// <summary>

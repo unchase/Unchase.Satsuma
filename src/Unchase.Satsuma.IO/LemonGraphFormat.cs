@@ -34,6 +34,18 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.IO
 {
+	/// <inheritdoc cref="LemonGraphFormat{TNodeProperty, TArcProperty}"/>
+	public sealed class LemonGraphFormat :
+        LemonGraphFormat<object, object>
+    {
+		/// <summary>
+        /// Initialize <seealso cref="LemonGraphFormat"/>.
+        /// </summary>
+        public LemonGraphFormat()
+		{
+        }
+    }
+
 	/// <summary>
 	/// Loads and saves graphs stored in the <em>Lemon Graph Format</em>.
 	/// </summary>
@@ -42,8 +54,8 @@ namespace Unchase.Satsuma.IO
 	/// for a specification of the LGF.
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class LemonGraphFormat<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class LemonGraphFormat<TNodeProperty, TArcProperty>
     {
 		/// <summary>
 		/// The graph itself.

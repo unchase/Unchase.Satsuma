@@ -32,6 +32,23 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="BipartiteMaximumMatching{TNodeProperty, TArcProperty}"/>
+	public sealed class BipartiteMaximumMatching :
+        BipartiteMaximumMatching<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="BipartiteMaximumMatching"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="isRed">Describes a bipartition of the input graph by dividing its nodes into red and blue ones.</param>
+        public BipartiteMaximumMatching(
+            IGraph graph,
+            Func<Node, bool> isRed)
+		        : base(graph, isRed)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds a maximum matching in a bipartite graph using the alternating path algorithm.
 	/// </summary>
@@ -39,8 +56,8 @@ namespace Unchase.Satsuma.Algorithms
 	/// See also <seealso cref="BipartiteMinimumCostMatching{TNodeProperty, TArcProperty}"/>.
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class BipartiteMaximumMatching<TNodeProperty, TArcProperty> : 
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class BipartiteMaximumMatching<TNodeProperty, TArcProperty> : 
         IClearable
 	{
 		/// <summary>

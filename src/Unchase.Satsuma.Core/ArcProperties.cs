@@ -26,6 +26,27 @@ Updated by Unchase © 2022*/
 
 namespace Unchase.Satsuma.Core
 {
+    /// <inheritdoc cref="ArcProperties{TProperty}"/>
+    public class ArcProperties :
+        ArcProperties<object>
+    {
+        /// <summary>
+        /// Initialize <see cref="ArcProperties"/>.
+        /// </summary>
+        /// <param name="u">U node.</param>
+        /// <param name="v">V node.</param>
+        /// <param name="isEdge">Is edge.</param>
+        /// <param name="properties">The arc properties.</param>
+        public ArcProperties(
+            Node u,
+            Node v,
+            bool isEdge,
+            Dictionary<string, object>? properties = default)
+                : base(u, v, isEdge, properties)
+        {
+        }
+    }
+
     /// <summary>
     /// The arc properties.
     /// </summary>

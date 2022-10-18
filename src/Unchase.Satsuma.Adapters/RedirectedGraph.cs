@@ -31,17 +31,34 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Adapters
 {
-	/// <summary>
-	/// Adapter for modifying the direction of some arcs of an underlying graph.
-	/// </summary>
-	/// <remarks>
-	/// <para>Node and Arc objects are interchangeable between the adapter and the original graph.</para>
-	/// <para>The underlying graph can be freely modified while using this adapter.</para>
-	/// <para>For special cases, consider the UndirectedGraph and ReverseGraph classes for performance.</para>
-	/// </remarks>
-	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
+    /// <inheritdoc cref="RedirectedGraph{TNodeProperty, TArcProperty}"/>
+    public sealed class RedirectedGraph :
+        RedirectedGraph<object, object>
+    {
+        /// <summary>
+        /// Creates an adapter over the given graph for redirecting its arcs.
+        /// </summary>
+        /// <param name="graph">The graph to redirect.</param>
+        /// <param name="getDirection">The function which modifies the arc directions.</param>
+        public RedirectedGraph(
+            IGraph graph,
+            Func<Arc, ArcDirection> getDirection)
+                : base(graph, getDirection)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Adapter for modifying the direction of some arcs of an underlying graph.
+    /// </summary>
+    /// <remarks>
+    /// <para>Node and Arc objects are interchangeable between the adapter and the original graph.</para>
+    /// <para>The underlying graph can be freely modified while using this adapter.</para>
+    /// <para>For special cases, consider the UndirectedGraph and ReverseGraph classes for performance.</para>
+    /// </remarks>
+    /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class RedirectedGraph<TNodeProperty, TArcProperty> : 
+    public class RedirectedGraph<TNodeProperty, TArcProperty> : 
         IGraph<TNodeProperty, TArcProperty>
 	{
         private readonly IGraph<TNodeProperty, TArcProperty> _graph;

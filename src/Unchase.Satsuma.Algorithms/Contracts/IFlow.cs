@@ -29,6 +29,13 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms.Contracts
 {
+    /// <inheritdoc cref="IFlow{TCapacity,TNodeProperty,TArcProperty}"/>
+    /// <typeparam name="TCapacity">The arc capacity type.</typeparam>
+    public interface IFlow<TCapacity> :
+        IFlow<TCapacity, object, object>
+    {
+    }
+
     /// <summary>
     /// Interface to a flow in a network.
     /// </summary>

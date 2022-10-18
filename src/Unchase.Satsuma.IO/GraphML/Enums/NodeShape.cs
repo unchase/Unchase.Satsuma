@@ -37,7 +37,7 @@ namespace Unchase.Satsuma.IO.GraphML.Enums
         Rectangle,
 
         /// <summary>
-        /// RoundRect.
+        /// Round rectangle.
         /// </summary>
         RoundRect,
 
@@ -62,7 +62,7 @@ namespace Unchase.Satsuma.IO.GraphML.Enums
         Triangle,
 
         /// <summary>
-        /// Rectangle3D.
+        /// Rectangle 3D.
         /// </summary>
         Rectangle3D,
 
@@ -82,7 +82,7 @@ namespace Unchase.Satsuma.IO.GraphML.Enums
         Trapezoid,
 
         /// <summary>
-        /// Trapezoid2.
+        /// Trapezoid 2.
         /// </summary>
         Trapezoid2
     }

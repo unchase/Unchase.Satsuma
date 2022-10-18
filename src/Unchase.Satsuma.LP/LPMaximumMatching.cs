@@ -34,6 +34,23 @@ using Unchase.Satsuma.LP.Enums;
 
 namespace Unchase.Satsuma.LP
 {
+    /// <inheritdoc cref="LpMaximumMatching{TNodeProperty, TArcProperty}"/>
+    public sealed class LpMaximumMatching :
+        LpMaximumMatching<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="LpMaximumMatching"/>.
+        /// </summary>
+        /// <param name="solver"><see cref="ISolver"/>.</param>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public LpMaximumMatching(
+            ISolver solver,
+            IGraph graph)
+                : base(solver, graph)
+        {
+        }
+    }
+
     /// <summary>
     /// Computes a maximum matching in an arbitrary graph, using integer programming.
     /// </summary>
@@ -42,7 +59,7 @@ namespace Unchase.Satsuma.LP
     /// </remarks>
     /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-    public sealed class LpMaximumMatching<TNodeProperty, TArcProperty>
+    public class LpMaximumMatching<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.

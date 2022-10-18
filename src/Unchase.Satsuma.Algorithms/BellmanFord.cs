@@ -30,6 +30,25 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="BellmanFord{TNodeProperty, TArcProperty}"/>
+	public sealed class BellmanFord :
+        BellmanFord<object, object>
+    {
+		/// <summary>
+		/// Runs the Bellman-Ford algorithm.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="cost">The arc cost function. Each value must be finite or positive infinity.</param>
+		/// <param name="sources">The source nodes.</param>
+		public BellmanFord(
+            IGraph graph,
+            Func<Arc, double> cost,
+            IEnumerable<Node> sources)
+		        : base(graph, cost, sources)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds cheapest paths in a graph from a set of source nodes to all nodes, or a negative cycle reachable from the sources.
 	/// </summary>
@@ -49,8 +68,8 @@ namespace Unchase.Satsuma.Algorithms
 	/// <para>  - For unreachable nodes, <see cref="GetDistance"/>, <see cref="GetParentArc"/> and <see cref="GetPath"/> <see cref="double.PositiveInfinity"/>, <see cref="Arc.Invalid"/> and null respectively.</para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class BellmanFord<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class BellmanFord<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.

@@ -19,7 +19,7 @@ namespace Unchase.Satsuma.Test.Algorithms
         /// <param name="start">Start test.</param>
         [Theory]
         [InlineData(true)]
-        public void BellmanFord_Returns_Success(bool start)
+        public void Generic_BellmanFord_Returns_Success(bool start)
         {
             if (start)
             {

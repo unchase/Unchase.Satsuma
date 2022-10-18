@@ -29,7 +29,7 @@ using Unchase.Satsuma.Algorithms.Connectivity;
 namespace Unchase.Satsuma.Algorithms.Enums
 {
     /// <summary>
-    /// <see cref="BiEdgeConnectedComponents"/> flags.
+    /// <see cref="BiEdgeConnectedComponents{TNodeProperty, TArcProperty}"/> flags.
     /// </summary>
     [Flags]
     public enum BiEdgeConnectedComponentsFlags
@@ -40,13 +40,13 @@ namespace Unchase.Satsuma.Algorithms.Enums
         None = 0,
 
         /// <summary>
-        /// If set, <see cref="BiEdgeConnectedComponents.Components"/> will contain the 2-edge-connected components.
+        /// If set, <see cref="BiEdgeConnectedComponents{TNodeProperty, TArcProperty}.Components"/> will contain the 2-edge-connected components.
         /// </summary>
         CreateComponents = 1 << 0,
 
         // 
         /// <summary>
-        /// If set, <see cref="BiEdgeConnectedComponents.Bridges"/> will contain the bridges.
+        /// If set, <see cref="BiEdgeConnectedComponents{TNodeProperty, TArcProperty}.Bridges"/> will contain the bridges.
         /// </summary>
         CreateBridges = 1 << 1
     }

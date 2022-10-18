@@ -26,6 +26,12 @@ Updated by Unchase © 2022*/
 
 namespace Unchase.Satsuma.Core
 {
+    /// <inheritdoc cref="NodeProperties{TProperty}"/>
+    public class NodeProperties :
+        NodeProperties<object>
+    {
+    }
+
     /// <summary>
     /// The node properties.
     /// </summary>

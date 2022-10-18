@@ -30,6 +30,23 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Drawing
 {
+	/// <inheritdoc cref="ForceDirectedLayout{TNodeProperty, TArcProperty}"/>
+	public sealed class ForceDirectedLayout :
+        ForceDirectedLayout<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="ForceDirectedLayout"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="initialPositions">If null, a random layout is used.</param>
+        public ForceDirectedLayout(
+            IGraph graph,
+            Func<Node, PointD>? initialPositions = null)
+		        : base(graph, initialPositions)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Attempts to draw a graph to the plane such that a certain equilibrium is attained.
 	/// </summary>
@@ -64,8 +81,8 @@ namespace Unchase.Satsuma.Drawing
 	/// </para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class ForceDirectedLayout<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class ForceDirectedLayout<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The default initial temperature for the simulated annealing.

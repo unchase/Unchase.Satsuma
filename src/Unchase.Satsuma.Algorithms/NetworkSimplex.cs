@@ -35,6 +35,29 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="NetworkSimplex{TNodeProperty, TArcProperty}"/>
+	public sealed class NetworkSimplex :
+        NetworkSimplex<object, object>
+    {
+		/// <summary>
+		/// Initialize <see cref="NetworkSimplex"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="lowerBound">The lower bound for the circulation.</param>
+		/// <param name="upperBound">The upper bound for the circulation.</param>
+		/// <param name="supply">The desired difference of outgoing and incoming flow for a node. Must be finite.</param>
+		/// <param name="cost">The cost of sending a unit of circulation through an arc. Must be finite.</param>
+		public NetworkSimplex(
+            IGraph graph,
+            Func<Arc, long>? lowerBound = null,
+            Func<Arc, long>? upperBound = null,
+            Func<Node, long>? supply = null,
+            Func<Arc, double>? cost = null)
+                : base(graph, lowerBound, upperBound, supply, cost)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Finds a minimum cost feasible circulation using the network simplex method.
 	/// </summary>
@@ -46,8 +69,8 @@ namespace Unchase.Satsuma.Algorithms
 	/// </para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class NetworkSimplex<TNodeProperty, TArcProperty> : 
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class NetworkSimplex<TNodeProperty, TArcProperty> : 
         IClearable
 	{
 		/// <summary>

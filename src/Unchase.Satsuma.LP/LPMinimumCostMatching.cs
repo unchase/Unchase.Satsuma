@@ -34,6 +34,29 @@ using Unchase.Satsuma.LP.Enums;
 
 namespace Unchase.Satsuma.LP
 {
+    /// <inheritdoc cref="LpMinimumCostMatching{TNodeProperty, TArcProperty}"/>
+    public sealed class LpMinimumCostMatching :
+        LpMinimumCostMatching<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="LpMinimumCostMatching"/>.
+        /// </summary>
+        /// <param name="solver"><see cref="ISolver"/>.</param>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="cost">A finite cost function on the arcs of Graph.</param>
+        /// <param name="minimumMatchingSize">Minimum constraint on the size (number of arcs) of the returned matching.</param>
+        /// <param name="maximumMatchingSize">Maximum constraint on the size (number of arcs) of the returned matching.</param>
+        public LpMinimumCostMatching(
+            ISolver solver,
+            IGraph graph,
+            Func<Arc, double> cost,
+            int minimumMatchingSize = 0,
+            int maximumMatchingSize = int.MaxValue)
+                : base(solver, graph, cost, minimumMatchingSize, maximumMatchingSize)
+        {
+        }
+    }
+
     /// <summary>
     /// Finds a minimum cost matching in an arbitrary graph using integer programming.
     /// </summary>
@@ -42,7 +65,7 @@ namespace Unchase.Satsuma.LP
     /// </remarks>
     /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-    public sealed class LpMinimumCostMatching<TNodeProperty, TArcProperty>
+    public class LpMinimumCostMatching<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.

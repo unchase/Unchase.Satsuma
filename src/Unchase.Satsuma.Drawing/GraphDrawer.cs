@@ -32,6 +32,23 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Drawing
 {
+	/// <inheritdoc cref="GraphDrawer{TNodeProperty, TArcProperty}"/>
+	public sealed class GraphDrawer :
+        GraphDrawer<object, object>
+    {
+		/// <summary>
+		/// Initialize <see cref="GraphDrawer{TNodeProperty, TArcProperty}"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="nodePosition">Assigns its position to a node.</param>
+		public GraphDrawer(
+            IGraph graph,
+            Func<Node, PointF> nodePosition)
+		        : base(graph, nodePosition)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Draws a graph on a Graphics.
 	/// </summary>
@@ -58,8 +75,8 @@ namespace Unchase.Satsuma.Drawing
 	/// </para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class GraphDrawer<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class GraphDrawer<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The graph to draw.

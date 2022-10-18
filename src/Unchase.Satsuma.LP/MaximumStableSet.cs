@@ -33,6 +33,25 @@ using Unchase.Satsuma.LP.Enums;
 
 namespace Unchase.Satsuma.LP
 {
+    /// <inheritdoc cref="MaximumStableSet{TNodeProperty, TArcProperty}"/>
+    public sealed class MaximumStableSet :
+        MaximumStableSet<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="MaximumStableSet"/>.
+        /// </summary>
+        /// <param name="solver"><see cref="ISolver"/>.</param>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        /// <param name="weight">A finite weight function on the nodes of Graph.</param>
+        public MaximumStableSet(
+            ISolver solver,
+            IGraph graph,
+            Func<Node, double>? weight = null)
+                : base(solver, graph, weight)
+        {
+        }
+    }
+
     /// <summary>
     /// Finds a maximum weight stable set in an arbitrary graph, using integer programming.
     /// </summary>
@@ -41,7 +60,7 @@ namespace Unchase.Satsuma.LP
     /// </remarks>
     /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-    public sealed class MaximumStableSet<TNodeProperty, TArcProperty>
+    public class MaximumStableSet<TNodeProperty, TArcProperty>
     {
         /// <summary>
         /// The input graph.

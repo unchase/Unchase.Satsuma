@@ -30,6 +30,21 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Adapters
 {
+    /// <inheritdoc cref="UndirectedGraph{TNodeProperty, TArcProperty}"/>
+    public sealed class UndirectedGraph :
+        UndirectedGraph<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="UndirectedGraph"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public UndirectedGraph(
+            IGraph graph)
+                : base(graph)
+        {
+        }
+    }
+
     /// <summary>
     /// Adapter showing all arcs of an underlying graph as undirected edges.
     /// </summary>
@@ -39,7 +54,7 @@ namespace Unchase.Satsuma.Adapters
     /// </remarks>
     /// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
     /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-    public sealed class UndirectedGraph<TNodeProperty, TArcProperty> : 
+    public class UndirectedGraph<TNodeProperty, TArcProperty> : 
         IGraph<TNodeProperty, TArcProperty>
     {
         private readonly IGraph<TNodeProperty, TArcProperty> _graph;

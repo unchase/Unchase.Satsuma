@@ -37,8 +37,9 @@ using Unchase.Satsuma.IO.GraphML.Enums;
 
 namespace Unchase.Satsuma.IO.GraphML
 {
-	/// <inheritdoc cref="GraphMlFormat{TNodeProperty, TArcProperty}"/>
-	public static class GraphMlFormat
+    /// <inheritdoc cref="GraphMlFormat{TNodeProperty, TArcProperty}"/>
+	public sealed class GraphMlFormat :
+        GraphMlFormat<object, object>
     {
         internal static readonly XNamespace Xmlns = "http://graphml.graphdrawing.org/xmlns";
         internal static readonly XNamespace XmlnsXsi = "http://www.w3.org/2001/XMLSchema-instance"; // xmlns:xsi
@@ -46,7 +47,14 @@ namespace Unchase.Satsuma.IO.GraphML
         internal static readonly XNamespace XmlnsYed = "http://www.yworks.com/xml/yed/3"; // xmlns:yed
         internal const string XsiSchemaLocation = "http://graphml.graphdrawing.org/xmlns\n" + // xsi:schemaLocation
                                                   "http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd";
-	}
+
+		/// <summary>
+		/// Initialize <seealso cref="GraphMlFormat"/>.
+		/// </summary>
+		public GraphMlFormat()
+        {
+		}
+    }
 
 	/// <summary>
 	/// Loads and saves graphs stored in GraphML format.
@@ -123,7 +131,7 @@ namespace Unchase.Satsuma.IO.GraphML
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
 	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class GraphMlFormat<TNodeProperty, TArcProperty>
+	public class GraphMlFormat<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The graph itself.

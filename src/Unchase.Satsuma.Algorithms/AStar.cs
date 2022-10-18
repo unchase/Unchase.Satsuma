@@ -30,6 +30,25 @@ using Unchase.Satsuma.Core.Contracts;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="AStar{TNodeProperty, TArcProperty}"/>
+	public sealed class AStar :
+        AStar<object, object>
+    {
+		/// <summary>
+		/// Initialize <see cref="AStar"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="cost">A non-negative arc cost function.</param>
+		/// <param name="heuristic">The A* heuristic function.</param>
+		public AStar(
+            IGraph graph,
+            Func<Arc, double> cost,
+            Func<Node, double> heuristic)
+		        : base(graph, cost, heuristic)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Uses the A* search algorithm to find cheapest paths in a graph.
 	/// </summary>
@@ -60,8 +79,8 @@ namespace Unchase.Satsuma.Algorithms
 	/// </para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class AStar<TNodeProperty, TArcProperty>
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class AStar<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.

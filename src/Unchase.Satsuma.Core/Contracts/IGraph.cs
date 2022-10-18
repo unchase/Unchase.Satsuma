@@ -28,6 +28,12 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Core.Contracts
 {
+    /// <inheritdoc cref="IGraph{TNodeProperty, TArcProperty}"/>
+    public interface IGraph :
+        IGraph<object, object>
+    {
+    }
+
     /// <summary>
     /// Interface to a read-only graph.
     /// </summary>

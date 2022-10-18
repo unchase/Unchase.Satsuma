@@ -31,6 +31,25 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Adapters
 {
+	/// <inheritdoc cref="PathGraph{TNodeProperty, TArcProperty}"/>
+	public sealed class PathGraph :
+        PathGraph<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="PathGraph{TNodeProperty, TArcProperty}"/>.
+        /// </summary>
+        /// <param name="nodeCount">Node count.</param>
+        /// <param name="topology"><see cref="Topology"/>.</param>
+        /// <param name="directedness"><see cref="Directedness"/>.</param>
+        public PathGraph(
+            int nodeCount,
+            Topology topology,
+            Directedness directedness)
+		        : base(nodeCount, topology, directedness)
+        {
+        }
+    }
+
 	/// <summary>
 	/// A path or cycle graph on a given number of nodes.
 	/// </summary>
@@ -44,7 +63,7 @@ namespace Unchase.Satsuma.Adapters
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
 	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class PathGraph<TNodeProperty, TArcProperty> : 
+	public class PathGraph<TNodeProperty, TArcProperty> : 
         IPath<TNodeProperty, TArcProperty>
 	{
 		private readonly int _nodeCount;

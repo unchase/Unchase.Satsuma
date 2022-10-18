@@ -32,27 +32,27 @@ namespace Unchase.Satsuma.IO.GraphML.Enums
     public enum StandardType
     {
         /// <summary>
-        /// 
+        /// Bool.
         /// </summary>
         Bool, 
         
         /// <summary>
-        /// 
+        /// Double.
         /// </summary>
         Double, 
         
         /// <summary>
-        /// 
+        /// Float.
         /// </summary>
         Float, 
         
         /// <summary>
-        /// 
+        /// Int.
         /// </summary>
         Int, 
         
         /// <summary>
-        /// 
+        /// Long.
         /// </summary>
         Long,
 

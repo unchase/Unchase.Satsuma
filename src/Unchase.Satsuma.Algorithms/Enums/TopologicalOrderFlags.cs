@@ -29,7 +29,7 @@ using Unchase.Satsuma.Algorithms.Connectivity;
 namespace Unchase.Satsuma.Algorithms.Enums
 {
     /// <summary>
-    /// <see cref="TopologicalOrder"/> flags.
+    /// <see cref="TopologicalOrder{TNodeProperty, TArcProperty}"/> flags.
     /// </summary>
     [Flags]
     public enum TopologicalOrderFlags
@@ -40,7 +40,7 @@ namespace Unchase.Satsuma.Algorithms.Enums
         None = 0,
 
         /// <summary>
-        /// If set, <see cref="TopologicalOrder.Order"/> will contain a topological order of the nodes.
+        /// If set, <see cref="TopologicalOrder{TNodeProperty, TArcProperty}.Order"/> will contain a topological order of the nodes.
         /// </summary>
         CreateOrder = 1 << 0
     }

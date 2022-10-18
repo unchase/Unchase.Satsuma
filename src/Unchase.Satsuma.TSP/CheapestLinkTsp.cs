@@ -32,6 +32,24 @@ using Unchase.Satsuma.TSP.Contracts;
 
 namespace Unchase.Satsuma.TSP
 {
+	/// <inheritdoc cref="CheapestLinkTsp{TNode, TNodeProperty, TArcProperty}"/>
+	/// <typeparam name="TNode">The type of node.</typeparam>
+	public sealed class CheapestLinkTsp<TNode> :
+        CheapestLinkTsp<TNode, object, object>
+    {
+		/// <summary>
+		/// Initialize <see cref="CheapestLinkTsp{TNode}"/>.
+		/// </summary>
+		/// <param name="nodes">The nodes the salesman has to visit.</param>
+		/// <param name="cost">A finite cost function on the node pairs. Must be symmetric, or at least close to symmetric.</param>
+		public CheapestLinkTsp(
+            IList<TNode> nodes,
+            Func<TNode, TNode, double> cost)
+		        : base(nodes, cost)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Solves the symmetric "traveling salesman problem" by using the cheapest link heuristic.
 	/// </summary>
@@ -43,10 +61,10 @@ namespace Unchase.Satsuma.TSP
 	/// <para>Running time: O(n<sup>2</sup> \e log n), memory usage: O(n<sup>2</sup>); where \e n is the number of nodes.</para>
 	/// </remarks>
 	/// </remarks>
-	/// <typeparam name="TNode">Type of node.</typeparam>
+	/// <typeparam name="TNode">The type of node.</typeparam>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class CheapestLinkTsp<TNode, TNodeProperty, TArcProperty> : 
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class CheapestLinkTsp<TNode, TNodeProperty, TArcProperty> : 
         ITsp<TNode>
 	{
         /// <summary>

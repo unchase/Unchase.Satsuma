@@ -32,6 +32,25 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Algorithms
 {
+	/// <inheritdoc cref="Dijkstra{TNodeProperty, TArcProperty}"/>
+	public sealed class Dijkstra :
+        Dijkstra<object, object>
+    {
+		/// <summary>
+		/// Initialize <see cref="Dijkstra"/>.
+		/// </summary>
+		/// <param name="graph"><see cref="IGraph"/>.</param>
+		/// <param name="cost">The arc cost function.</param>
+		/// <param name="mode">The path cost calculation mode.</param>
+		public Dijkstra(
+            IGraph graph,
+            Func<Arc, double> cost,
+            DijkstraMode mode)
+		        : base(graph, cost, mode)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Uses <see cref="Dijkstra{TNodeProperty, TArcProperty}"/>'s algorithm to find cheapest paths in a graph.
 	/// </summary>
@@ -64,7 +83,7 @@ namespace Unchase.Satsuma.Algorithms
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
 	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class Dijkstra<TNodeProperty, TArcProperty>
+	public class Dijkstra<TNodeProperty, TArcProperty>
 	{
         /// <summary>
 		/// The input graph.

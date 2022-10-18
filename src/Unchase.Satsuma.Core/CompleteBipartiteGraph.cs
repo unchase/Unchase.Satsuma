@@ -29,6 +29,25 @@ using Unchase.Satsuma.Core.Enums;
 
 namespace Unchase.Satsuma.Core
 {
+	/// <inheritdoc cref="CompleteBipartiteGraph{TNodeProperty, TArcProperty}"/>
+	public sealed class CompleteBipartiteGraph :
+        CompleteBipartiteGraph<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="CompleteBipartiteGraph"/>.
+        /// </summary>
+        /// <param name="redNodeCount">Red node count.</param>
+        /// <param name="blueNodeCount">Blue node count.</param>
+        /// <param name="directedness">If <see cref="Directedness.Directed"/>, then the graph is directed from the red to the blue nodes. Otherwise, the graph is undirected.</param>
+        public CompleteBipartiteGraph(
+            int redNodeCount,
+            int blueNodeCount,
+            Directedness directedness)
+		        : base(redNodeCount, blueNodeCount, directedness)
+        {
+        }
+    }
+
 	/// <summary>
 	/// A complete bipartite graph on a given number of nodes.
 	/// </summary>
@@ -39,8 +58,8 @@ namespace Unchase.Satsuma.Core
 	/// <para>This type is thread safe.</para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class CompleteBipartiteGraph<TNodeProperty, TArcProperty> : 
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class CompleteBipartiteGraph<TNodeProperty, TArcProperty> : 
         IGraph<TNodeProperty, TArcProperty>
 	{
 		/// <inheritdoc />

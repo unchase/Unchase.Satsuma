@@ -31,6 +31,21 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Adapters
 {
+	/// <inheritdoc cref="Subgraph{TNodeProperty, TArcProperty}"/>
+	public sealed class Subgraph :
+        Subgraph<object, object>
+    {
+        /// <summary>
+        /// Initialize <see cref="Subgraph"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public Subgraph(
+            IGraph graph)
+		        : base(graph)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Adapter for hiding/showing nodes/arcs of an underlying graph.
 	/// </summary>
@@ -42,8 +57,8 @@ namespace Unchase.Satsuma.Adapters
 	/// <para>By default, all nodes and arcs are enabled.</para>
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
-    /// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class Subgraph<TNodeProperty, TArcProperty> : 
+	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
+	public class Subgraph<TNodeProperty, TArcProperty> : 
         IGraph<TNodeProperty, TArcProperty>
 	{
 		private readonly IGraph<TNodeProperty, TArcProperty> _graph;

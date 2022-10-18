@@ -31,6 +31,21 @@ using Unchase.Satsuma.Core.Extensions;
 
 namespace Unchase.Satsuma.Adapters
 {
+	/// <inheritdoc cref="ContractedGraph{TNodeProperty, TArcProperty}"/>
+	public sealed class ContractedGraph :
+        ContractedGraph<object, object>
+    {
+		/// <summary>
+        /// Initialize <see cref="ContractedGraph"/>.
+        /// </summary>
+        /// <param name="graph"><see cref="IGraph"/>.</param>
+        public ContractedGraph(
+            IGraph graph)
+                : base(graph)
+        {
+		}
+    }
+
 	/// <summary>
 	/// Adapter for identifying some nodes of an underlying graph.
 	/// </summary>
@@ -44,7 +59,7 @@ namespace Unchase.Satsuma.Adapters
 	/// </remarks>
 	/// <typeparam name="TNodeProperty">The type of stored node properties.</typeparam>
 	/// <typeparam name="TArcProperty">The type of stored arc properties.</typeparam>
-	public sealed class ContractedGraph<TNodeProperty, TArcProperty> : 
+	public class ContractedGraph<TNodeProperty, TArcProperty> : 
         IGraph<TNodeProperty, TArcProperty>
 	{
 		private readonly IGraph<TNodeProperty, TArcProperty> _graph;

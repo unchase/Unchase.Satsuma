@@ -26,6 +26,12 @@ Updated by Unchase © 2022*/
 
 namespace Unchase.Satsuma.Core.Contracts
 {
+    /// <inheritdoc cref="INodeLookup{TNodeProperty}"/>
+    public interface INodeLookup :
+        INodeLookup<object>
+    {
+    }
+
     /// <summary>
     /// A graph which can provide information about its nodes.
     /// </summary>
